@@ -39,7 +39,7 @@ function BackgroundStars() {
 
 function App() {
   const {
-    currentGesture, mode, setMode, hands, highlightedSlot,
+    currentGesture, mode, setMode, highlightedSlot,
     selectedDate, draftTitle, draftDuration, setDraftDuration,
     addEvent, removeEvent, events, goNextDay, goPrevDay, toggleView,
     setLastAction, setDraftTitle, setSpeechText, error, setError, googleSignedIn,
