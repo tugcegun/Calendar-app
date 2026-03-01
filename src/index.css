@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+@import url('https://fonts.cdnfonts.com/css/aston-script');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rose: #E50046;
+  --peach: #FDAB9E;
+  --cream: #1a1a2e;
+  --mint: #C7DB9C;
+  --bg: #FFF0BD;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--cream);
+  overflow: hidden;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+}
+
+#root { width: 100vw; height: 100vh; }
+
+.pixel-border {
+  border: 3px solid;
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.2), inset -1px -1px 0px rgba(0,0,0,0.1), inset 1px 1px 0px rgba(255,255,255,0.04);
+}
+.pixel-border-sm {
+  border: 2px solid;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+}
+.pixel-btn {
+  font-family: 'Press Start 2P', monospace;
+  border: 2px solid;
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.25);
+  transition: all 0.1s;
+  cursor: pointer;
+}
+.pixel-btn:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0px rgba(0,0,0,0.25); filter: brightness(1.1); }
+.pixel-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0px rgba(0,0,0,0.25); }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--peach); border: 2px solid var(--bg); }
+
+@keyframes twinkle { 0%,100%{opacity:0.15} 50%{opacity:0.5} }
+
+@keyframes pixelAssemble {
+  0% { transform: scale(0); opacity: 0; }
+  15% { transform: scale(0.3); opacity: 0.2; }
+  30% { transform: scale(0.5); opacity: 0.4; }
+  45% { transform: scale(0.7); opacity: 0.6; }
+  60% { transform: scale(0.85); opacity: 0.8; }
+  75% { transform: scale(1.05); opacity: 0.9; }
+  90% { transform: scale(0.98); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-pixel-assemble {
+  animation: pixelAssemble 0.5s steps(8) forwards;
+}
