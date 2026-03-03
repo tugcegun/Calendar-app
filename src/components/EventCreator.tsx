@@ -1,13 +1,14 @@
 import { useAppStore } from '../store/useAppStore';
 import { useGoogleCalendar } from '../hooks/useGoogleCalendar';
+import { addFirestoreEvent } from '../services/firestoreService';
 import { VoiceInput } from './VoiceInput';
 import { PixelFrog, PixelFist, PixelHeart } from './PixelIcons';
 
 export function EventCreator() {
   const {
     mode, draftTitle, setDraftTitle, draftDuration, setDraftDuration,
-    highlightedSlot, selectedDate, addEvent, setMode, setLastAction,
-    setSpeechText, googleSignedIn,
+    highlightedSlot, setHighlightedSlot, selectedDate, setMode, setLastAction,
+    setSpeechText, googleSignedIn, firebaseUser,
   } = useAppStore();
   const { addGoogleEvent } = useGoogleCalendar();
 
@@ -18,12 +19,11 @@ export function EventCreator() {
     const slot = highlightedSlot ?? 9;
     if (googleSignedIn) {
       await addGoogleEvent(draftTitle.trim(), selectedDate, slot, 0, draftDuration);
-    } else {
-      addEvent({
-        id: `evt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    } else if (firebaseUser) {
+      const color = ['#E50046', '#FDAB9E', '#C7DB9C', '#E50046', '#FDAB9E'][Math.floor(Math.random() * 5)];
+      await addFirestoreEvent(firebaseUser.uid, {
         title: draftTitle.trim(), date: selectedDate,
-        startHour: slot, startMinute: 0, duration: draftDuration,
-        color: ['#E50046', '#FDAB9E', '#C7DB9C', '#E50046', '#FDAB9E'][Math.floor(Math.random() * 5)],
+        startHour: slot, startMinute: 0, duration: draftDuration, color,
       });
       setLastAction(`"${draftTitle}" olusturuldu`);
     }
@@ -31,7 +31,7 @@ export function EventCreator() {
   };
 
   const handleCancel = () => {
-    setDraftTitle(''); setSpeechText(''); setDraftDuration(60); setMode('idle');
+    setDraftTitle(''); setSpeechText(''); setDraftDuration(60); setMode('idle'); setHighlightedSlot(null);
   };
 
   return (

@@ -1,4 +1,8 @@
 import { useEffect, useCallback, useState, useMemo } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from './services/firebase';
+import { addFirestoreEvent, deleteFirestoreEvent } from './services/firestoreService';
+import { useAuth } from './hooks/useAuth';
 import { CameraView } from './components/CameraView';
 import { CalendarView } from './components/CalendarView';
 import { MiniCalendar } from './components/MiniCalendar';
@@ -6,10 +10,10 @@ import { GestureIndicator } from './components/GestureIndicator';
 import { EventCreator } from './components/EventCreator';
 import { StatusBar } from './components/StatusBar';
 import { Onboarding } from './components/Onboarding';
-import { GoogleAuthButton } from './components/GoogleAuthButton';
 import { HandCursor } from './components/HandCursor';
 import { PixelFrog, PixelCat, PixelLion, PixelHand, PixelFist, PixelStar, PixelHeart } from './components/PixelIcons';
 import { useGestureRecognition } from './hooks/useGestureRecognition';
+import { useHandScroll } from './hooks/useHandScroll';
 import { useGoogleCalendar } from './hooks/useGoogleCalendar';
 import { resolveAction } from './services/gestureEngine';
 import { useAppStore } from './store/useAppStore';
@@ -41,38 +45,39 @@ function App() {
   const {
     currentGesture, mode, setMode, highlightedSlot,
     selectedDate, draftTitle, draftDuration, setDraftDuration,
-    addEvent, removeEvent, events, goNextDay, goPrevDay, toggleView,
+    removeEvent, events, goNextDay, goPrevDay, toggleView,
     setLastAction, setDraftTitle, setSpeechText, error, setError, googleSignedIn,
+    firebaseUser, authLoading,
   } = useAppStore();
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  useAuth();
   useGestureRecognition();
+  useHandScroll();
   const { addGoogleEvent, removeGoogleEvent } = useGoogleCalendar();
+
+  const userName = firebaseUser?.displayName || firebaseUser?.email || '';
+
+  const handleLogout = useCallback(async () => {
+    await signOut(auth);
+  }, []);
 
   const processAction = useCallback(() => {
     const result = resolveAction(currentGesture, mode);
     if (!result) return;
 
     switch (result.action) {
-      case 'click_select':
-        if (highlightedSlot !== null) {
-          setMode('creating');
-          setLastAction(`${highlightedSlot}:00 secildi`);
-        }
-        break;
-
       case 'save_event':
         if (mode === 'creating' && draftTitle.trim()) {
           const slot = highlightedSlot ?? 9;
           if (googleSignedIn) {
             addGoogleEvent(draftTitle.trim(), selectedDate, slot, 0, draftDuration);
-          } else {
-            addEvent({
-              id: `evt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+          } else if (firebaseUser) {
+            const color = ['#E50046', '#FDAB9E', '#C7DB9C', '#E50046', '#FDAB9E'][Math.floor(Math.random() * 5)];
+            addFirestoreEvent(firebaseUser.uid, {
               title: draftTitle.trim(), date: selectedDate,
-              startHour: slot, startMinute: 0, duration: draftDuration,
-              color: ['#E50046', '#FDAB9E', '#C7DB9C', '#E50046', '#FDAB9E'][Math.floor(Math.random() * 5)],
+              startHour: slot, startMinute: 0, duration: draftDuration, color,
             });
             setLastAction(`"${draftTitle}" kaydedildi`);
           }
@@ -85,8 +90,12 @@ function App() {
           const slotEvents = events.filter((e) => e.date === selectedDate && e.startHour === highlightedSlot);
           if (slotEvents.length > 0) {
             const toDelete = slotEvents[0];
-            if (googleSignedIn) removeGoogleEvent(toDelete.id);
-            else { removeEvent(toDelete.id); setLastAction(`"${toDelete.title}" silindi`); }
+            if (googleSignedIn) {
+              removeGoogleEvent(toDelete.id);
+            } else if (firebaseUser) {
+              deleteFirestoreEvent(firebaseUser.uid, toDelete.id);
+              setLastAction(`"${toDelete.title}" silindi`);
+            }
           }
         }
         break;
@@ -97,13 +106,24 @@ function App() {
     }
   }, [
     currentGesture, mode, draftTitle, draftDuration, highlightedSlot,
-    selectedDate, events, googleSignedIn,
-    setMode, addEvent, removeEvent, goNextDay, goPrevDay, toggleView,
+    selectedDate, events, googleSignedIn, firebaseUser,
+    setMode, removeEvent, goNextDay, goPrevDay, toggleView,
     setLastAction, setDraftTitle, setSpeechText, setDraftDuration,
     addGoogleEvent, removeGoogleEvent,
   ]);
 
   useEffect(() => { processAction(); }, [currentGesture]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auth loading screen
+  if (authLoading) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center bg-bg">
+        <BackgroundStars />
+        <PixelFrog size={72} className="animate-hop" />
+        <p className="font-pixel text-[12px] text-cream/60 mt-4 animate-pulse">YUKLENIYOR...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full flex flex-col bg-bg">
@@ -157,7 +177,6 @@ function App() {
               </div>
             </div>
 
-            <GoogleAuthButton />
             <MiniCalendar />
 
             {/* Gesture reference */}
@@ -185,6 +204,24 @@ function App() {
               </div>
             )}
           </div>
+
+          {/* Account & logout — pinned to bottom */}
+          {userName && (
+            <div className="px-4 py-3 border-t-[2px] border-peach/30 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-full bg-rose/20 border-2 border-rose/40 flex items-center justify-center shrink-0">
+                  <span className="font-pixel text-[7px] text-rose">{userName.charAt(0).toUpperCase()}</span>
+                </div>
+                <span className="text-[14px] font-body text-cream/70 truncate">{userName}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="font-pixel text-[7px] text-rose/50 hover:text-rose transition-colors shrink-0 ml-2"
+              >
+                CIKIS
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Sidebar toggle */}

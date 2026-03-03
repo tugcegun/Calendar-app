@@ -3,1446 +3,1082 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TUGÇE | Air Planner - Pixel Portfolio</title>
+  <title>Air Planner - El Hareketleriyle Takvim Yonetimi</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
   <link href="https://fonts.cdnfonts.com/css/aston-script" rel="stylesheet">
   <style>
+    /* ══════ LIGHT MODE (default) ══════ */
     :root {
-      --rose: #E50046;
-      --peach: #FDAB9E;
-      --cream: #1a1a2e;
-      --mint: #C7DB9C;
-      --bg: #FFF0BD;
-      --bg-light: #F0E4A0;
-      --bg-card: #FFF8D6;
+      --bg1: #FCF9EA;
+      --bg2: #BADFDB;
+      --bg3: #FFBDBD;
+      --bg4: #FFA4A4;
+      --green: #B8DB80;
+      --mint: #BADFDB;
+      --coral: #FFA4A4;
+      --pink: #F39EB6;
+      --text: #3a3a3a;
+      --text-soft: #6b6b6b;
+      --card: #ffffff;
+      --card-border: #3a3a3a;
+      --dark-bg: #2c3030;
+      --dark-bg2: #222626;
+      --nav-bg: rgba(252,249,234,0.88);
+      --nav-text: #3a3a3a;
+      --nav-link: rgba(58,58,58,0.55);
+      --star-opacity: 0.12;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ══════ DARK MODE ══════ */
+    body.dark {
+      --bg1: #1a1e1a;
+      --bg2: #152524;
+      --bg3: #261a1e;
+      --bg4: #2e1e1e;
+      --text: #eae8d8;
+      --text-soft: #9a9888;
+      --card: #222824;
+      --card-border: #4a5a4a;
+      --dark-bg: #141816;
+      --dark-bg2: #0e1210;
+      --nav-bg: rgba(26,30,26,0.92);
+      --nav-text: #eae8d8;
+      --nav-link: rgba(234,232,216,0.45);
+      --star-opacity: 0.25;
+    }
 
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
-      color: var(--cream);
-      font-family: 'VT323', monospace;
-      font-size: 24px;
+      background: var(--bg1);
+      color: var(--text);
+      font-family: 'Satoshi', sans-serif;
       overflow-x: hidden;
-      image-rendering: pixelated;
-    }
-
-    .pixel-border {
-      border: 3px solid;
-      box-shadow: 4px 4px 0px rgba(0,0,0,0.4), inset -2px -2px 0px rgba(0,0,0,0.2), inset 2px 2px 0px rgba(255,255,255,0.05);
+      transition: background 0.4s, color 0.4s;
     }
 
     .pixel-btn {
       font-family: 'Press Start 2P', monospace;
-      border: 3px solid;
-      box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
-      transition: all 0.1s;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
+      border: 3px solid; box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
+      transition: all 0.12s; cursor: pointer; text-decoration: none;
+      display: inline-block; image-rendering: pixelated;
     }
-    .pixel-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.4); }
-    .pixel-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px rgba(0,0,0,0.4); }
+    .pixel-btn:hover { transform: translate(2px,2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.25); }
 
-    h1, h2, h3 { font-family: 'Press Start 2P', monospace; }
-
-    .star {
-      position: fixed;
-      width: 2px; height: 2px;
-      background: var(--cream);
-      opacity: 0.3;
-      animation: twinkle var(--dur) ease-in-out infinite;
-      animation-delay: var(--delay);
-      pointer-events: none;
-      z-index: 0;
-    }
-    @keyframes twinkle { 0%,100%{opacity:0.1} 50%{opacity:0.8} }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-    @keyframes floatSlow { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-8px) rotate(2deg)} }
-    @keyframes typewriter { from{width:0} to{width:100%} }
-    @keyframes blink { 50%{border-color:transparent} }
-    @keyframes slideUp { from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
-    @keyframes fillBar { from{width:0} to{width:var(--fill)} }
-    @keyframes wiggle { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-5deg)} 75%{transform:rotate(5deg)} }
-    @keyframes hop { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-
-    .float { animation: float 3s ease-in-out infinite; }
-    .float-slow { animation: floatSlow 4s ease-in-out infinite; }
-
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 60px 20px;
-      max-width: 900px;
-      margin: 0 auto;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.6s ease;
-    }
-    section.visible { opacity: 1; transform: translateY(0); }
-
-    .glow-rose { text-shadow: 0 0 10px var(--rose), 0 0 30px rgba(255,170,184,0.3); }
-    .glow-peach { text-shadow: 0 0 10px var(--peach), 0 0 30px rgba(255,216,223,0.3); }
-    .glow-mint { text-shadow: 0 0 10px var(--mint), 0 0 30px rgba(168,223,142,0.3); }
-
-    html { scroll-behavior: smooth; }
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--rose); border: 2px solid var(--bg); }
+    ::-webkit-scrollbar-track { background: var(--dark-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border: 2px solid var(--dark-bg); }
 
-    .monitor {
-      width: 520px; height: 420px;
-      border: 12px solid #4a4270;
-      border-top-color: #5a5280;
-      border-left-color: #5a5280;
-      border-right-color: #3a3260;
-      border-bottom-color: #3a3260;
-      border-radius: 10px;
-      background: var(--bg-card);
-      box-shadow: 8px 8px 0 rgba(0,0,0,0.5), 0 0 50px rgba(255,170,184,0.15);
-      position: relative;
-      animation: float 3s ease-in-out infinite;
+    /* ── Stars ── */
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .star {
+      position: absolute; opacity: var(--star-opacity);
+      animation: twinkle var(--dur) ease-in-out infinite var(--delay);
+      image-rendering: pixelated; transition: opacity 0.4s;
     }
-    .monitor::before {
-      content: '';
-      position: absolute; inset: -4px;
-      border: 4px solid #2a2240;
-      border-radius: 14px;
-      pointer-events: none;
+    @keyframes twinkle { 0%,100%{opacity:0.04} 50%{opacity:0.4} }
+
+    /* ══ NAVBAR ══ */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 56px; padding: 0 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--nav-bg); backdrop-filter: blur(14px);
+      border-bottom: 3px solid var(--green);
+      transition: background 0.4s;
     }
-    .monitor-screen {
-      margin: 14px;
-      height: calc(100% - 28px);
-      background: linear-gradient(135deg, #1a1830 0%, #252040 100%);
-      border: 2px solid #4a4270;
-      position: relative;
-      overflow: hidden;
+    .nav-logo {
+      font-family: 'Press Start 2P', monospace; font-size: 10px;
+      color: var(--green); display: flex; align-items: center; gap: 8px;
+      text-decoration: none; image-rendering: pixelated;
     }
-    /* CRT scanlines */
-    .monitor-screen::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(transparent 0, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
-      pointer-events: none;
-      z-index: 10;
+    .nav-right { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-right a {
+      font-family: 'Satoshi', sans-serif; font-weight: 600; font-size: 13px;
+      color: var(--nav-link); text-decoration: none; padding: 7px 14px; transition: 0.15s;
     }
-    /* CRT vignette */
-    .monitor-screen::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
-      pointer-events: none;
-      z-index: 11;
+    .nav-right a:hover { color: var(--nav-text); background: rgba(184,219,128,0.15); }
+    .nav-login {
+      font-family: 'Press Start 2P', monospace !important; font-size: 8px !important;
+      color: #3a3a3a !important; background: var(--green) !important;
+      padding: 9px 18px !important; box-shadow: 3px 3px 0 rgba(0,0,0,0.2); border: none;
     }
-    /* Power button */
-    .monitor-power {
-      position: absolute;
-      bottom: -2px; right: 20px;
-      width: 14px; height: 14px;
-      background: #2a2240;
-      border: 2px solid #3a3260;
-      border-radius: 50%;
+    .nav-login:hover { transform: translate(2px,2px) !important; box-shadow: 1px 1px 0 rgba(0,0,0,0.2) !important; }
+
+    /* ── Theme toggle ── */
+    .theme-btn {
+      background: none; border: 2px solid var(--green); cursor: pointer;
+      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; padding: 0; margin-left: 2px;
+    }
+    .theme-btn:hover { background: rgba(184,219,128,0.15); }
+    .theme-btn svg { image-rendering: pixelated; }
+    .theme-sun { display: none; }
+    .theme-moon { display: block; }
+    body.dark .theme-sun { display: block; }
+    body.dark .theme-moon { display: none; }
+
+    /* ══ KEYFRAMES ══ */
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+    @keyframes floatSlow { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-14px) rotate(4deg)} }
+    @keyframes hop { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes wiggle { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes blink-dot { 50%{opacity:0.2} }
+
+    /* ══ SCROLL ANIM ══ */
+    .anim { opacity: 0; }
+    .anim.vis { opacity: 1; transform: none; transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
+    .a-up { transform: translateY(60px); }
+    .a-left { transform: translateX(-100px); }
+    .a-right { transform: translateX(100px); }
+    .a-scale { transform: scale(0.8); }
+    .d1 { transition-delay: 0.08s !important; }
+    .d2 { transition-delay: 0.16s !important; }
+    .d3 { transition-delay: 0.24s !important; }
+
+    /* ── Section slide (scroll-driven) ── */
+    .section-slide {
+      will-change: transform, opacity;
+    }
+
+    /* ── Pixel cursor canvas ── */
+    #pixelCursor {
+      position: fixed; inset: 0; z-index: 99; pointer-events: none;
+      image-rendering: pixelated;
+    }
+
+    /* ══ HERO ══ */
+    .hero {
+      position: relative; z-index: 1; min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 80px 24px 120px;
+      background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      overflow: hidden; transition: background 0.4s;
     }
-    .monitor-power::after {
-      content: '';
-      width: 6px; height: 6px;
-      background: #4ade80;
-      border-radius: 50%;
-      box-shadow: 0 0 6px #4ade80, 0 0 12px rgba(74,222,128,0.4);
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px; margin-bottom: 28px;
+      background: rgba(184,219,128,0.15); border: 2px solid var(--green);
+      font-weight: 600; font-size: 13px; color: var(--green);
     }
-    /* Brand label */
-    .monitor-brand {
-      position: absolute;
-      bottom: 0px; left: 20px;
+    .hero h1 {
       font-family: 'Press Start 2P', monospace;
-      font-size: 7px;
-      color: #5a5280;
-      letter-spacing: 1px;
+      font-size: clamp(20px, 4.2vw, 42px);
+      color: var(--text); line-height: 1.55; margin-bottom: 22px; image-rendering: pixelated;
     }
-    .monitor-stand { width: 100px; height: 24px; background: #4a4270; margin: 0 auto; border-left: 2px solid #5a5280; border-right: 2px solid #3a3260; }
-    .monitor-base { width: 180px; height: 10px; background: #5a5280; margin: 0 auto; border-radius: 0 0 4px 4px; border-bottom: 2px solid #3a3260; }
+    .hl-g { color: var(--green); text-shadow: 0 0 30px rgba(184,219,128,0.25); }
+    .hl-p { color: var(--coral); text-shadow: 0 0 30px rgba(255,164,164,0.25); }
+    .hero-sub {
+      font-size: clamp(15px, 1.7vw, 18px); color: var(--text-soft);
+      max-width: 500px; margin: 0 auto 36px; line-height: 1.8;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-float { position: absolute; pointer-events: none; image-rendering: pixelated; z-index: 1; }
 
-    /* CRT flicker */
-    @keyframes crtFlicker {
-      0% { opacity: 1; }
-      92% { opacity: 1; }
-      93% { opacity: 0.8; }
-      94% { opacity: 1; }
-      100% { opacity: 1; }
+    /* ══ MARQUEE BANDS ══ */
+    .marquee-band {
+      position: relative; z-index: 2; overflow: hidden; white-space: nowrap;
+      border-top: 3px solid; border-bottom: 3px solid; padding: 14px 0;
+      transition: background 0.4s, border-color 0.4s, color 0.4s;
     }
-    .monitor-screen { animation: crtFlicker 4s ease-in-out infinite; }
+    .marquee-track {
+      display: inline-flex; animation: marquee var(--speed, 20s) linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-item {
+      font-family: 'Press Start 2P', monospace; font-size: var(--msize, 11px);
+      padding: 0 32px; display: inline-flex; align-items: center; gap: 16px; image-rendering: pixelated;
+    }
+    .marquee-dot { width: 6px; height: 6px; flex-shrink: 0; }
+    .band-1 { background: var(--green); border-color: var(--card-border); color: #3a3a3a; }
+    .band-2 { background: var(--bg4); border-color: var(--card-border); color: #fff; }
+    .band-3 { background: var(--mint); border-color: var(--card-border); color: #3a3a3a; }
 
-    /* Play hint bounce */
-    @keyframes bounceDown {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(8px); }
+    /* ══ FEATURES ══ */
+    .feat-section {
+      position: relative; z-index: 1;
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg1) 100%);
+      transition: background 0.4s;
+      padding: 90px 24px 100px;
     }
-    .play-hint {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 16px;
-      animation: bounceDown 1.2s ease-in-out infinite;
-    }
-    .play-hint-arrow {
-      font-size: 24px;
-      color: var(--mint);
-    }
-    .play-hint-text {
+    .feat-header { text-align: center; margin-bottom: 52px; }
+    .section-title {
       font-family: 'Press Start 2P', monospace;
-      font-size: 11px;
-      color: var(--mint);
-      text-shadow: 0 0 8px rgba(168,223,142,0.4);
+      font-size: clamp(12px, 2vw, 18px);
+      margin-bottom: 12px; image-rendering: pixelated; line-height: 1.7;
+      color: var(--text);
     }
+    .section-sub { font-size: 16px; color: var(--text-soft); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .f-card {
+      background: var(--card); border: 3px solid var(--green);
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.08);
+      padding: 36px 28px; position: relative; overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.4s;
+    }
+    .f-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 4px; background: linear-gradient(90deg, var(--green), var(--coral));
+    }
+    .f-card:hover { transform: translateY(-6px); box-shadow: 8px 12px 0 rgba(0,0,0,0.1); }
+    .f-icon {
+      width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+      background: var(--bg3); border: 2px solid var(--coral);
+      margin-bottom: 20px; image-rendering: pixelated; transition: background 0.4s;
+    }
+    .f-card h3 {
+      font-family: 'Press Start 2P', monospace; font-size: 10px;
+      color: var(--text); margin-bottom: 12px; line-height: 1.7;
+    }
+    .f-card p { font-size: 15px; color: var(--text-soft); line-height: 1.7; }
 
-    .photo-placeholder {
-      width: 120px; height: 120px;
-      border: 3px solid var(--rose);
-      background: var(--bg);
+    /* ══ HOW IT WORKS ══ */
+    .how-section {
+      position: relative; z-index: 1;
+      background: linear-gradient(180deg, var(--bg1) 0%, var(--bg3) 50%, var(--bg3) 100%);
+      padding: 100px 24px; overflow: hidden; transition: background 0.4s;
+    }
+    .how-header { text-align: center; margin-bottom: 64px; position: relative; z-index: 1; }
+    .steps { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+    .steps::before {
+      content: ''; position: absolute; left: 50%; top: 40px; bottom: 40px;
+      width: 3px; background: var(--text); transform: translateX(-50%); opacity: 0.12;
+    }
+    .step { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; margin-bottom: 24px; }
+    .step-card {
+      padding: 28px 24px; background: var(--card);
+      border: 3px solid var(--card-border); box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .step-card h3 { font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--text); margin-bottom: 10px; line-height: 1.7; }
+    .step-card p { font-size: 14px; color: var(--text-soft); line-height: 1.7; }
+    .step-num {
+      width: 64px; height: 64px; margin: 0 auto;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 20px rgba(255,170,184,0.2);
+      background: var(--green); border: 3px solid var(--card-border);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+      font-family: 'Press Start 2P', monospace; font-size: 22px;
+      color: #3a3a3a; position: relative; z-index: 2;
     }
 
-    .typewriter {
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 3px solid var(--peach);
-      animation: typewriter 2s steps(20) forwards, blink 0.8s step-end infinite;
-      width: 0;
+    /* ══ GESTURES ══ */
+    .gest-section {
+      position: relative; z-index: 1;
+      background: linear-gradient(180deg, var(--bg3) 0%, var(--dark-bg) 15%, var(--dark-bg) 100%);
+      padding: 100px 0 80px; overflow: hidden; transition: background 0.4s;
+    }
+    .gest-header { text-align: center; padding: 0 24px 44px; position: relative; z-index: 1; }
+    .gest-header .section-title { color: var(--bg1); }
+    .gest-header .section-sub { color: rgba(252,249,234,0.4); }
+    .gest-marquee { overflow: hidden; position: relative; z-index: 1; }
+    .gest-marquee-track { display: flex; gap: 20px; padding: 0 10px; animation: marquee 28s linear infinite; }
+    .gest-marquee:hover .gest-marquee-track { animation-play-state: paused; }
+    .g-card {
+      flex-shrink: 0; width: 180px;
+      background: rgba(255,255,255,0.04); border: 2px solid rgba(184,219,128,0.2);
+      padding: 24px 16px; text-align: center; transition: 0.2s;
+    }
+    .g-card:hover { background: rgba(184,219,128,0.08); border-color: var(--green); transform: translateY(-4px); }
+    .g-icon { width: 44px; height: 44px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; image-rendering: pixelated; }
+    .g-card h4 { font-family: 'Press Start 2P', monospace; font-size: 7px; color: var(--green); margin-bottom: 6px; }
+    .g-card p { font-family: 'VT323', monospace; font-size: 20px; color: rgba(252,249,234,0.35); }
+
+    /* ══ CAMERA ══ */
+    .cam-section {
+      position: relative; z-index: 1;
+      background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg2) 100%);
+      padding: 100px 24px 120px; text-align: center; overflow: hidden; transition: background 0.4s;
+    }
+    .cam-section .section-title { color: var(--bg1); }
+    .cam-section .section-sub { color: rgba(252,249,234,0.35); max-width: 460px; margin: 0 auto 44px; }
+    .cam-wrap { max-width: 700px; margin: 0 auto; }
+    .cam-frame {
+      border: 4px solid var(--green);
+      box-shadow: 8px 8px 0 rgba(0,0,0,0.35), 0 0 50px rgba(184,219,128,0.05);
+      background: #0a0e0a; position: relative; overflow: hidden; aspect-ratio: 4/3;
+    }
+    .cam-frame video, .cam-frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .cam-frame video { transform: scaleX(-1); }
+    .cam-frame canvas { transform: scaleX(-1); z-index: 2; }
+    .cam-scanlines {
+      position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background: repeating-linear-gradient(transparent 0,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);
+    }
+    .cam-status { position: absolute; top: 12px; left: 14px; z-index: 4; display: flex; align-items: center; gap: 8px; font-family: 'Press Start 2P', monospace; font-size: 7px; color: var(--green); }
+    .cam-dot { width: 7px; height: 7px; background: var(--green); animation: blink-dot 1s step-end infinite; }
+    .cam-gesture { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 4; font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--coral); background: rgba(0,0,0,0.7); padding: 9px 20px; border: 2px solid var(--coral); min-width: 200px; transition: 0.2s; }
+    .cam-start { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: rgba(0,0,0,0.6); cursor: pointer; border: none; transition: 0.2s; }
+    .cam-start:hover { background: rgba(0,0,0,0.4); }
+    .cam-start span { font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--green); }
+    .cam-start .sub { font-family: 'Satoshi', sans-serif; font-size: 13px; color: rgba(252,249,234,0.3); }
+    .cam-label { margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: 'VT323', monospace; font-size: 19px; color: rgba(252,249,234,0.2); }
+
+    /* ══ FROG GAME ══ */
+    .game-section {
+      position: relative; z-index: 1;
+      background: linear-gradient(180deg, var(--dark-bg2) 0%, var(--dark-bg) 100%);
+      padding: 80px 24px 100px; text-align: center; overflow: hidden; transition: background 0.4s;
+    }
+    .game-section .section-title { color: var(--bg1); }
+    .game-section .section-sub { color: rgba(252,249,234,0.35); max-width: 460px; margin: 0 auto 36px; }
+    .game-wrap { max-width: 680px; margin: 0 auto; }
+    .game-monitor {
+      background: #2a2a3e; border: 4px solid var(--green);
+      border-radius: 14px 14px 4px 4px; padding: 12px;
+      box-shadow: 8px 8px 0 rgba(0,0,0,0.35), 0 0 40px rgba(184,219,128,0.06);
+      position: relative;
+    }
+    .game-screen {
+      background: #0d1a0d; border: 3px solid #0a0e0a; border-radius: 3px;
+      height: 420px; position: relative; overflow: hidden; cursor: default;
+    }
+    .game-screen::after {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(transparent 0,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);
+      pointer-events: none; z-index: 5;
+    }
+    .game-led {
+      position: absolute; bottom: 5px; right: 16px;
+      width: 6px; height: 6px; background: var(--green);
+      border-radius: 50%; box-shadow: 0 0 6px var(--green);
+      animation: blink-dot 2s ease-in-out infinite;
+    }
+    .game-base { width: 140px; height: 14px; background: #2a2a3e; margin: 0 auto; border: 3px solid var(--green); border-top: none; border-radius: 0 0 4px 4px; }
+    .game-foot { width: 220px; height: 8px; background: #222236; margin: 0 auto; border-radius: 0 0 6px 6px; box-shadow: 4px 4px 0 rgba(0,0,0,0.3); }
+    #frogCanvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+    .game-hud {
+      position: absolute; top: 8px; left: 10px; right: 10px;
+      display: flex; justify-content: space-between;
+      font-family: 'Press Start 2P', monospace; font-size: 7px;
+      color: var(--green); z-index: 4; pointer-events: none;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+    }
+    .game-msg {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-family: 'Press Start 2P', monospace; font-size: 9px;
+      color: var(--bg1); text-align: center; z-index: 4; pointer-events: none;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.8); line-height: 2.4;
+    }
+    .game-keys {
+      margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: 'VT323', monospace; font-size: 18px; color: rgba(252,249,234,0.2);
     }
 
-    .stat-bar {
-      height: 12px; background: var(--bg); border: 2px solid #4a4270; position: relative;
+    /* ══ CTA ══ */
+    .cta-section {
+      position: relative; z-index: 1;
+      background: linear-gradient(180deg, var(--dark-bg2) 0%, var(--bg1) 30%);
+      text-align: center; padding: 140px 24px 100px; overflow: hidden; transition: background 0.4s;
     }
-    .stat-fill {
-      height: 100%;
-      animation: fillBar 1.5s ease forwards;
-      animation-play-state: paused;
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-section h2 { font-family: 'Press Start 2P', monospace; font-size: clamp(13px, 2.2vw, 20px); color: var(--text); margin-bottom: 14px; line-height: 1.7; image-rendering: pixelated; }
+    .cta-section p { font-size: 17px; color: var(--text-soft); margin-bottom: 32px; max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+
+    /* ══ FOOTER ══ */
+    .footer { background: var(--dark-bg); padding: 28px 24px; text-align: center; border-top: 3px solid var(--green); transition: background 0.4s; }
+    .footer p { font-family: 'VT323', monospace; font-size: 18px; color: rgba(252,249,234,0.22); }
+    .footer .heart { color: var(--coral); }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 768px) {
+      .navbar { padding: 0 14px; }
+      .step { grid-template-columns: 50px 1fr; }
+      .step-blank { display: none; }
+      .step .step-card { grid-column: 2 !important; grid-row: 1 !important; }
+      .step .step-num-w { grid-column: 1 !important; grid-row: 1 !important; }
+      .step-num { width: 44px; height: 44px; font-size: 16px; }
+      .feat-grid { grid-template-columns: 1fr; max-width: 400px; }
     }
-    .visible .stat-fill { animation-play-state: running; }
-
-    .feature-card { transition: transform 0.2s; }
-    .feature-card:hover { transform: translateY(-4px); }
-    .feature-card:hover .feature-icon { animation: wiggle 0.5s ease; }
-
-    .tech-icon { transition: transform 0.3s; display: inline-block; }
-    .tech-icon:hover { animation: wiggle 0.5s ease; }
-
-    .skyline { height: 80px; position: relative; overflow: hidden; }
-    .building { position: absolute; bottom: 0; background: var(--bg-light); border: 2px solid #4a4270; }
-
-    .pixel-animal { image-rendering: pixelated; }
-
-    .script-title {
-      font-family: 'Aston Script', cursive;
-      text-shadow: 0 0 25px rgba(255,170,184,0.4), 2px 2px 0px rgba(0,0,0,0.3);
-    }
+    @media (max-width: 520px) { .nav-right .hm { display: none; } .hero h1 { font-size: 16px; } }
   </style>
 </head>
 <body>
 
-<!-- Stars -->
-<div id="stars"></div>
+  <canvas id="pixelCursor"></canvas>
+  <div class="stars" id="stars"></div>
 
-<!-- HERO -->
-<section id="hero" style="padding-top:100px; text-align:center;">
-  <!-- Floating pixel animals -->
-  <div style="position:absolute;top:20px;left:10%;animation:floatSlow 3s ease-in-out infinite;">
-    <svg width="32" height="32" viewBox="0 0 10 10" class="pixel-animal" style="image-rendering:pixelated">
-      <rect x="4" y="0" width="2" height="2" fill="#1a1a2e"/>
-      <rect x="3" y="2" width="4" height="1" fill="#1a1a2e"/>
-      <rect x="0" y="3" width="10" height="2" fill="#1a1a2e"/>
-      <rect x="1" y="5" width="8" height="1" fill="#1a1a2e"/>
-      <rect x="2" y="6" width="6" height="1" fill="#1a1a2e"/>
-      <rect x="3" y="7" width="1" height="2" fill="#1a1a2e"/>
-      <rect x="6" y="7" width="1" height="2" fill="#1a1a2e"/>
-    </svg>
-  </div>
-  <div style="position:absolute;top:60px;right:12%;animation:floatSlow 4s ease-in-out infinite;animation-delay:1s;">
-    <svg width="28" height="28" viewBox="0 0 10 10" class="pixel-animal" style="image-rendering:pixelated">
-      <rect x="1" y="1" width="3" height="2" fill="#E50046"/>
-      <rect x="6" y="1" width="3" height="2" fill="#E50046"/>
-      <rect x="0" y="2" width="10" height="2" fill="#E50046"/>
-      <rect x="1" y="4" width="8" height="2" fill="#E50046"/>
-      <rect x="2" y="6" width="6" height="1" fill="#E50046"/>
-      <rect x="3" y="7" width="4" height="1" fill="#E50046"/>
-      <rect x="4" y="8" width="2" height="1" fill="#E50046"/>
-    </svg>
-  </div>
-  <div style="position:absolute;top:120px;left:5%;animation:floatSlow 3.5s ease-in-out infinite;animation-delay:0.5s;">
-    <!-- Pixel Frog -->
-    <svg width="36" height="36" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-      <rect x="3" y="1" width="3" height="3" fill="#C7DB9C"/>
-      <rect x="10" y="1" width="3" height="3" fill="#C7DB9C"/>
-      <rect x="4" y="2" width="2" height="2" fill="#fff"/>
-      <rect x="11" y="2" width="2" height="2" fill="#fff"/>
-      <rect x="5" y="2" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="12" y="2" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="1" y="4" width="14" height="5" fill="#C7DB9C"/>
-      <rect x="2" y="5" width="12" height="3" fill="#8fcc7a"/>
-      <rect x="5" y="7" width="2" height="1" fill="#E50046"/>
-      <rect x="9" y="7" width="2" height="1" fill="#E50046"/>
-      <rect x="6" y="8" width="4" height="1" fill="#E50046"/>
-      <rect x="2" y="9" width="4" height="3" fill="#C7DB9C"/>
-      <rect x="10" y="9" width="4" height="3" fill="#C7DB9C"/>
-      <rect x="1" y="11" width="3" height="2" fill="#8fcc7a"/>
-      <rect x="12" y="11" width="3" height="2" fill="#8fcc7a"/>
-    </svg>
-  </div>
-  <div style="position:absolute;top:40px;right:5%;animation:floatSlow 2.5s ease-in-out infinite;animation-delay:1.5s;">
-    <!-- Pixel Cat -->
-    <svg width="34" height="34" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-      <rect x="2" y="0" width="2" height="4" fill="#FDAB9E"/>
-      <rect x="12" y="0" width="2" height="4" fill="#FDAB9E"/>
-      <rect x="2" y="3" width="12" height="7" fill="#FDAB9E"/>
-      <rect x="3" y="4" width="10" height="5" fill="#ffd4a8"/>
-      <rect x="4" y="5" width="2" height="2" fill="#fff"/>
-      <rect x="10" y="5" width="2" height="2" fill="#fff"/>
-      <rect x="5" y="5" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="11" y="5" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="7" y="7" width="2" height="1" fill="#E50046"/>
-      <rect x="6" y="8" width="1" height="1" fill="#FDAB9E"/>
-      <rect x="9" y="8" width="1" height="1" fill="#FDAB9E"/>
-      <rect x="3" y="10" width="10" height="3" fill="#FDAB9E"/>
-      <rect x="4" y="13" width="3" height="2" fill="#FDAB9E"/>
-      <rect x="9" y="13" width="3" height="2" fill="#FDAB9E"/>
-      <rect x="13" y="9" width="3" height="1" fill="#FDAB9E"/>
-    </svg>
-  </div>
-
-  <!-- CRT Monitor with Frog Runner Game -->
-  <div style="display:inline-block;">
-    <div class="monitor">
-      <div class="monitor-screen" id="gameScreen">
-        <canvas id="gameCanvas" style="width:100%;height:100%;display:block;image-rendering:pixelated;"></canvas>
-      </div>
-      <span class="monitor-brand">PIXEL-TRON</span>
-      <div class="monitor-power"></div>
-    </div>
-    <div class="monitor-stand"></div>
-    <div class="monitor-base"></div>
-    <!-- Play Hint -->
-    <div class="play-hint">
-      <span class="play-hint-arrow">▼</span>
-      <span class="play-hint-text">PLAY THE GAME!</span>
-      <span class="play-hint-arrow">▼</span>
-    </div>
-  </div>
-
-  <div style="margin-top:30px;">
-    <div class="script-title" style="font-size:56px;color:var(--rose);display:inline-block;">
-      Merhaba! Ben Tugçe
-    </div>
-  </div>
-  <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:12px;">
-    <!-- Small pixel frog -->
-    <svg width="20" height="20" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated;animation:hop 0.6s ease infinite">
-      <rect x="3" y="1" width="3" height="3" fill="#C7DB9C"/>
-      <rect x="10" y="1" width="3" height="3" fill="#C7DB9C"/>
-      <rect x="4" y="2" width="2" height="2" fill="#fff"/>
-      <rect x="11" y="2" width="2" height="2" fill="#fff"/>
-      <rect x="5" y="2" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="12" y="2" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="1" y="4" width="14" height="5" fill="#C7DB9C"/>
-      <rect x="2" y="5" width="12" height="3" fill="#8fcc7a"/>
-      <rect x="2" y="9" width="4" height="3" fill="#C7DB9C"/>
-      <rect x="10" y="9" width="4" height="3" fill="#C7DB9C"/>
-    </svg>
-    <p style="color:var(--peach);font-size:28px;">Developer / Web Designer / Teacher</p>
-    <!-- Small pixel lion -->
-    <svg width="20" height="20" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated;animation:float 3s ease-in-out infinite">
-      <rect x="1" y="0" width="14" height="3" fill="#FDAB9E"/>
-      <rect x="0" y="2" width="16" height="3" fill="#FDAB9E"/>
-      <rect x="1" y="4" width="14" height="7" fill="#ffd4a8"/>
-      <rect x="4" y="5" width="2" height="2" fill="#fff"/>
-      <rect x="10" y="5" width="2" height="2" fill="#fff"/>
-      <rect x="5" y="6" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="11" y="6" width="1" height="1" fill="#1a1a2e"/>
-      <rect x="6" y="8" width="4" height="2" fill="#E50046"/>
-    </svg>
-  </div>
-</section>
-
-<!-- PROJECT -->
-<section id="project">
-  <div class="pixel-border" style="border-color:var(--rose);padding:30px;background:var(--bg-light);">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-      <!-- Pixel Calendar icon -->
-      <svg width="24" height="24" viewBox="0 0 12 12" class="pixel-animal" style="image-rendering:pixelated">
-        <rect x="0" y="2" width="12" height="10" fill="#FFF8D6"/>
-        <rect x="0" y="2" width="12" height="3" fill="#E50046"/>
-        <rect x="2" y="0" width="2" height="4" fill="#FDAB9E"/>
-        <rect x="8" y="0" width="2" height="4" fill="#FDAB9E"/>
-        <rect x="2" y="6" width="2" height="2" fill="#1a1a2e"/>
-        <rect x="5" y="6" width="2" height="2" fill="#1a1a2e"/>
-        <rect x="8" y="6" width="2" height="2" fill="#1a1a2e"/>
-        <rect x="2" y="9" width="2" height="2" fill="#1a1a2e"/>
-      </svg>
-      <h2 style="font-size:18px;color:var(--rose);" class="glow-rose">CALENDAR AIR PLANNER</h2>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
-      <!-- Pixel Hand icon (pointing finger) -->
-      <svg width="20" height="20" viewBox="0 0 12 16" class="pixel-animal" style="image-rendering:pixelated">
-        <rect x="4" y="0" width="3" height="2" fill="#fff8e8"/>
-        <rect x="4" y="2" width="3" height="4" fill="#FDAB9E"/>
-        <rect x="7" y="6" width="3" height="2" fill="#FDAB9E"/>
-        <rect x="7" y="7" width="3" height="1" fill="#e5a87a"/>
-        <rect x="2" y="7" width="2" height="3" fill="#FDAB9E"/>
-        <rect x="3" y="6" width="4" height="5" fill="#FDAB9E"/>
-        <rect x="4" y="8" width="6" height="3" fill="#FDAB9E"/>
-        <rect x="4" y="6" width="6" height="1" fill="#e5a87a"/>
-        <rect x="4" y="11" width="5" height="3" fill="#FDAB9E"/>
-        <rect x="4" y="13" width="5" height="1" fill="#e5a87a"/>
-      </svg>
-      <p style="color:var(--peach);font-size:28px;">Ellerini kullan, takvimini yonet!</p>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div class="feature-card pixel-border" style="border-color:var(--peach);padding:16px;background:rgba(255,216,223,0.05);">
-        <div class="feature-icon" style="margin-bottom:6px;">
-          <!-- Pixel pointing hand -->
-          <svg width="32" height="32" viewBox="0 0 12 16" class="pixel-animal" style="image-rendering:pixelated">
-            <rect x="4" y="0" width="3" height="2" fill="#fff8e8"/>
-            <rect x="4" y="2" width="3" height="4" fill="#FDAB9E"/>
-            <rect x="7" y="6" width="3" height="2" fill="#FDAB9E"/>
-            <rect x="7" y="7" width="3" height="1" fill="#e5a87a"/>
-            <rect x="2" y="7" width="2" height="3" fill="#FDAB9E"/>
-            <rect x="3" y="6" width="4" height="5" fill="#FDAB9E"/>
-            <rect x="4" y="8" width="6" height="3" fill="#FDAB9E"/>
-            <rect x="4" y="6" width="6" height="1" fill="#e5a87a"/>
-            <rect x="4" y="11" width="5" height="3" fill="#FDAB9E"/>
-            <rect x="4" y="13" width="5" height="1" fill="#e5a87a"/>
-          </svg>
-        </div>
-        <span style="color:var(--cream);font-size:24px;">Isaret parmagiyla saat sec</span>
-      </div>
-      <div class="feature-card pixel-border" style="border-color:var(--mint);padding:16px;background:rgba(168,223,142,0.05);">
-        <div class="feature-icon" style="margin-bottom:6px;">
-          <!-- Pixel Frog (represents creation) -->
-          <svg width="32" height="32" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-            <rect x="3" y="1" width="3" height="3" fill="#C7DB9C"/>
-            <rect x="10" y="1" width="3" height="3" fill="#C7DB9C"/>
-            <rect x="4" y="2" width="2" height="2" fill="#fff"/>
-            <rect x="11" y="2" width="2" height="2" fill="#fff"/>
-            <rect x="5" y="2" width="1" height="1" fill="#1a1a2e"/>
-            <rect x="12" y="2" width="1" height="1" fill="#1a1a2e"/>
-            <rect x="1" y="4" width="14" height="5" fill="#C7DB9C"/>
-            <rect x="2" y="5" width="12" height="3" fill="#8fcc7a"/>
-            <rect x="5" y="7" width="2" height="1" fill="#E50046"/>
-            <rect x="9" y="7" width="2" height="1" fill="#E50046"/>
-            <rect x="6" y="8" width="4" height="1" fill="#E50046"/>
-            <rect x="2" y="9" width="4" height="3" fill="#C7DB9C"/>
-            <rect x="10" y="9" width="4" height="3" fill="#C7DB9C"/>
-          </svg>
-        </div>
-        <span style="color:var(--cream);font-size:24px;">Avuc ac &rarr; etkinlik olustur</span>
-      </div>
-      <div class="feature-card pixel-border" style="border-color:var(--rose);padding:16px;background:rgba(255,170,184,0.05);">
-        <div class="feature-icon" style="margin-bottom:6px;">
-          <!-- Pixel Cat (represents precision) -->
-          <svg width="32" height="32" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-            <rect x="2" y="0" width="2" height="4" fill="#FDAB9E"/>
-            <rect x="12" y="0" width="2" height="4" fill="#FDAB9E"/>
-            <rect x="2" y="3" width="12" height="7" fill="#FDAB9E"/>
-            <rect x="3" y="4" width="10" height="5" fill="#ffd4a8"/>
-            <rect x="4" y="5" width="2" height="2" fill="#fff"/>
-            <rect x="10" y="5" width="2" height="2" fill="#fff"/>
-            <rect x="5" y="5" width="1" height="1" fill="#1a1a2e"/>
-            <rect x="11" y="5" width="1" height="1" fill="#1a1a2e"/>
-            <rect x="7" y="7" width="2" height="1" fill="#E50046"/>
-            <rect x="3" y="10" width="10" height="3" fill="#FDAB9E"/>
-            <rect x="4" y="13" width="3" height="2" fill="#FDAB9E"/>
-            <rect x="9" y="13" width="3" height="2" fill="#FDAB9E"/>
-          </svg>
-        </div>
-        <span style="color:var(--cream);font-size:24px;">Sikistir &rarr; sure ayarla</span>
-      </div>
-      <div class="feature-card pixel-border" style="border-color:var(--cream);padding:16px;background:rgba(240,255,223,0.03);">
-        <div class="feature-icon" style="margin-bottom:6px;">
-          <!-- Pixel Fist -->
-          <svg width="32" height="32" viewBox="0 0 12 14" class="pixel-animal" style="image-rendering:pixelated">
-            <rect x="1" y="1" width="10" height="1" fill="#ffd4a8"/>
-            <rect x="1" y="2" width="10" height="3" fill="#FDAB9E"/>
-            <rect x="1" y="3" width="3" height="2" fill="#e5a87a"/>
-            <rect x="5" y="3" width="2" height="2" fill="#e5a87a"/>
-            <rect x="8" y="3" width="3" height="2" fill="#e5a87a"/>
-            <rect x="0" y="5" width="12" height="4" fill="#FDAB9E"/>
-            <rect x="0" y="8" width="3" height="2" fill="#ffd4a8"/>
-            <rect x="1" y="9" width="10" height="2" fill="#FDAB9E"/>
-            <rect x="2" y="11" width="8" height="2" fill="#FDAB9E"/>
-            <rect x="2" y="12" width="8" height="1" fill="#d4956a"/>
-          </svg>
-        </div>
-        <span style="color:var(--cream);font-size:24px;">Yumruk &rarr; kaydet</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DEMO -->
-<section id="demo" style="text-align:center;">
-  <div class="pixel-border" style="border-color:var(--peach);padding:30px;background:var(--bg-light);">
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;">
-      <!-- Pixel Lion -->
-      <svg width="24" height="24" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-        <rect x="1" y="0" width="14" height="3" fill="#FDAB9E"/>
-        <rect x="0" y="2" width="16" height="3" fill="#FDAB9E"/>
-        <rect x="1" y="4" width="14" height="7" fill="#ffd4a8"/>
-        <rect x="4" y="5" width="2" height="2" fill="#fff"/>
-        <rect x="10" y="5" width="2" height="2" fill="#fff"/>
-        <rect x="5" y="6" width="1" height="1" fill="#1a1a2e"/>
-        <rect x="11" y="6" width="1" height="1" fill="#1a1a2e"/>
-        <rect x="6" y="8" width="4" height="2" fill="#E50046"/>
-        <rect x="0" y="5" width="2" height="5" fill="#FDAB9E"/>
-        <rect x="14" y="5" width="2" height="5" fill="#FDAB9E"/>
-      </svg>
-      <h2 style="font-size:16px;color:var(--peach);" class="glow-peach">DEMO / ONIZLEME</h2>
-    </div>
-    <div class="pixel-border" style="border-color:#4a4270;height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--bg);">
-      <!-- Big pixel frog in demo area -->
-      <svg width="80" height="80" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated;animation:hop 0.6s ease infinite">
-        <rect x="3" y="1" width="3" height="3" fill="#C7DB9C"/>
-        <rect x="10" y="1" width="3" height="3" fill="#C7DB9C"/>
-        <rect x="4" y="2" width="2" height="2" fill="#fff"/>
-        <rect x="11" y="2" width="2" height="2" fill="#fff"/>
-        <rect x="5" y="2" width="1" height="1" fill="#1a1a2e"/>
-        <rect x="12" y="2" width="1" height="1" fill="#1a1a2e"/>
-        <rect x="1" y="4" width="14" height="5" fill="#C7DB9C"/>
-        <rect x="2" y="5" width="12" height="3" fill="#8fcc7a"/>
-        <rect x="5" y="7" width="2" height="1" fill="#E50046"/>
-        <rect x="9" y="7" width="2" height="1" fill="#E50046"/>
-        <rect x="6" y="8" width="4" height="1" fill="#E50046"/>
-        <rect x="2" y="9" width="4" height="3" fill="#C7DB9C"/>
-        <rect x="10" y="9" width="4" height="3" fill="#C7DB9C"/>
-        <rect x="1" y="11" width="3" height="2" fill="#8fcc7a"/>
-        <rect x="12" y="11" width="3" height="2" fill="#8fcc7a"/>
-      </svg>
-      <span style="font-family:'Press Start 2P';font-size:10px;color:var(--peach);opacity:0.6;">CLICK BELOW TO START</span>
-    </div>
-    <a href="./app.html" class="pixel-btn" style="margin-top:20px;padding:12px 30px;font-size:12px;border-color:var(--mint);color:var(--mint);background:rgba(168,223,142,0.1);">
-      <!-- Pixel arrow right -->
-      <svg width="12" height="12" viewBox="0 0 8 8" style="image-rendering:pixelated;display:inline-block;vertical-align:middle;margin-right:6px;">
-        <rect x="3" y="0" width="2" height="2" fill="#C7DB9C"/>
-        <rect x="5" y="2" width="2" height="2" fill="#C7DB9C"/>
-        <rect x="0" y="2" width="5" height="4" fill="#C7DB9C"/>
-        <rect x="5" y="4" width="2" height="2" fill="#C7DB9C"/>
-        <rect x="3" y="6" width="2" height="2" fill="#C7DB9C"/>
-      </svg>
-      UYGULAMAYI AC
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo">
+      <svg width="20" height="20" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="3" y="0" width="4" height="2" fill="#B8DB80"/><rect x="9" y="0" width="4" height="2" fill="#B8DB80"/><rect x="2" y="2" width="12" height="3" fill="#B8DB80"/><rect x="4" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="10" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/><rect x="5" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="9" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="8" width="4" height="1" fill="#FFA4A4"/><rect x="2" y="9" width="4" height="3" fill="#B8DB80"/><rect x="10" y="9" width="4" height="3" fill="#B8DB80"/></svg>
+      AIR PLANNER
     </a>
-  </div>
-</section>
+    <ul class="nav-right">
+      <li><a href="#features" class="hm">Ozellikler</a></li>
+      <li><a href="#how" class="hm">Nasil Calisir</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#game">Oyun</a></li>
+      <li><a href="./login.html" class="nav-login">GIRIS YAP</a></li>
+      <li>
+        <button class="theme-btn" id="themeBtn" title="Tema degistir">
+          <!-- Moon (light mode -> show moon) -->
+          <svg class="theme-moon" width="18" height="18" viewBox="0 0 8 8" style="image-rendering:pixelated;">
+            <rect x="3" y="0" width="3" height="1" fill="#3a3a3a"/>
+            <rect x="2" y="1" width="1" height="1" fill="#3a3a3a"/>
+            <rect x="5" y="1" width="2" height="1" fill="#3a3a3a"/>
+            <rect x="1" y="2" width="1" height="4" fill="#3a3a3a"/>
+            <rect x="6" y="2" width="1" height="1" fill="#3a3a3a"/>
+            <rect x="2" y="6" width="1" height="1" fill="#3a3a3a"/>
+            <rect x="3" y="7" width="3" height="1" fill="#3a3a3a"/>
+            <rect x="6" y="4" width="1" height="2" fill="#3a3a3a"/>
+          </svg>
+          <!-- Sun (dark mode -> show sun) -->
+          <svg class="theme-sun" width="18" height="18" viewBox="0 0 10 10" style="image-rendering:pixelated;">
+            <rect x="4" y="0" width="2" height="1" fill="#FCF9EA"/>
+            <rect x="1" y="1" width="1" height="1" fill="#FCF9EA"/>
+            <rect x="8" y="1" width="1" height="1" fill="#FCF9EA"/>
+            <rect x="3" y="2" width="4" height="1" fill="#FCF9EA"/>
+            <rect x="2" y="3" width="6" height="4" fill="#FCF9EA"/>
+            <rect x="3" y="7" width="4" height="1" fill="#FCF9EA"/>
+            <rect x="0" y="4" width="1" height="2" fill="#FCF9EA"/>
+            <rect x="9" y="4" width="1" height="2" fill="#FCF9EA"/>
+            <rect x="1" y="8" width="1" height="1" fill="#FCF9EA"/>
+            <rect x="8" y="8" width="1" height="1" fill="#FCF9EA"/>
+            <rect x="4" y="9" width="2" height="1" fill="#FCF9EA"/>
+          </svg>
+        </button>
+      </li>
+    </ul>
+  </nav>
 
-<!-- TECH STACK -->
-<section id="tech">
-  <div class="pixel-border" style="border-color:var(--mint);padding:30px;background:var(--bg-light);">
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;">
-      <!-- Pixel Star -->
-      <svg width="18" height="18" viewBox="0 0 10 10" class="pixel-animal" style="image-rendering:pixelated">
-        <rect x="4" y="0" width="2" height="2" fill="#1a1a2e"/>
-        <rect x="3" y="2" width="4" height="1" fill="#1a1a2e"/>
-        <rect x="0" y="3" width="10" height="2" fill="#1a1a2e"/>
-        <rect x="1" y="5" width="8" height="1" fill="#1a1a2e"/>
-        <rect x="2" y="6" width="6" height="1" fill="#1a1a2e"/>
-        <rect x="3" y="7" width="1" height="2" fill="#1a1a2e"/>
-        <rect x="6" y="7" width="1" height="2" fill="#1a1a2e"/>
-      </svg>
-      <h2 style="font-size:16px;color:var(--mint);" class="glow-mint">TEKNOLOJI STACK</h2>
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="hero-float" style="top:14%;left:7%;animation:float 4.5s ease-in-out infinite;">
+      <svg width="36" height="30" viewBox="0 0 9 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="0" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="5" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="0" y="2" width="9" height="1" fill="#FFA4A4"/><rect x="1" y="3" width="7" height="1" fill="#FFBDBD"/><rect x="2" y="4" width="5" height="1" fill="#FFBDBD"/><rect x="3" y="5" width="3" height="1" fill="#FFBDBD"/><rect x="4" y="6" width="1" height="1" fill="#FFBDBD"/></svg>
     </div>
-    <div style="display:flex;justify-content:center;gap:30px;flex-wrap:wrap;">
-      <div class="tech-icon" style="text-align:center;">
-        <!-- Pixel frog for React -->
-        <svg width="40" height="40" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-          <rect x="3" y="1" width="3" height="3" fill="#C7DB9C"/>
-          <rect x="10" y="1" width="3" height="3" fill="#C7DB9C"/>
-          <rect x="4" y="2" width="2" height="2" fill="#fff"/>
-          <rect x="11" y="2" width="2" height="2" fill="#fff"/>
-          <rect x="5" y="2" width="1" height="1" fill="#1a1a2e"/>
-          <rect x="12" y="2" width="1" height="1" fill="#1a1a2e"/>
-          <rect x="1" y="4" width="14" height="5" fill="#C7DB9C"/>
-          <rect x="2" y="5" width="12" height="3" fill="#8fcc7a"/>
-          <rect x="2" y="9" width="4" height="3" fill="#C7DB9C"/>
-          <rect x="10" y="9" width="4" height="3" fill="#C7DB9C"/>
-        </svg>
-        <div style="font-size:20px;color:var(--mint);margin-top:4px;">React</div>
-      </div>
-      <div class="tech-icon" style="text-align:center;">
-        <!-- Pixel hand for MediaPipe (pointing finger) -->
-        <svg width="40" height="40" viewBox="0 0 12 16" class="pixel-animal" style="image-rendering:pixelated">
-          <rect x="4" y="0" width="3" height="2" fill="#fff8e8"/>
-          <rect x="4" y="2" width="3" height="4" fill="#FDAB9E"/>
-          <rect x="7" y="6" width="3" height="2" fill="#FDAB9E"/>
-          <rect x="7" y="7" width="3" height="1" fill="#e5a87a"/>
-          <rect x="2" y="7" width="2" height="3" fill="#FDAB9E"/>
-          <rect x="3" y="6" width="4" height="5" fill="#FDAB9E"/>
-          <rect x="4" y="8" width="6" height="3" fill="#FDAB9E"/>
-          <rect x="4" y="6" width="6" height="1" fill="#e5a87a"/>
-          <rect x="4" y="11" width="5" height="3" fill="#FDAB9E"/>
-          <rect x="4" y="13" width="5" height="1" fill="#e5a87a"/>
-        </svg>
-        <div style="font-size:20px;color:var(--rose);margin-top:4px;">MediaPipe</div>
-      </div>
-      <div class="tech-icon" style="text-align:center;">
-        <!-- Pixel calendar for Google Cal -->
-        <svg width="40" height="40" viewBox="0 0 12 12" class="pixel-animal" style="image-rendering:pixelated">
-          <rect x="0" y="2" width="12" height="10" fill="#FFF8D6"/>
-          <rect x="0" y="2" width="12" height="3" fill="#E50046"/>
-          <rect x="2" y="0" width="2" height="4" fill="#FDAB9E"/>
-          <rect x="8" y="0" width="2" height="4" fill="#FDAB9E"/>
-          <rect x="2" y="6" width="2" height="2" fill="#1a1a2e"/>
-          <rect x="5" y="6" width="2" height="2" fill="#1a1a2e"/>
-          <rect x="8" y="6" width="2" height="2" fill="#1a1a2e"/>
-          <rect x="2" y="9" width="2" height="2" fill="#1a1a2e"/>
-        </svg>
-        <div style="font-size:20px;color:var(--peach);margin-top:4px;">Google Cal</div>
-      </div>
-      <div class="tech-icon" style="text-align:center;">
-        <!-- Pixel cat for TypeScript -->
-        <svg width="40" height="40" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-          <rect x="2" y="0" width="2" height="4" fill="#FDAB9E"/>
-          <rect x="12" y="0" width="2" height="4" fill="#FDAB9E"/>
-          <rect x="2" y="3" width="12" height="7" fill="#FDAB9E"/>
-          <rect x="3" y="4" width="10" height="5" fill="#ffd4a8"/>
-          <rect x="4" y="5" width="2" height="2" fill="#fff"/>
-          <rect x="10" y="5" width="2" height="2" fill="#fff"/>
-          <rect x="5" y="5" width="1" height="1" fill="#1a1a2e"/>
-          <rect x="11" y="5" width="1" height="1" fill="#1a1a2e"/>
-          <rect x="7" y="7" width="2" height="1" fill="#E50046"/>
-          <rect x="3" y="10" width="10" height="3" fill="#FDAB9E"/>
-          <rect x="4" y="13" width="3" height="2" fill="#FDAB9E"/>
-          <rect x="9" y="13" width="3" height="2" fill="#FDAB9E"/>
-        </svg>
-        <div style="font-size:20px;color:var(--cream);margin-top:4px;">TypeScript</div>
+    <div class="hero-float" style="top:22%;right:9%;animation:floatSlow 5.5s ease-in-out infinite;">
+      <svg width="28" height="28" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="2" fill="#B8DB80"/><rect x="1" y="2" width="6" height="2" fill="#B8DB80"/><rect x="0" y="3" width="8" height="2" fill="#8fcc7a"/><rect x="1" y="5" width="6" height="2" fill="#B8DB80"/><rect x="3" y="7" width="2" height="1" fill="#8fcc7a"/></svg>
+    </div>
+    <div class="hero-float" style="bottom:24%;left:5%;animation:wiggle 3s ease-in-out infinite;">
+      <svg width="26" height="26" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="2" y="0" width="4" height="1" fill="#BADFDB"/><rect x="1" y="1" width="6" height="1" fill="#BADFDB"/><rect x="0" y="2" width="8" height="4" fill="#BADFDB"/><rect x="2" y="3" width="1" height="1" fill="#3a3a3a"/><rect x="5" y="3" width="1" height="1" fill="#3a3a3a"/><rect x="3" y="5" width="2" height="1" fill="#FFA4A4"/><rect x="1" y="6" width="2" height="2" fill="#BADFDB"/><rect x="5" y="6" width="2" height="2" fill="#BADFDB"/></svg>
+    </div>
+    <div class="hero-float" style="bottom:18%;right:6%;animation:hop 2s ease-in-out infinite;">
+      <svg width="44" height="44" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="3" y="0" width="4" height="2" fill="#B8DB80"/><rect x="9" y="0" width="4" height="2" fill="#B8DB80"/><rect x="2" y="2" width="12" height="3" fill="#B8DB80"/><rect x="4" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="10" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/><rect x="5" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="9" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="8" width="4" height="1" fill="#FFA4A4"/><rect x="2" y="9" width="4" height="3" fill="#B8DB80"/><rect x="10" y="9" width="4" height="3" fill="#B8DB80"/></svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge anim a-up"><svg width="12" height="12" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="8" fill="#B8DB80"/><rect x="0" y="3" width="8" height="2" fill="#B8DB80"/></svg> MediaPipe + Pixel Art</div>
+      <h1 class="anim a-up d1">ELLERINI KULLAN<br><span class="hl-g">TAKVIMINI</span> <span class="hl-p">YONET</span></h1>
+      <p class="hero-sub anim a-up d2">Kamera ile el hareketlerini algilayarak takvimini yonet. Klavye ve fare olmadan, sadece ellerinle etkinlik olustur ve duzenle.</p>
+      <div class="hero-btns anim a-up d3">
+        <a href="#demo" class="pixel-btn" style="padding:13px 32px;font-size:10px;border-color:var(--green);color:#3a3a3a;background:var(--green);">DENEYIN</a>
+        <a href="./login.html" class="pixel-btn" style="padding:13px 32px;font-size:10px;border-color:var(--coral);color:var(--coral);background:transparent;">GIRIS YAP</a>
       </div>
     </div>
+  </section>
 
-    <div style="margin-top:24px;max-width:400px;margin-left:auto;margin-right:auto;">
-      <div style="margin-bottom:8px;">
-        <div style="display:flex;justify-content:space-between;font-size:20px;margin-bottom:4px;">
-          <span style="color:var(--cream);">El Algilama</span><span style="color:var(--mint);">99%</span>
-        </div>
-        <div class="stat-bar"><div class="stat-fill" style="--fill:99%;background:var(--mint);"></div></div>
+  <!-- ══ MARQUEE 1 ══ -->
+  <div class="marquee-band band-1"><div class="marquee-track" style="--speed:18s;">
+    <span class="marquee-item">AIR PLANNER <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">GESTURE CALENDAR <span class="marquee-dot" style="background:var(--coral);"></span></span>
+    <span class="marquee-item">PIXEL ART <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">MEDIAPIPE HANDS <span class="marquee-dot" style="background:var(--coral);"></span></span>
+    <span class="marquee-item">EL HAREKETI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">TAKVIM YONETIMI <span class="marquee-dot" style="background:var(--coral);"></span></span>
+    <span class="marquee-item">AIR PLANNER <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">GESTURE CALENDAR <span class="marquee-dot" style="background:var(--coral);"></span></span>
+    <span class="marquee-item">PIXEL ART <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">MEDIAPIPE HANDS <span class="marquee-dot" style="background:var(--coral);"></span></span>
+    <span class="marquee-item">EL HAREKETI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">TAKVIM YONETIMI <span class="marquee-dot" style="background:var(--coral);"></span></span>
+  </div></div>
+
+  <!-- ══ FEATURES ══ -->
+  <div class="feat-section section-slide slide-from-right" id="features">
+    <div class="feat-header">
+      <h2 class="section-title anim a-up" style="color:var(--coral);">OZELLIKLER</h2>
+      <p class="section-sub anim a-up d1">Pixel temali ozelliklerle dolu bir takvim deneyimi</p>
+    </div>
+    <div class="feat-grid">
+      <div class="f-card anim a-up">
+        <div class="f-icon"><svg width="28" height="28" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#3a3a3a"/><rect x="2" y="1" width="2" height="3" fill="#FCF9EA"/><rect x="6" y="1" width="2" height="3" fill="#FCF9EA"/><rect x="0" y="2" width="2" height="3" fill="#FCF9EA"/><rect x="8" y="2" width="2" height="3" fill="#FCF9EA"/><rect x="0" y="5" width="10" height="4" fill="#FCF9EA"/><rect x="1" y="9" width="8" height="3" fill="#FCF9EA"/></svg></div>
+        <h3>EL HAREKETI KONTROLU</h3><p>Yumruk, acik el, peace isareti ve daha fazlasi ile takvimini yonet. MediaPipe ile gercek zamanli el algilama.</p>
       </div>
-      <div style="margin-bottom:8px;">
-        <div style="display:flex;justify-content:space-between;font-size:20px;margin-bottom:4px;">
-          <span style="color:var(--cream);">Jest Tanima</span><span style="color:var(--rose);">95%</span>
-        </div>
-        <div class="stat-bar"><div class="stat-fill" style="--fill:95%;background:var(--rose);"></div></div>
+      <div class="f-card anim a-up d1">
+        <div class="f-icon" style="background:rgba(186,223,219,0.3);border-color:var(--mint);"><svg width="28" height="28" viewBox="0 0 10 10" style="image-rendering:pixelated;"><rect x="0" y="0" width="10" height="2" fill="#B8DB80"/><rect x="2" y="0" width="1" height="1" fill="#3a3a3a"/><rect x="7" y="0" width="1" height="1" fill="#3a3a3a"/><rect x="0" y="2" width="10" height="8" fill="#FCF9EA"/><rect x="1" y="4" width="2" height="2" fill="#FFA4A4"/><rect x="4" y="4" width="2" height="2" fill="#B8DB80"/><rect x="7" y="4" width="2" height="2" fill="#BADFDB"/></svg></div>
+        <h3>PIXEL TAKVIM</h3><p>Gunluk ve haftalik gorunumde etkinliklerini pixel temali arayuzde goruntule. Renkli ve estetik.</p>
       </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;font-size:20px;margin-bottom:4px;">
-          <span style="color:var(--cream);">Ses Tanima</span><span style="color:var(--peach);">90%</span>
-        </div>
-        <div class="stat-bar"><div class="stat-fill" style="--fill:90%;background:var(--peach);"></div></div>
+      <div class="f-card anim a-up d2">
+        <div class="f-icon"><svg width="28" height="28" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="2" y="1" width="4" height="4" fill="#FFA4A4"/><rect x="3" y="5" width="2" height="1" fill="#FFA4A4"/><rect x="1" y="6" width="6" height="1" fill="#3a3a3a" opacity="0.2"/><rect x="3" y="7" width="2" height="2" fill="#3a3a3a" opacity="0.2"/><rect x="2" y="9" width="4" height="1" fill="#3a3a3a" opacity="0.2"/></svg></div>
+        <h3>SESLI GIRIS</h3><p>Etkinlik adini sesli olarak soyle, uygulama otomatik metne cevirsin. Eller serbest deneyim.</p>
+      </div>
+      <div class="f-card anim a-up d3">
+        <div class="f-icon" style="background:rgba(186,223,219,0.3);border-color:var(--mint);"><svg width="28" height="28" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="1" fill="#4285F4"/><rect x="0" y="1" width="1" height="6" fill="#4285F4"/><rect x="1" y="7" width="6" height="1" fill="#34A853"/><rect x="7" y="5" width="1" height="2" fill="#34A853"/><rect x="7" y="1" width="1" height="2" fill="#EA4335"/><rect x="3" y="3" width="5" height="2" fill="#FBBC05"/><rect x="7" y="3" width="1" height="2" fill="#EA4335"/></svg></div>
+        <h3>GOOGLE TAKVIM</h3><p>Google hesabinla baglan, etkinliklerini Google Calendar ile senkronize et. Her yerden erisim.</p>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="pixel-border" style="border-color:var(--rose);padding:30px;background:var(--bg-light);">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-      <!-- Pixel Heart -->
-      <svg width="18" height="18" viewBox="0 0 10 10" class="pixel-animal" style="image-rendering:pixelated">
-        <rect x="1" y="1" width="3" height="2" fill="#E50046"/>
-        <rect x="6" y="1" width="3" height="2" fill="#E50046"/>
-        <rect x="0" y="2" width="10" height="2" fill="#E50046"/>
-        <rect x="1" y="4" width="8" height="2" fill="#E50046"/>
-        <rect x="2" y="6" width="6" height="1" fill="#E50046"/>
-        <rect x="3" y="7" width="4" height="1" fill="#E50046"/>
-        <rect x="4" y="8" width="2" height="1" fill="#E50046"/>
-      </svg>
-      <h2 style="font-size:16px;color:var(--rose);" class="glow-rose">HAKKIMDA</h2>
+  <!-- ══ MARQUEE 2 ══ -->
+  <div class="marquee-band band-2" style="--msize:9px;"><div class="marquee-track" style="--speed:22s;animation-direction:reverse;">
+    <span class="marquee-item">YUMRUK = SEC <span class="marquee-dot" style="background:#fff;"></span></span>
+    <span class="marquee-item">ACIK EL = HAREKET <span class="marquee-dot" style="background:var(--green);"></span></span>
+    <span class="marquee-item">PEACE = GORUNUM <span class="marquee-dot" style="background:#fff;"></span></span>
+    <span class="marquee-item">KAYDIRMA = GUN DEGISTIR <span class="marquee-dot" style="background:var(--green);"></span></span>
+    <span class="marquee-item">THUMBS DOWN = SIL <span class="marquee-dot" style="background:#fff;"></span></span>
+    <span class="marquee-item">PINCH = SURE AYARLA <span class="marquee-dot" style="background:var(--green);"></span></span>
+    <span class="marquee-item">YUMRUK = SEC <span class="marquee-dot" style="background:#fff;"></span></span>
+    <span class="marquee-item">ACIK EL = HAREKET <span class="marquee-dot" style="background:var(--green);"></span></span>
+    <span class="marquee-item">PEACE = GORUNUM <span class="marquee-dot" style="background:#fff;"></span></span>
+    <span class="marquee-item">KAYDIRMA = GUN DEGISTIR <span class="marquee-dot" style="background:var(--green);"></span></span>
+    <span class="marquee-item">THUMBS DOWN = SIL <span class="marquee-dot" style="background:#fff;"></span></span>
+    <span class="marquee-item">PINCH = SURE AYARLA <span class="marquee-dot" style="background:var(--green);"></span></span>
+  </div></div>
+
+  <!-- ══ HOW IT WORKS ══ -->
+  <div class="how-section section-slide slide-from-left" id="how">
+    <div class="how-header">
+      <h2 class="section-title anim a-up"><span style="color:var(--green);">NASIL</span> CALISIR?</h2>
+      <p class="section-sub anim a-up d1">3 adimda takvimini el hareketleriyle yonet</p>
     </div>
-
-    <div style="display:flex;gap:24px;align-items:start;flex-wrap:wrap;">
-      <!-- Avatar: Big pixel bunny -->
-      <div class="pixel-border" style="border-color:var(--peach);width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:var(--bg);flex-shrink:0;">
-        <svg width="64" height="64" viewBox="0 0 16 16" class="pixel-animal" style="image-rendering:pixelated">
-          <rect x="4" y="0" width="2" height="5" fill="#fff"/>
-          <rect x="10" y="0" width="2" height="5" fill="#fff"/>
-          <rect x="5" y="1" width="1" height="3" fill="#E50046"/>
-          <rect x="11" y="1" width="1" height="3" fill="#E50046"/>
-          <rect x="3" y="4" width="10" height="7" fill="#fff"/>
-          <rect x="4" y="5" width="8" height="5" fill="#f5f5f0"/>
-          <rect x="5" y="6" width="2" height="2" fill="#E50046"/>
-          <rect x="9" y="6" width="2" height="2" fill="#E50046"/>
-          <rect x="6" y="6" width="1" height="1" fill="#1a1a2e"/>
-          <rect x="10" y="6" width="1" height="1" fill="#1a1a2e"/>
-          <rect x="7" y="8" width="2" height="1" fill="#E50046"/>
-          <rect x="4" y="11" width="3" height="3" fill="#fff"/>
-          <rect x="9" y="11" width="3" height="3" fill="#fff"/>
-        </svg>
+    <div class="steps">
+      <div class="step">
+        <div class="step-card anim a-left" style="grid-column:1;"><h3>KAMERAYI AC</h3><p>Kamera erisim izni ver. MediaPipe ellerini otomatik olarak algilayacak ve ekranda gosterecek.</p></div>
+        <div class="step-num-w" style="grid-column:2;display:flex;justify-content:center;"><div class="step-num anim a-scale d1">1</div></div>
+        <div class="step-blank" style="grid-column:3;"></div>
       </div>
+      <div class="step">
+        <div class="step-blank" style="grid-column:1;"></div>
+        <div class="step-num-w" style="grid-column:2;display:flex;justify-content:center;"><div class="step-num anim a-scale d1">2</div></div>
+        <div class="step-card anim a-right" style="grid-column:3;"><h3>EL HAREKETLERINI YAP</h3><p>Acik el ile imleci hareket ettir, yumruk ile sec, peace ile gorunum degistir.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-card anim a-left" style="grid-column:1;"><h3>ETKINLIKLERINI YONET</h3><p>Saat dilimi sec, etkinlik adi yaz veya sesli soyle, yumruk yaparak kaydet.</p></div>
+        <div class="step-num-w" style="grid-column:2;display:flex;justify-content:center;"><div class="step-num anim a-scale d1">3</div></div>
+        <div class="step-blank" style="grid-column:3;"></div>
+      </div>
+    </div>
+  </div>
 
-      <div style="flex:1;min-width:200px;">
-        <p style="font-family:'Press Start 2P';font-size:14px;color:var(--peach);margin-bottom:12px;">
-          TUGÇE | DEVELOPER
-        </p>
-        <p style="color:var(--cream);opacity:0.7;margin-bottom:16px;font-size:24px;">Developer / Web Designer / Teacher</p>
+  <!-- ══ MARQUEE 3 ══ -->
+  <div class="marquee-band band-3" style="--msize:10px;"><div class="marquee-track" style="--speed:16s;">
+    <span class="marquee-item">HEMEN DENE <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">UCRETSIZ <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">HIZLI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">EGLENCELI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">PIXEL TEMALI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">EL KONTROLU <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">HEMEN DENE <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">UCRETSIZ <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">HIZLI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">EGLENCELI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">PIXEL TEMALI <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+    <span class="marquee-item">EL KONTROLU <span class="marquee-dot" style="background:#3a3a3a;"></span></span>
+  </div></div>
 
-        <!-- RPG Stats -->
-        <div style="display:grid;gap:6px;">
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:20px;margin-bottom:2px;">
-              <span style="color:var(--mint);">STR (Coding)</span><span style="color:var(--cream);">85</span>
-            </div>
-            <div class="stat-bar"><div class="stat-fill" style="--fill:85%;background:var(--mint);"></div></div>
+  <!-- ══ GESTURES ══ -->
+  <div class="gest-section section-slide slide-from-right">
+    <div class="gest-header">
+      <h2 class="section-title anim a-up">EL HAREKETLERI</h2>
+      <p class="section-sub anim a-up d1">6 hareketle tam kontrol</p>
+    </div>
+    <div class="gest-marquee"><div class="gest-marquee-track">
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#B8DB80"/><rect x="2" y="1" width="2" height="3" fill="#B8DB80"/><rect x="6" y="1" width="2" height="3" fill="#B8DB80"/><rect x="0" y="2" width="2" height="3" fill="#B8DB80"/><rect x="8" y="2" width="2" height="3" fill="#B8DB80"/><rect x="0" y="5" width="10" height="4" fill="#FCF9EA"/><rect x="1" y="9" width="8" height="3" fill="#FCF9EA"/></svg></div><h4>ACIK EL</h4><p>Imleci hareket ettir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="2" fill="#FCF9EA"/><rect x="0" y="2" width="8" height="4" fill="#FCF9EA"/><rect x="1" y="6" width="6" height="2" fill="#FCF9EA"/></svg></div><h4>YUMRUK</h4><p>Sec / Kaydet</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="2" y="0" width="2" height="5" fill="#B8DB80"/><rect x="4" y="0" width="2" height="5" fill="#B8DB80"/><rect x="1" y="5" width="6" height="3" fill="#FCF9EA"/><rect x="2" y="8" width="4" height="2" fill="#FCF9EA"/></svg></div><h4>PEACE</h4><p>Gorunum degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="3" fill="#FCF9EA"/><rect x="0" y="3" width="8" height="3" fill="#FCF9EA"/><rect x="3" y="6" width="2" height="4" fill="#FFA4A4"/></svg></div><h4>THUMBS DOWN</h4><p>Etkinlik sil</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 12 8" style="image-rendering:pixelated;"><rect x="0" y="3" width="10" height="2" fill="#B8DB80"/><rect x="8" y="1" width="2" height="2" fill="#B8DB80"/><rect x="10" y="3" width="2" height="2" fill="#B8DB80"/><rect x="8" y="5" width="2" height="2" fill="#B8DB80"/></svg></div><h4>KAYDIRMA</h4><p>Gun degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="0" y="2" width="3" height="2" fill="#FCF9EA"/><rect x="3" y="3" width="2" height="2" fill="#FFA4A4"/><rect x="5" y="2" width="3" height="2" fill="#FCF9EA"/></svg></div><h4>PINCH</h4><p>Sure ayarla</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#B8DB80"/><rect x="2" y="1" width="2" height="3" fill="#B8DB80"/><rect x="6" y="1" width="2" height="3" fill="#B8DB80"/><rect x="0" y="2" width="2" height="3" fill="#B8DB80"/><rect x="8" y="2" width="2" height="3" fill="#B8DB80"/><rect x="0" y="5" width="10" height="4" fill="#FCF9EA"/><rect x="1" y="9" width="8" height="3" fill="#FCF9EA"/></svg></div><h4>ACIK EL</h4><p>Imleci hareket ettir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="2" fill="#FCF9EA"/><rect x="0" y="2" width="8" height="4" fill="#FCF9EA"/><rect x="1" y="6" width="6" height="2" fill="#FCF9EA"/></svg></div><h4>YUMRUK</h4><p>Sec / Kaydet</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="2" y="0" width="2" height="5" fill="#B8DB80"/><rect x="4" y="0" width="2" height="5" fill="#B8DB80"/><rect x="1" y="5" width="6" height="3" fill="#FCF9EA"/><rect x="2" y="8" width="4" height="2" fill="#FCF9EA"/></svg></div><h4>PEACE</h4><p>Gorunum degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="3" fill="#FCF9EA"/><rect x="0" y="3" width="8" height="3" fill="#FCF9EA"/><rect x="3" y="6" width="2" height="4" fill="#FFA4A4"/></svg></div><h4>THUMBS DOWN</h4><p>Etkinlik sil</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 12 8" style="image-rendering:pixelated;"><rect x="0" y="3" width="10" height="2" fill="#B8DB80"/><rect x="8" y="1" width="2" height="2" fill="#B8DB80"/><rect x="10" y="3" width="2" height="2" fill="#B8DB80"/><rect x="8" y="5" width="2" height="2" fill="#B8DB80"/></svg></div><h4>KAYDIRMA</h4><p>Gun degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="0" y="2" width="3" height="2" fill="#FCF9EA"/><rect x="3" y="3" width="2" height="2" fill="#FFA4A4"/><rect x="5" y="2" width="3" height="2" fill="#FCF9EA"/></svg></div><h4>PINCH</h4><p>Sure ayarla</p></div>
+    </div></div>
+  </div>
+
+  <!-- ══ CAMERA DEMO ══ -->
+  <div class="cam-section section-slide slide-from-left" id="demo">
+    <h2 class="section-title anim a-up">CANLI DEMO</h2>
+    <p class="section-sub anim a-up d1">Kamerani ac ve el hareketlerini gercek zamanli test et</p>
+    <div class="cam-wrap anim a-scale d2">
+      <div class="cam-frame">
+        <video id="demoVideo" playsinline></video>
+        <canvas id="demoCanvas"></canvas>
+        <div class="cam-scanlines"></div>
+        <div class="cam-status" id="camStatus" style="display:none;"><div class="cam-dot"></div> CANLI</div>
+        <div class="cam-gesture" id="camGesture" style="display:none;">HAREKET BEKLENIYOR...</div>
+        <button class="cam-start" id="camStart">
+          <svg width="56" height="56" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="2" y="1" width="12" height="10" fill="none" stroke="#B8DB80" stroke-width="1"/><rect x="5" y="12" width="6" height="1" fill="#B8DB80"/><rect x="4" y="13" width="8" height="1" fill="#B8DB80"/><circle cx="8" cy="6" r="3" fill="none" stroke="#B8DB80" stroke-width="1"/><rect x="7" y="5" width="2" height="2" fill="#B8DB80"/></svg>
+          <span>KAMERAYI AC</span><span class="sub">El hareketlerini gercek zamanli test et</span>
+        </button>
+      </div>
+      <div class="cam-label"><svg width="10" height="10" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="8" fill="#B8DB80" opacity="0.3"/><rect x="0" y="3" width="8" height="2" fill="#B8DB80" opacity="0.3"/></svg><span>MediaPipe Hands &bull; 21 Landmark &bull; Gercek Zamanli</span></div>
+    </div>
+  </div>
+
+  <!-- ══ FROG GAME ══ -->
+  <div class="game-section section-slide slide-from-left" id="game">
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:8px;" class="anim a-up">
+      <svg width="56" height="56" viewBox="0 0 16 16" style="image-rendering:pixelated;animation:hop 2s ease-in-out infinite;"><rect x="3" y="0" width="4" height="2" fill="#B8DB80"/><rect x="9" y="0" width="4" height="2" fill="#B8DB80"/><rect x="2" y="2" width="12" height="3" fill="#B8DB80"/><rect x="4" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="10" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/><rect x="5" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="9" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="8" width="4" height="1" fill="#FFA4A4"/><rect x="2" y="9" width="4" height="3" fill="#B8DB80"/><rect x="10" y="9" width="4" height="3" fill="#B8DB80"/><rect x="1" y="11" width="3" height="2" fill="#8fcc7a"/><rect x="12" y="11" width="3" height="2" fill="#8fcc7a"/></svg>
+      <h2 style="font-family:'Aston Script',cursive;font-size:clamp(36px,5vw,52px);color:var(--green);margin:0;text-shadow:0 0 30px rgba(184,219,128,0.3);">Hungry Frog</h2>
+      <svg width="44" height="36" viewBox="0 0 9 8" style="image-rendering:pixelated;animation:float 3s ease-in-out infinite;"><rect x="1" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="0" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="5" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="0" y="2" width="9" height="1" fill="#FFA4A4"/><rect x="1" y="3" width="7" height="1" fill="#FFBDBD"/><rect x="2" y="4" width="5" height="1" fill="#FFBDBD"/><rect x="3" y="5" width="3" height="1" fill="#FFBDBD"/><rect x="4" y="6" width="1" height="1" fill="#FFBDBD"/></svg>
+    </div>
+    <p class="section-sub anim a-up d1" style="font-family:'VT323',monospace;font-size:24px;color:rgba(252,249,234,0.45);">Kurbagamizi doyur, boceklerden koru!</p>
+    <div class="game-wrap anim a-scale d2">
+      <div class="game-monitor">
+        <div class="game-screen" id="frogScreen">
+          <canvas id="frogCanvas"></canvas>
+          <div class="game-hud">
+            <span id="gScore">SKOR: 0</span>
+            <span id="gHigh">EN YUKSEK: 0</span>
           </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:20px;margin-bottom:2px;">
-              <span style="color:var(--cream);">INT (Problem Solving)</span><span style="color:var(--cream);">92</span>
-            </div>
-            <div class="stat-bar"><div class="stat-fill" style="--fill:92%;background:var(--cream);"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:20px;margin-bottom:2px;">
-              <span style="color:var(--rose);">DEX (Design)</span><span style="color:var(--cream);">78</span>
-            </div>
-            <div class="stat-bar"><div class="stat-fill" style="--fill:78%;background:var(--rose);"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:20px;margin-bottom:2px;">
-              <span style="color:var(--peach);">CHA (Communication)</span><span style="color:var(--cream);">88</span>
-            </div>
-            <div class="stat-bar"><div class="stat-fill" style="--fill:88%;background:var(--peach);"></div></div>
-          </div>
+          <div class="game-msg" id="gMsg" style="font-family:'VT323',monospace;font-size:24px;line-height:1.8;">Baslamak icin<br>bir tusa bas!</div>
         </div>
+        <div class="game-led"></div>
       </div>
+      <div class="game-base"></div>
+      <div class="game-foot"></div>
+    </div>
+    <div class="game-keys" style="font-family:'VT323',monospace;font-size:20px;">W A S D &bull; Yemleri topla &bull; Boceklere dokme!</div>
+  </div>
+
+  <!-- ══ CTA ══ -->
+  <div class="cta-section">
+    <div class="cta-inner anim a-up">
+      <svg width="56" height="56" viewBox="0 0 16 16" style="image-rendering:pixelated;margin-bottom:16px;"><rect x="3" y="0" width="4" height="2" fill="#B8DB80"/><rect x="9" y="0" width="4" height="2" fill="#B8DB80"/><rect x="2" y="2" width="12" height="3" fill="#B8DB80"/><rect x="4" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="10" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/><rect x="5" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="9" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="8" width="4" height="1" fill="#FFA4A4"/><rect x="2" y="9" width="4" height="3" fill="#B8DB80"/><rect x="10" y="9" width="4" height="3" fill="#B8DB80"/><rect x="1" y="11" width="3" height="2" fill="#8fcc7a"/><rect x="12" y="11" width="3" height="2" fill="#8fcc7a"/></svg>
+      <h2>HEMEN BASLA</h2>
+      <p>Hesap olustur ve el hareketleriyle takvimini yonetmeye basla.</p>
+      <a href="./login.html" class="pixel-btn" style="padding:14px 40px;font-size:11px;border-color:var(--coral);color:#fff;background:var(--coral);">KAYIT OL</a>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer style="position:relative;z-index:1;margin-top:40px;">
-  <div class="skyline">
-    <div class="building" style="left:5%;width:40px;height:50px;"></div>
-    <div class="building" style="left:12%;width:25px;height:70px;"></div>
-    <div class="building" style="left:18%;width:50px;height:45px;"></div>
-    <div class="building" style="left:28%;width:30px;height:60px;"></div>
-    <div class="building" style="left:35%;width:45px;height:55px;"></div>
-    <div class="building" style="left:44%;width:35px;height:75px;"></div>
-    <div class="building" style="left:52%;width:50px;height:40px;"></div>
-    <div class="building" style="left:60%;width:28px;height:65px;"></div>
-    <div class="building" style="left:67%;width:40px;height:50px;"></div>
-    <div class="building" style="left:75%;width:55px;height:35px;"></div>
-    <div class="building" style="left:83%;width:30px;height:58px;"></div>
-    <div class="building" style="left:90%;width:45px;height:48px;"></div>
-  </div>
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <p><span style="font-family:'Press Start 2P';font-size:8px;color:rgba(252,249,234,0.4);">AIR PLANNER</span></p>
+    <p style="margin-top:6px;">Made with <span class="heart">&#9829;</span> by Tugce &bull; 2025</p>
+  </footer>
 
-  <div style="background:var(--bg-light);border-top:3px solid var(--rose);padding:20px;text-align:center;">
-    <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-      <!-- Pixel Heart -->
-      <svg width="14" height="14" viewBox="0 0 10 10" style="image-rendering:pixelated">
-        <rect x="1" y="1" width="3" height="2" fill="#E50046"/>
-        <rect x="6" y="1" width="3" height="2" fill="#E50046"/>
-        <rect x="0" y="2" width="10" height="2" fill="#E50046"/>
-        <rect x="1" y="4" width="8" height="2" fill="#E50046"/>
-        <rect x="2" y="6" width="6" height="1" fill="#E50046"/>
-        <rect x="3" y="7" width="4" height="1" fill="#E50046"/>
-        <rect x="4" y="8" width="2" height="1" fill="#E50046"/>
-      </svg>
-      <p style="font-family:'Press Start 2P';font-size:10px;color:var(--cream);opacity:0.5;">
-        &copy; 2026 TUGÇE | MADE WITH LOVE AND GESTURES
-      </p>
-      <!-- Pixel Hand (pointing finger) -->
-      <svg width="14" height="14" viewBox="0 0 12 16" style="image-rendering:pixelated">
-        <rect x="4" y="0" width="3" height="2" fill="#fff8e8"/>
-        <rect x="4" y="2" width="3" height="4" fill="#FDAB9E"/>
-        <rect x="7" y="6" width="3" height="2" fill="#FDAB9E"/>
-        <rect x="7" y="7" width="3" height="1" fill="#e5a87a"/>
-        <rect x="2" y="7" width="2" height="3" fill="#FDAB9E"/>
-        <rect x="3" y="6" width="4" height="5" fill="#FDAB9E"/>
-        <rect x="4" y="8" width="6" height="3" fill="#FDAB9E"/>
-        <rect x="4" y="6" width="6" height="1" fill="#e5a87a"/>
-        <rect x="4" y="11" width="5" height="3" fill="#FDAB9E"/>
-        <rect x="4" y="13" width="5" height="1" fill="#e5a87a"/>
-      </svg>
-    </div>
-  </div>
-</footer>
-
-<script>
-  // Generate stars
-  const starsEl = document.getElementById('stars');
-  const starColors = ['#E50046', '#FDAB9E', '#1a1a2e', '#C7DB9C'];
-  for (let i = 0; i < 60; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.top = Math.random() * 100 + '%';
-    star.style.setProperty('--dur', (2 + Math.random() * 4) + 's');
-    star.style.setProperty('--delay', (Math.random() * 3) + 's');
-    if (Math.random() > 0.7) {
-      star.style.width = '3px';
-      star.style.height = '3px';
-      star.style.background = starColors[Math.floor(Math.random() * 4)];
-    }
-    starsEl.appendChild(star);
-  }
-
-  // Intersection Observer for scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+  <!-- ══ SCRIPTS ══ -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script>
+  (function(){
+    // ── Dark mode ──
+    var body = document.body;
+    var btn = document.getElementById('themeBtn');
+    if (localStorage.getItem('airplanner-theme') === 'dark') body.classList.add('dark');
+    btn.addEventListener('click', function() {
+      body.classList.toggle('dark');
+      localStorage.setItem('airplanner-theme', body.classList.contains('dark') ? 'dark' : 'light');
     });
-  }, { threshold: 0.15 });
 
-  document.querySelectorAll('section').forEach(s => observer.observe(s));
-
-  // ===== FROG COLLECTOR GAME =====
-  (function() {
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const screenEl = document.getElementById('gameScreen');
-
-    function resize() {
-      canvas.width = screenEl.clientWidth;
-      canvas.height = screenEl.clientHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Constants
-    const FROG_SIZE = 36;
-    const BUG_SIZE = 16;
-    const ENEMY_SIZE = 24;
-    const FROG_SPEED = 3;
-    const POND_MARGIN = 12;
-
-    // State machine: IDLE → PLAYING → DEAD → IDLE
-    let state = 'IDLE';
-    let score = 0;
-    let highScore = parseInt(localStorage.getItem('frogCollectorHigh') || '0');
-    let frameCount = 0;
-    let difficulty = 1;
-
-    // Frog
-    let frog = { x: 0, y: 0, dir: 'down' };
-
-    // Input keys held
-    let keys = {};
-
-    // Collectibles (flies/bugs)
-    let bugs = [];
-    let nextBugIn = 60;
-
-    // Enemies (snakes)
-    let enemies = [];
-    let nextEnemyIn = 200;
-
-    // Particles (collect effect)
-    let particles = [];
-
-    // Pond decorations (lily pads, etc.)
-    let lilyPads = [];
-
-    function resetGame() {
-      frog.x = canvas.width / 2 - FROG_SIZE / 2;
-      frog.y = canvas.height / 2 - FROG_SIZE / 2;
-      frog.dir = 'down';
-      bugs = [];
-      enemies = [];
-      particles = [];
-      score = 0;
-      frameCount = 0;
-      difficulty = 1;
-      nextBugIn = 30;
-      nextEnemyIn = 180;
-
-      // Generate lily pads
-      lilyPads = [];
-      for (var i = 0; i < 8; i++) {
-        lilyPads.push({
-          x: POND_MARGIN + Math.random() * (canvas.width - POND_MARGIN * 2 - 30),
-          y: POND_MARGIN + Math.random() * (canvas.height - POND_MARGIN * 2 - 30),
-          size: 16 + Math.random() * 14,
-          opacity: 0.15 + Math.random() * 0.15
-        });
-      }
-
-      // Spawn initial bugs
-      for (var j = 0; j < 3; j++) spawnBug();
+    // ── Stars ──
+    var sc=document.getElementById('stars'), cols=['#FFA4A4','#B8DB80','#BADFDB','#FFBDBD'];
+    for(var i=0;i<55;i++){
+      var s=document.createElement('div'); s.className='star';
+      s.style.left=((i*17.31)%100)+'%'; s.style.top=((i*23.57+i*3.1)%100)+'%';
+      s.style.setProperty('--dur',(2+(i%5))+'s'); s.style.setProperty('--delay',((i*0.37)%3)+'s');
+      s.style.background=cols[i%4]; var sz=(Math.sin(i*7.3)>0.3)?'3px':'2px'; s.style.width=sz; s.style.height=sz;
+      sc.appendChild(s);
     }
 
-    function spawnBug() {
-      var margin = 30;
-      bugs.push({
-        x: margin + Math.random() * (canvas.width - margin * 2),
-        y: margin + Math.random() * (canvas.height - margin * 2),
-        wingFrame: 0,
-        type: Math.random() > 0.3 ? 'fly' : 'butterfly'
-      });
-    }
+    // ── Scroll reveal (small elements) ──
+    var obs=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('vis'); });
+    },{threshold:0.12, rootMargin:'0px 0px -30px 0px'});
+    document.querySelectorAll('.anim').forEach(function(el){obs.observe(el);});
 
-    function spawnEnemy() {
-      // Spawn from a random edge
-      var side = Math.floor(Math.random() * 4);
-      var ex, ey, edx, edy;
-      var spd = 0.8 + difficulty * 0.3;
-      if (spd > 3) spd = 3;
+    // ── Section slide transitions (scroll-driven horizontal entrance) ──
+    (function(){
+      var slides=document.querySelectorAll('.section-slide');
+      var skipTranslate=[];
+      slides.forEach(function(el,i){ skipTranslate[i]=false; });
 
-      if (side === 0) { ex = -ENEMY_SIZE; ey = Math.random() * canvas.height; }
-      else if (side === 1) { ex = canvas.width + ENEMY_SIZE; ey = Math.random() * canvas.height; }
-      else if (side === 2) { ex = Math.random() * canvas.width; ey = -ENEMY_SIZE; }
-      else { ex = Math.random() * canvas.width; ey = canvas.height + ENEMY_SIZE; }
+      function updateSlides(){
+        var wh=window.innerHeight;
+        var vw=window.innerWidth;
+        for(var i=0;i<slides.length;i++){
+          var el=slides[i];
+          var rect=el.getBoundingClientRect();
+          // Start: 250px below viewport bottom
+          // End: section top at ~5% from viewport top (fully in view)
+          // Total range ≈ 1.2x viewport height
+          var raw=(wh+250-rect.top)/(wh*1.2);
+          var p=Math.max(0,Math.min(1,raw));
+          // ease-out quad: visible slide that decelerates into final position
+          var e=p*(2-p);
 
-      // Aim toward frog
-      var angle = Math.atan2(frog.y - ey, frog.x - ex);
-      edx = Math.cos(angle) * spd;
-      edy = Math.sin(angle) * spd;
-
-      var type = Math.random() > 0.5 ? 'snake' : 'spider';
-      enemies.push({ x: ex, y: ey, dx: edx, dy: edy, type: type, frame: 0 });
-    }
-
-    function addParticles(x, y, color) {
-      for (var i = 0; i < 6; i++) {
-        particles.push({
-          x: x, y: y,
-          dx: (Math.random() - 0.5) * 4,
-          dy: (Math.random() - 0.5) * 4,
-          life: 20,
-          color: color,
-          size: 2 + Math.random() * 3
-        });
-      }
-    }
-
-    // Input
-    document.addEventListener('keydown', function(e) {
-      keys[e.key.toLowerCase()] = true;
-      if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        if (state === 'IDLE') { state = 'PLAYING'; resetGame(); }
-        else if (state === 'DEAD') { state = 'IDLE'; }
-      }
-    });
-    document.addEventListener('keyup', function(e) {
-      keys[e.key.toLowerCase()] = false;
-    });
-    canvas.addEventListener('click', function() {
-      if (state === 'IDLE') { state = 'PLAYING'; resetGame(); }
-      else if (state === 'DEAD') { state = 'IDLE'; }
-    });
-    canvas.addEventListener('touchstart', function(e) {
-      e.preventDefault();
-      if (state === 'IDLE') { state = 'PLAYING'; resetGame(); }
-      else if (state === 'DEAD') { state = 'IDLE'; }
-    }, { passive: false });
-
-    // Mobile touch controls — track touch position for movement
-    let touchActive = false;
-    let touchX = 0, touchY = 0;
-    canvas.addEventListener('touchmove', function(e) {
-      e.preventDefault();
-      if (state === 'PLAYING' && e.touches.length > 0) {
-        var rect = canvas.getBoundingClientRect();
-        touchActive = true;
-        touchX = (e.touches[0].clientX - rect.left) * (canvas.width / rect.width);
-        touchY = (e.touches[0].clientY - rect.top) * (canvas.height / rect.height);
-      }
-    }, { passive: false });
-    canvas.addEventListener('touchend', function() { touchActive = false; });
-
-    // --- Drawing functions ---
-
-    function drawFrog(x, y, size, dir) {
-      var s = size / 16;
-      // Shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.2)';
-      ctx.fillRect(x + 2, y + size - 2*s, size - 4, 3*s);
-
-      ctx.save();
-      // Rotation based on direction
-      ctx.translate(x + size/2, y + size/2);
-      if (dir === 'up') ctx.rotate(Math.PI);
-      else if (dir === 'left') ctx.rotate(Math.PI / 2);
-      else if (dir === 'right') ctx.rotate(-Math.PI / 2);
-      ctx.translate(-size/2, -size/2);
-
-      // Body
-      ctx.fillStyle = '#C7DB9C';
-      ctx.fillRect(1*s, 4*s, 14*s, 8*s);
-      // Belly
-      ctx.fillStyle = '#8fcc7a';
-      ctx.fillRect(3*s, 5*s, 10*s, 6*s);
-      // Eyes (at the "front" = bottom in default facing down)
-      ctx.fillStyle = '#C7DB9C';
-      ctx.fillRect(2*s, 11*s, 4*s, 4*s);
-      ctx.fillRect(10*s, 11*s, 4*s, 4*s);
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(3*s, 12*s, 2*s, 2*s);
-      ctx.fillRect(11*s, 12*s, 2*s, 2*s);
-      ctx.fillStyle = '#1a1a2e';
-      ctx.fillRect(4*s, 13*s, 1*s, 1*s);
-      ctx.fillRect(12*s, 13*s, 1*s, 1*s);
-      // Cheeks
-      ctx.fillStyle = '#E50046';
-      ctx.fillRect(5*s, 10*s, 2*s, 1*s);
-      ctx.fillRect(9*s, 10*s, 2*s, 1*s);
-      // Back legs
-      ctx.fillStyle = '#8fcc7a';
-      ctx.fillRect(0*s, 2*s, 3*s, 4*s);
-      ctx.fillRect(13*s, 2*s, 3*s, 4*s);
-
-      ctx.restore();
-    }
-
-    function drawFly(x, y, wingFrame) {
-      // Body
-      ctx.fillStyle = '#1a1a2e';
-      ctx.fillRect(x + 5, y + 5, 6, 6);
-      // Wings
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      var wingOff = Math.sin(wingFrame * 0.3) * 2;
-      ctx.fillRect(x, y + 2 + wingOff, 6, 4);
-      ctx.fillRect(x + 10, y + 2 - wingOff, 6, 4);
-      // Eyes
-      ctx.fillStyle = '#E50046';
-      ctx.fillRect(x + 5, y + 5, 2, 2);
-      ctx.fillRect(x + 9, y + 5, 2, 2);
-    }
-
-    function drawButterfly(x, y, wingFrame) {
-      // Wings
-      var wingOff = Math.sin(wingFrame * 0.2) * 3;
-      ctx.fillStyle = '#FDAB9E';
-      ctx.fillRect(x, y + wingOff, 6, 8);
-      ctx.fillRect(x + 10, y - wingOff, 6, 8);
-      ctx.fillStyle = '#E50046';
-      ctx.fillRect(x + 1, y + 2 + wingOff, 4, 4);
-      ctx.fillRect(x + 11, y + 2 - wingOff, 4, 4);
-      // Body
-      ctx.fillStyle = '#1a1a2e';
-      ctx.fillRect(x + 6, y + 1, 4, 12);
-      // Antennae
-      ctx.fillStyle = '#1a1a2e';
-      ctx.fillRect(x + 6, y - 2, 1, 3);
-      ctx.fillRect(x + 9, y - 2, 1, 3);
-    }
-
-    function drawSnake(x, y, frame) {
-      var wiggle = Math.sin(frame * 0.1) * 3;
-      // Body segments
-      ctx.fillStyle = '#e55050';
-      ctx.fillRect(x + 4, y + 8 + wiggle, 16, 8);
-      ctx.fillRect(x + 8, y + 4 - wiggle, 12, 8);
-      // Head
-      ctx.fillStyle = '#ff6b6b';
-      ctx.fillRect(x, y + 6 + wiggle, 8, 10);
-      // Eyes
-      ctx.fillStyle = '#1a1a2e';
-      ctx.fillRect(x + 1, y + 8 + wiggle, 3, 3);
-      ctx.fillRect(x + 5, y + 8 + wiggle, 3, 3);
-      ctx.fillStyle = '#1a1a2e';
-      ctx.fillRect(x + 2, y + 9 + wiggle, 1, 1);
-      ctx.fillRect(x + 6, y + 9 + wiggle, 1, 1);
-      // Tongue
-      if (frame % 40 < 20) {
-        ctx.fillStyle = '#E50046';
-        ctx.fillRect(x - 3, y + 11 + wiggle, 4, 1);
-        ctx.fillRect(x - 5, y + 10 + wiggle, 2, 1);
-        ctx.fillRect(x - 5, y + 12 + wiggle, 2, 1);
-      }
-      // Pattern
-      ctx.fillStyle = '#cc3030';
-      ctx.fillRect(x + 10, y + 10 + wiggle, 3, 3);
-      ctx.fillRect(x + 16, y + 6 - wiggle, 3, 3);
-    }
-
-    function drawSpider(x, y, frame) {
-      var bob = Math.sin(frame * 0.15) * 2;
-      // Legs
-      ctx.fillStyle = '#5a3080';
-      // Left legs
-      ctx.fillRect(x - 4, y + 4 + bob, 8, 2);
-      ctx.fillRect(x - 3, y + 10 - bob, 7, 2);
-      ctx.fillRect(x - 5, y + 16 + bob, 9, 2);
-      ctx.fillRect(x - 2, y + 22 - bob, 6, 2);
-      // Right legs
-      ctx.fillRect(x + 20, y + 4 - bob, 8, 2);
-      ctx.fillRect(x + 20, y + 10 + bob, 7, 2);
-      ctx.fillRect(x + 20, y + 16 - bob, 9, 2);
-      ctx.fillRect(x + 20, y + 22 + bob, 6, 2);
-      // Body
-      ctx.fillStyle = '#7040a0';
-      ctx.fillRect(x + 4, y + 2, 16, 20);
-      ctx.fillStyle = '#8050b0';
-      ctx.fillRect(x + 6, y + 4, 12, 16);
-      // Eyes (8 eyes — 2 big, 6 small)
-      ctx.fillStyle = '#ff4040';
-      ctx.fillRect(x + 7, y + 6, 4, 4);
-      ctx.fillRect(x + 13, y + 6, 4, 4);
-      ctx.fillStyle = '#ff8080';
-      ctx.fillRect(x + 6, y + 12, 2, 2);
-      ctx.fillRect(x + 10, y + 12, 2, 2);
-      ctx.fillRect(x + 14, y + 12, 2, 2);
-      ctx.fillRect(x + 16, y + 12, 2, 2);
-    }
-
-    function drawLilyPad(x, y, size, opacity) {
-      ctx.globalAlpha = opacity;
-      ctx.fillStyle = '#4a7a3a';
-      // Simple circle-ish pad
-      ctx.fillRect(x + size*0.2, y, size*0.6, size);
-      ctx.fillRect(x, y + size*0.2, size, size*0.6);
-      // Cut notch
-      ctx.fillStyle = '#1a2a40';
-      ctx.fillRect(x + size*0.4, y, size*0.15, size*0.3);
-      // Vein
-      ctx.fillStyle = '#3a6a2a';
-      ctx.fillRect(x + size*0.45, y + size*0.3, 2, size*0.5);
-      ctx.globalAlpha = 1;
-    }
-
-    function drawPond() {
-      // Water background
-      ctx.fillStyle = '#1a2a40';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      // Water ripple pattern
-      ctx.fillStyle = '#1e3050';
-      for (var wy = 0; wy < canvas.height; wy += 12) {
-        var rippleOff = Math.sin((wy + frameCount * 0.5) * 0.05) * 4;
-        for (var wx = 0; wx < canvas.width; wx += 20) {
-          ctx.fillRect(wx + rippleOff, wy, 10, 2);
-        }
-      }
-      // Pond border
-      ctx.fillStyle = '#3d6030';
-      ctx.fillRect(0, 0, canvas.width, 4);
-      ctx.fillRect(0, canvas.height - 4, canvas.width, 4);
-      ctx.fillRect(0, 0, 4, canvas.height);
-      ctx.fillRect(canvas.width - 4, 0, 4, canvas.height);
-      // Lily pads
-      lilyPads.forEach(function(lp) { drawLilyPad(lp.x, lp.y, lp.size, lp.opacity); });
-    }
-
-    function drawParticles() {
-      particles.forEach(function(p) {
-        ctx.globalAlpha = p.life / 20;
-        ctx.fillStyle = p.color;
-        ctx.fillRect(p.x, p.y, p.size, p.size);
-      });
-      ctx.globalAlpha = 1;
-    }
-
-    function drawHUD() {
-      ctx.fillStyle = 'rgba(0,0,0,0.4)';
-      ctx.fillRect(canvas.width - 130, 4, 126, 20);
-      ctx.fillStyle = '#1a1a2e';
-      ctx.font = '10px "Press Start 2P"';
-      ctx.textAlign = 'right';
-      ctx.fillText('SCORE: ' + score, canvas.width - 10, 18);
-
-      // Lives / bug count icon
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#C7DB9C';
-      ctx.fillRect(8, 8, 8, 8);
-      ctx.fillStyle = '#1a1a2e';
-      ctx.font = '8px "Press Start 2P"';
-      ctx.fillText('x' + bugs.length, 20, 16);
-    }
-
-    function drawWASDKeys(cx, cy, keySize) {
-      var gap = 2;
-      var ks = keySize;
-      // W
-      drawKey(cx, cy - ks - gap, ks, ks, 'W', keys['w']);
-      // A S D
-      drawKey(cx - ks - gap, cy, ks, ks, 'A', keys['a']);
-      drawKey(cx, cy, ks, ks, 'S', keys['s']);
-      drawKey(cx + ks + gap, cy, ks, ks, 'D', keys['d']);
-    }
-
-    function drawKey(x, y, w, h, label, pressed) {
-      // Key shadow
-      ctx.fillStyle = '#1a1830';
-      ctx.fillRect(x + 2, y + 2, w, h);
-      // Key background
-      ctx.fillStyle = pressed ? '#C7DB9C' : '#FFF8D6';
-      ctx.fillRect(x, y, w, h);
-      // Key border
-      ctx.strokeStyle = pressed ? '#8fcc7a' : '#5a5280';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(x, y, w, h);
-      // Label
-      ctx.fillStyle = pressed ? '#1a1830' : '#1a1a2e';
-      ctx.font = Math.floor(w * 0.5) + 'px "Press Start 2P"';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(label, x + w/2, y + h/2 + 1);
-      ctx.textBaseline = 'alphabetic';
-    }
-
-    // --- IDLE Screen ---
-    function drawIdleOverlay() {
-      ctx.fillStyle = 'rgba(26,24,48,0.9)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      var cx = canvas.width / 2;
-      var cy = canvas.height / 2;
-
-      // Title
-      ctx.fillStyle = '#C7DB9C';
-      ctx.font = '16px "Press Start 2P"';
-      ctx.textAlign = 'center';
-      ctx.fillText('FROG COLLECTOR', cx, cy - 110);
-
-      // Subtitle
-      ctx.fillStyle = '#FDAB9E';
-      ctx.font = '8px "Press Start 2P"';
-      ctx.fillText('Collect bugs, avoid enemies!', cx, cy - 90);
-
-      // Draw frog
-      drawFrog(cx - 30, cy - 80, 60, 'down');
-
-      // Controls section
-      ctx.fillStyle = '#1a1a2e';
-      ctx.font = '9px "Press Start 2P"';
-      ctx.fillText('- CONTROLS -', cx, cy + 8);
-
-      // Draw WASD keys visual
-      drawWASDKeys(cx - 10, cy + 34, 20);
-
-      // Labels next to WASD
-      ctx.fillStyle = '#C7DB9C';
-      ctx.font = '7px "Press Start 2P"';
-      ctx.textAlign = 'left';
-      ctx.fillText('MOVE', cx + 40, cy + 46);
-
-      // Collectible legend
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#1a1a2e';
-      ctx.font = '7px "Press Start 2P"';
-      var legendY = cy + 85;
-      // Bug icon
-      drawFly(cx - 70, legendY - 8, 0);
-      ctx.fillStyle = '#C7DB9C';
-      ctx.fillText('= EAT', cx - 40, legendY);
-
-      // Enemy icon
-      ctx.fillStyle = '#ff6b6b';
-      ctx.fillRect(cx + 20, legendY - 6, 10, 8);
-      ctx.fillStyle = '#ff4040';
-      ctx.fillRect(cx + 22, legendY - 4, 3, 3);
-      ctx.fillStyle = '#E50046';
-      ctx.font = '7px "Press Start 2P"';
-      ctx.fillText('= AVOID', cx + 58, legendY);
-
-      // Start prompt
-      var blink = Math.sin(frameCount * 0.08) > 0;
-      if (blink) {
-        ctx.fillStyle = '#FDAB9E';
-        ctx.font = '9px "Press Start 2P"';
-        ctx.textAlign = 'center';
-        ctx.fillText('PRESS SPACE OR CLICK', cx, cy + 120);
-      }
-    }
-
-    // --- DEAD Screen ---
-    function drawDeadOverlay() {
-      ctx.fillStyle = 'rgba(26,24,48,0.88)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      var cx = canvas.width / 2;
-      var cy = canvas.height / 2;
-
-      ctx.fillStyle = '#E50046';
-      ctx.font = '18px "Press Start 2P"';
-      ctx.textAlign = 'center';
-      ctx.fillText('GAME OVER', cx, cy - 40);
-
-      ctx.fillStyle = '#1a1a2e';
-      ctx.font = '12px "Press Start 2P"';
-      ctx.fillText('SCORE: ' + score, cx, cy);
-
-      ctx.fillStyle = '#FDAB9E';
-      ctx.font = '10px "Press Start 2P"';
-      ctx.fillText('BEST: ' + highScore, cx, cy + 25);
-
-      var blink = Math.sin(frameCount * 0.08) > 0;
-      if (blink) {
-        ctx.fillStyle = '#C7DB9C';
-        ctx.font = '9px "Press Start 2P"';
-        ctx.fillText('CLICK TO RETRY', cx, cy + 60);
-      }
-    }
-
-    // --- RECT collision ---
-    function rectsOverlap(ax, ay, aw, ah, bx, by, bw, bh) {
-      return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
-    }
-
-    // --- UPDATE ---
-    function update() {
-      frameCount++;
-
-      if (state !== 'PLAYING') return;
-
-      // Difficulty ramp
-      difficulty = 1 + Math.floor(score / 5);
-      if (difficulty > 10) difficulty = 10;
-
-      // Movement
-      var moving = false;
-      var speed = FROG_SPEED + difficulty * 0.15;
-
-      if (touchActive && state === 'PLAYING') {
-        // Mobile: move toward touch position
-        var tdx = touchX - (frog.x + FROG_SIZE/2);
-        var tdy = touchY - (frog.y + FROG_SIZE/2);
-        var dist = Math.sqrt(tdx*tdx + tdy*tdy);
-        if (dist > 4) {
-          frog.x += (tdx / dist) * speed;
-          frog.y += (tdy / dist) * speed;
-          moving = true;
-          if (Math.abs(tdx) > Math.abs(tdy)) frog.dir = tdx > 0 ? 'right' : 'left';
-          else frog.dir = tdy > 0 ? 'down' : 'up';
-        }
-      }
-
-      if (keys['w'] || keys['arrowup']) { frog.y -= speed; frog.dir = 'up'; moving = true; }
-      if (keys['s'] || keys['arrowdown']) { frog.y += speed; frog.dir = 'down'; moving = true; }
-      if (keys['a'] || keys['arrowleft']) { frog.x -= speed; frog.dir = 'left'; moving = true; }
-      if (keys['d'] || keys['arrowright']) { frog.x += speed; frog.dir = 'right'; moving = true; }
-
-      // Clamp to bounds
-      if (frog.x < POND_MARGIN) frog.x = POND_MARGIN;
-      if (frog.y < POND_MARGIN) frog.y = POND_MARGIN;
-      if (frog.x + FROG_SIZE > canvas.width - POND_MARGIN) frog.x = canvas.width - POND_MARGIN - FROG_SIZE;
-      if (frog.y + FROG_SIZE > canvas.height - POND_MARGIN) frog.y = canvas.height - POND_MARGIN - FROG_SIZE;
-
-      // Bug collection
-      for (var i = bugs.length - 1; i >= 0; i--) {
-        bugs[i].wingFrame++;
-        var b = bugs[i];
-        if (rectsOverlap(frog.x + 4, frog.y + 4, FROG_SIZE - 8, FROG_SIZE - 8, b.x, b.y, BUG_SIZE, BUG_SIZE)) {
-          score++;
-          addParticles(b.x + BUG_SIZE/2, b.y + BUG_SIZE/2, b.type === 'fly' ? '#1a1a2e' : '#FDAB9E');
-          bugs.splice(i, 1);
-        }
-      }
-
-      // Spawn new bugs
-      nextBugIn--;
-      if (nextBugIn <= 0 || bugs.length < 2) {
-        spawnBug();
-        nextBugIn = 80 - difficulty * 5;
-        if (nextBugIn < 30) nextBugIn = 30;
-      }
-
-      // Enemy update
-      enemies.forEach(function(en) {
-        en.x += en.dx;
-        en.y += en.dy;
-        en.frame++;
-
-        // Slowly adjust toward frog
-        if (en.frame % 60 === 0) {
-          var angle = Math.atan2(frog.y - en.y, frog.x - en.x);
-          var spd = Math.sqrt(en.dx*en.dx + en.dy*en.dy);
-          en.dx = en.dx * 0.5 + Math.cos(angle) * spd * 0.5;
-          en.dy = en.dy * 0.5 + Math.sin(angle) * spd * 0.5;
-        }
-      });
-
-      // Remove off-screen enemies far away
-      for (var j = enemies.length - 1; j >= 0; j--) {
-        var e = enemies[j];
-        if (e.x < -100 || e.x > canvas.width + 100 || e.y < -100 || e.y > canvas.height + 100) {
-          enemies.splice(j, 1);
-        }
-      }
-
-      // Spawn enemies
-      nextEnemyIn--;
-      if (nextEnemyIn <= 0) {
-        spawnEnemy();
-        nextEnemyIn = Math.max(80, 200 - difficulty * 15);
-      }
-
-      // Collision with enemies
-      for (var k = 0; k < enemies.length; k++) {
-        var en2 = enemies[k];
-        if (rectsOverlap(frog.x + 6, frog.y + 6, FROG_SIZE - 12, FROG_SIZE - 12, en2.x + 4, en2.y + 4, ENEMY_SIZE - 8, ENEMY_SIZE - 8)) {
-          state = 'DEAD';
-          addParticles(frog.x + FROG_SIZE/2, frog.y + FROG_SIZE/2, '#E50046');
-          if (score > highScore) {
-            highScore = score;
-            localStorage.setItem('frogCollectorHigh', String(highScore));
+          if(p>=0.99){
+            el.style.transform=''; el.style.opacity=''; continue;
           }
-          break;
+
+          // Opacity reaches full at ~65% of animation
+          var op=Math.min(1,e*1.55);
+
+          if(skipTranslate[i]){
+            el.style.opacity=Math.max(0,op);
+          }else{
+            var isRight=el.classList.contains('slide-from-right');
+            var maxX=vw*0.55;
+            var tx=(1-e)*maxX*(isRight?1:-1);
+            el.style.transform='translateX('+Math.round(tx)+'px)';
+            el.style.opacity=Math.max(0,op);
+          }
         }
       }
 
-      // Update particles
-      for (var pi = particles.length - 1; pi >= 0; pi--) {
-        var p = particles[pi];
-        p.x += p.dx;
-        p.y += p.dy;
-        p.life--;
-        if (p.life <= 0) particles.splice(pi, 1);
+      var ticking=false;
+      window.addEventListener('scroll',function(){
+        if(!ticking){ ticking=true; requestAnimationFrame(function(){ updateSlides(); ticking=false; }); }
+      },{passive:true});
+      window.addEventListener('load',updateSlides);
+      updateSlides();
+    })();
+
+    // ── Pixel cursor effect ──
+    (function(){
+      var cvs=document.getElementById('pixelCursor');
+      var ctx2=cvs.getContext('2d');
+      var pixels=[];
+      var PIXEL=6;
+      var colors=['#B8DB80','#FFA4A4','#BADFDB','#FFBDBD','#FCF9EA'];
+      var mx=-100,my=-100;
+      var lastSpawn=0;
+
+      function resize(){ cvs.width=window.innerWidth; cvs.height=window.innerHeight; }
+      resize();
+      window.addEventListener('resize',resize);
+
+      document.addEventListener('mousemove',function(e){
+        mx=e.clientX; my=e.clientY;
+        var now=Date.now();
+        if(now-lastSpawn<30) return;
+        lastSpawn=now;
+        // spawn cluster of pixels around cursor
+        for(var i=0;i<3;i++){
+          var ox=(Math.random()-0.5)*40;
+          var oy=(Math.random()-0.5)*40;
+          var px=Math.round((mx+ox)/PIXEL)*PIXEL;
+          var py=Math.round((my+oy)/PIXEL)*PIXEL;
+          pixels.push({
+            x:px, y:py,
+            life:1,
+            decay:0.015+Math.random()*0.02,
+            color:colors[Math.floor(Math.random()*colors.length)]
+          });
+        }
+        if(pixels.length>200) pixels.splice(0,pixels.length-200);
+      });
+
+      function drawPixels(){
+        ctx2.clearRect(0,0,cvs.width,cvs.height);
+        for(var i=pixels.length-1;i>=0;i--){
+          var p=pixels[i];
+          p.life-=p.decay;
+          if(p.life<=0){ pixels.splice(i,1); continue; }
+          ctx2.globalAlpha=p.life*0.55;
+          ctx2.fillStyle=p.color;
+          ctx2.fillRect(p.x,p.y,PIXEL,PIXEL);
+        }
+        ctx2.globalAlpha=1;
+        requestAnimationFrame(drawPixels);
       }
-    }
+      drawPixels();
+    })();
 
-    // --- DRAW ---
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawPond();
+    // ── Parallax ──
+    var hf=document.querySelectorAll('.hero-float');
+    window.addEventListener('scroll',function(){
+      var sy=window.scrollY;
+      hf.forEach(function(el,i){ el.style.marginTop=(-sy*(0.12+i*0.07))+'px'; });
+    },{passive:true});
 
-      if (state === 'IDLE') {
-        drawIdleOverlay();
-      } else if (state === 'PLAYING') {
-        // Draw bugs
-        bugs.forEach(function(b) {
-          if (b.type === 'fly') drawFly(b.x, b.y, b.wingFrame);
-          else drawButterfly(b.x, b.y, b.wingFrame);
-        });
-        // Draw enemies
-        enemies.forEach(function(en) {
-          if (en.type === 'snake') drawSnake(en.x, en.y, en.frame);
-          else drawSpider(en.x, en.y, en.frame);
-        });
-        // Draw particles
-        drawParticles();
-        // Draw frog
-        drawFrog(frog.x, frog.y, FROG_SIZE, frog.dir);
-        drawHUD();
-      } else if (state === 'DEAD') {
-        // Show last frame
-        bugs.forEach(function(b) {
-          if (b.type === 'fly') drawFly(b.x, b.y, b.wingFrame);
-          else drawButterfly(b.x, b.y, b.wingFrame);
-        });
-        enemies.forEach(function(en) {
-          if (en.type === 'snake') drawSnake(en.x, en.y, en.frame);
-          else drawSpider(en.x, en.y, en.frame);
-        });
-        drawParticles();
-        drawDeadOverlay();
+    // ══ FROG GAME ══
+    (function(){
+      var cv=document.getElementById('frogCanvas'),c=cv.getContext('2d');
+      var scr=document.getElementById('frogScreen');
+      var scoreEl=document.getElementById('gScore'),hiEl=document.getElementById('gHigh'),msgEl=document.getElementById('gMsg');
+      var W,H,sc;
+      function rsz(){var r=scr.getBoundingClientRect();W=Math.floor(r.width);H=Math.floor(r.height);cv.width=W;cv.height=H;sc=Math.max(3,Math.floor(W/100));}
+      rsz(); window.addEventListener('resize',function(){rsz();if(!run)drw();});
+
+      function px(a,ox,oy,s){for(var i=0;i<a.length;i++){c.fillStyle=a[i][2];c.fillRect(ox+a[i][0]*s,oy+a[i][1]*s,s,s);}}
+
+      // Frog facing down (default)
+      var F_DOWN=[
+        [1,0,'#B8DB80'],[2,0,'#B8DB80'],[5,0,'#B8DB80'],[6,0,'#B8DB80'],
+        [1,1,'#B8DB80'],[2,1,'#3a3a3a'],[5,1,'#3a3a3a'],[6,1,'#B8DB80'],
+        [0,2,'#8fcc7a'],[1,2,'#8fcc7a'],[2,2,'#8fcc7a'],[3,2,'#8fcc7a'],
+        [4,2,'#8fcc7a'],[5,2,'#8fcc7a'],[6,2,'#8fcc7a'],[7,2,'#8fcc7a'],
+        [0,3,'#8fcc7a'],[1,3,'#8fcc7a'],[2,3,'#FFA4A4'],[3,3,'#FFA4A4'],
+        [4,3,'#FFA4A4'],[5,3,'#FFA4A4'],[6,3,'#8fcc7a'],[7,3,'#8fcc7a'],
+        [0,4,'#B8DB80'],[1,4,'#B8DB80'],[6,4,'#B8DB80'],[7,4,'#B8DB80'],
+        [0,5,'#8fcc7a'],[1,5,'#8fcc7a'],[6,5,'#8fcc7a'],[7,5,'#8fcc7a'],
+      ];
+      // Frog facing up
+      var F_UP=[
+        [0,0,'#8fcc7a'],[1,0,'#8fcc7a'],[6,0,'#8fcc7a'],[7,0,'#8fcc7a'],
+        [0,1,'#B8DB80'],[1,1,'#B8DB80'],[6,1,'#B8DB80'],[7,1,'#B8DB80'],
+        [0,2,'#8fcc7a'],[1,2,'#8fcc7a'],[2,2,'#FFA4A4'],[3,2,'#FFA4A4'],
+        [4,2,'#FFA4A4'],[5,2,'#FFA4A4'],[6,2,'#8fcc7a'],[7,2,'#8fcc7a'],
+        [0,3,'#8fcc7a'],[1,3,'#8fcc7a'],[2,3,'#8fcc7a'],[3,3,'#8fcc7a'],
+        [4,3,'#8fcc7a'],[5,3,'#8fcc7a'],[6,3,'#8fcc7a'],[7,3,'#8fcc7a'],
+        [1,4,'#B8DB80'],[2,4,'#3a3a3a'],[5,4,'#3a3a3a'],[6,4,'#B8DB80'],
+        [1,5,'#B8DB80'],[2,5,'#B8DB80'],[5,5,'#B8DB80'],[6,5,'#B8DB80'],
+      ];
+      // Frog facing right
+      var F_RIGHT=[
+        [0,1,'#B8DB80'],[0,2,'#B8DB80'],
+        [1,0,'#8fcc7a'],[1,1,'#3a3a3a'],[1,2,'#8fcc7a'],[1,3,'#8fcc7a'],
+        [2,0,'#8fcc7a'],[2,1,'#8fcc7a'],[2,2,'#8fcc7a'],[2,3,'#8fcc7a'],
+        [3,0,'#8fcc7a'],[3,1,'#8fcc7a'],[3,2,'#8fcc7a'],[3,3,'#8fcc7a'],
+        [4,0,'#8fcc7a'],[4,1,'#FFA4A4'],[4,2,'#FFA4A4'],[4,3,'#8fcc7a'],
+        [5,0,'#8fcc7a'],[5,1,'#3a3a3a'],[5,2,'#8fcc7a'],[5,3,'#8fcc7a'],
+        [6,1,'#B8DB80'],[6,2,'#B8DB80'],
+        [0,0,'#8fcc7a'],[6,0,'#8fcc7a'],[0,3,'#8fcc7a'],[6,3,'#8fcc7a'],
+      ];
+      // Frog facing left
+      var F_LEFT=[
+        [6,1,'#B8DB80'],[6,2,'#B8DB80'],
+        [5,0,'#8fcc7a'],[5,1,'#3a3a3a'],[5,2,'#8fcc7a'],[5,3,'#8fcc7a'],
+        [4,0,'#8fcc7a'],[4,1,'#8fcc7a'],[4,2,'#8fcc7a'],[4,3,'#8fcc7a'],
+        [3,0,'#8fcc7a'],[3,1,'#8fcc7a'],[3,2,'#8fcc7a'],[3,3,'#8fcc7a'],
+        [2,0,'#8fcc7a'],[2,1,'#FFA4A4'],[2,2,'#FFA4A4'],[2,3,'#8fcc7a'],
+        [1,0,'#8fcc7a'],[1,1,'#3a3a3a'],[1,2,'#8fcc7a'],[1,3,'#8fcc7a'],
+        [0,1,'#B8DB80'],[0,2,'#B8DB80'],
+        [6,0,'#8fcc7a'],[0,0,'#8fcc7a'],[6,3,'#8fcc7a'],[0,3,'#8fcc7a'],
+      ];
+      function getFrogSprite(dir){
+        if(dir==='up') return F_UP;
+        if(dir==='left') return F_LEFT;
+        if(dir==='right') return F_RIGHT;
+        return F_DOWN;
       }
-    }
+      // Food (leaf/berry)
+      var FOOD=[
+        [2,0,'#8fcc7a'],[3,0,'#8fcc7a'],
+        [1,1,'#B8DB80'],[2,1,'#B8DB80'],[3,1,'#B8DB80'],
+        [0,2,'#B8DB80'],[1,2,'#8fcc7a'],[2,2,'#B8DB80'],
+        [1,3,'#B8DB80'],
+      ];
+      // Heart food
+      var HFOOD=[
+        [1,0,'#FFA4A4'],[2,0,'#FFA4A4'],[4,0,'#FFA4A4'],[5,0,'#FFA4A4'],
+        [0,1,'#FFA4A4'],[1,1,'#FFBDBD'],[2,1,'#FFA4A4'],[3,1,'#FFA4A4'],[4,1,'#FFBDBD'],[5,1,'#FFA4A4'],[6,1,'#FFA4A4'],
+        [0,2,'#FFA4A4'],[1,2,'#FFA4A4'],[2,2,'#FFA4A4'],[3,2,'#FFA4A4'],[4,2,'#FFA4A4'],[5,2,'#FFA4A4'],[6,2,'#FFA4A4'],
+        [1,3,'#FFBDBD'],[2,3,'#FFA4A4'],[3,3,'#FFA4A4'],[4,3,'#FFA4A4'],[5,3,'#FFBDBD'],
+        [2,4,'#FFBDBD'],[3,4,'#FFBDBD'],[4,4,'#FFBDBD'],
+        [3,5,'#FFBDBD'],
+      ];
+      // Bug (enemy)
+      var BUG=[
+        [0,0,'#662222'],[4,0,'#662222'],
+        [1,1,'#842A3B'],[2,1,'#842A3B'],[3,1,'#842A3B'],
+        [0,2,'#A3485A'],[1,2,'#842A3B'],[2,2,'#662222'],[3,2,'#842A3B'],[4,2,'#A3485A'],
+        [1,3,'#842A3B'],[2,3,'#842A3B'],[3,3,'#842A3B'],
+        [0,4,'#662222'],[4,4,'#662222'],
+      ];
 
-    function gameLoop() {
-      update();
-      draw();
-      requestAnimationFrame(gameLoop);
-    }
+      var hi=parseInt(localStorage.getItem('frog-game-hi')||'0');
+      hiEl.textContent='EN YUKSEK: '+hi;
 
-    document.fonts.ready.then(function() {
-      resetGame();
-      gameLoop();
+      var frog,foods,bugs,pts,score,run,over,frame,keys;
+      keys={w:false,a:false,s:false,d:false};
+
+      function reset(){
+        var fs=sc*8;
+        frog={x:W/2-fs/2,y:H/2-fs/2,s:fs,spd:2.5*(W/400),dir:'down'};
+        foods=[]; bugs=[]; pts=[]; score=0; frame=0; over=false;
+        scoreEl.textContent='SKOR: 0';
+        msgEl.style.display='none';
+        for(var i=0;i<4;i++) spawnFood();
+        for(var j=0;j<2;j++) spawnBug();
+      }
+
+      function rndPos(sz){return{x:Math.random()*(W-sz*sc),y:Math.random()*(H-sz*sc)};}
+
+      function spawnFood(){
+        var p=rndPos(7);
+        var isHeart=Math.random()>0.65;
+        foods.push({x:p.x,y:p.y,heart:isHeart});
+      }
+      function spawnBug(){
+        var p=rndPos(5);
+        var ang=Math.random()*Math.PI*2;
+        var spBase=0.8+score*0.05;
+        var sp=Math.min(spBase,3)*(W/400);
+        bugs.push({x:p.x,y:p.y,dx:Math.cos(ang)*sp,dy:Math.sin(ang)*sp});
+      }
+
+      function burst(x,y,col,n){
+        for(var i=0;i<n;i++)
+          pts.push({x:x,y:y,vx:(Math.random()-0.5)*4,vy:(Math.random()-0.5)*4,l:18+Math.random()*12,c:col,s:sc});
+      }
+
+      function upd(){
+        frame++;
+        // Move frog & set direction
+        var sp=frog.spd;
+        if(keys.w){frog.y-=sp;frog.dir='up';}
+        if(keys.s){frog.y+=sp;frog.dir='down';}
+        if(keys.a){frog.x-=sp;frog.dir='left';}
+        if(keys.d){frog.x+=sp;frog.dir='right';}
+        // Clamp
+        if(frog.x<0)frog.x=0; if(frog.x>W-frog.s)frog.x=W-frog.s;
+        if(frog.y<0)frog.y=0; if(frog.y>H-frog.s)frog.y=H-frog.s;
+
+        // Move bugs
+        for(var i=0;i<bugs.length;i++){
+          var b=bugs[i];
+          b.x+=b.dx; b.y+=b.dy;
+          if(b.x<0||b.x>W-5*sc){b.dx*=-1;b.x=Math.max(0,Math.min(b.x,W-5*sc));}
+          if(b.y<0||b.y>H-5*sc){b.dy*=-1;b.y=Math.max(0,Math.min(b.y,H-5*sc));}
+          // Randomly change direction
+          if(Math.random()<0.01){b.dx+=(Math.random()-0.5)*0.5;b.dy+=(Math.random()-0.5)*0.5;}
+        }
+
+        // Food collision
+        var fcx=frog.x+frog.s/2, fcy=frog.y+frog.s/2;
+        for(var j=foods.length-1;j>=0;j--){
+          var f=foods[j];
+          var fsz=f.heart?7*sc*0.6:4*sc;
+          var fx=f.x+fsz/2,fy=f.y+fsz/2;
+          if(Math.abs(fcx-fx)<frog.s*0.5+fsz*0.4&&Math.abs(fcy-fy)<frog.s*0.5+fsz*0.4){
+            score+=f.heart?3:1;
+            scoreEl.textContent='SKOR: '+score;
+            burst(f.x,f.y,f.heart?'#FFA4A4':'#B8DB80',6);
+            foods.splice(j,1);
+            spawnFood();
+            // Add bug every 5 points
+            if(score%5===0) spawnBug();
+          }
+        }
+
+        // Bug collision
+        for(var k=0;k<bugs.length;k++){
+          var bg=bugs[k];
+          var bx=bg.x+2.5*sc,by=bg.y+2.5*sc;
+          if(Math.abs(fcx-bx)<frog.s*0.4+2*sc&&Math.abs(fcy-by)<frog.s*0.4+2*sc){
+            over=true; run=false;
+            burst(frog.x+frog.s/2,frog.y+frog.s/2,'#B8DB80',15);
+            if(score>hi){hi=score;localStorage.setItem('frog-game-hi',hi.toString());hiEl.textContent='EN YUKSEK: '+hi;}
+            msgEl.innerHTML='OYUN BITTI!<br>SKOR: '+score+'<br><br><span style="font-size:18px;opacity:0.5;">Tekrar oynamak icin bir tusa bas</span>';
+            msgEl.style.display='block';
+            return;
+          }
+        }
+
+        // Particles
+        for(var p=pts.length-1;p>=0;p--){
+          pts[p].x+=pts[p].vx;pts[p].y+=pts[p].vy;pts[p].l--;
+          if(pts[p].l<=0)pts.splice(p,1);
+        }
+      }
+
+      function drw(){
+        c.fillStyle='#0d1a0d';c.fillRect(0,0,W,H);
+        // BG dots
+        c.fillStyle='rgba(184,219,128,0.06)';
+        for(var i=0;i<30;i++){
+          c.fillRect(((i*37.7)%W),((i*23.3)%H),sc*0.5,sc*0.5);
+        }
+        // Grid
+        c.strokeStyle='rgba(184,219,128,0.04)';c.lineWidth=1;
+        for(var gx=0;gx<W;gx+=sc*10){c.beginPath();c.moveTo(gx,0);c.lineTo(gx,H);c.stroke();}
+        for(var gy=0;gy<H;gy+=sc*10){c.beginPath();c.moveTo(0,gy);c.lineTo(W,gy);c.stroke();}
+
+        // Foods
+        for(var j=0;j<foods.length;j++){
+          var f=foods[j];
+          var bob=Math.sin(frame*0.06+j*2)*2;
+          if(f.heart) px(HFOOD,f.x,f.y+bob,sc*0.6);
+          else px(FOOD,f.x,f.y+bob,sc);
+        }
+        // Bugs
+        for(var k=0;k<bugs.length;k++){
+          var bg=bugs[k];
+          var wiggle=Math.sin(frame*0.15+k)*1;
+          px(BUG,bg.x+wiggle,bg.y,sc);
+        }
+        // Frog
+        if(!over) px(getFrogSprite(frog.dir),frog.x,frog.y,sc);
+        // Particles
+        for(var p=0;p<pts.length;p++){
+          c.fillStyle=pts[p].c;c.globalAlpha=pts[p].l/30;
+          c.fillRect(pts[p].x,pts[p].y,pts[p].s,pts[p].s);
+        }
+        c.globalAlpha=1;
+      }
+
+      function loop(){if(!run)return;upd();drw();if(run)requestAnimationFrame(loop);}
+
+      function start(){
+        if(run&&!over)return;
+        reset();run=true;requestAnimationFrame(loop);
+      }
+
+      document.addEventListener('keydown',function(e){
+        var k=e.key.toLowerCase();
+        if(k==='w'||k==='a'||k==='s'||k==='d'||k==='arrowup'||k==='arrowdown'||k==='arrowleft'||k==='arrowright'){
+          if(!run||over){start();return;}
+          if(k==='w'||k==='arrowup')keys.w=true;
+          if(k==='s'||k==='arrowdown')keys.s=true;
+          if(k==='a'||k==='arrowleft')keys.a=true;
+          if(k==='d'||k==='arrowright')keys.d=true;
+        }
+      });
+      document.addEventListener('keyup',function(e){
+        var k=e.key.toLowerCase();
+        if(k==='w'||k==='arrowup')keys.w=false;
+        if(k==='s'||k==='arrowdown')keys.s=false;
+        if(k==='a'||k==='arrowleft')keys.a=false;
+        if(k==='d'||k==='arrowright')keys.d=false;
+      });
+
+      scr.addEventListener('click',function(){if(!run||over)start();});
+
+      rsz();reset();drw();
+    })();
+
+    // ── Camera ──
+    var video=document.getElementById('demoVideo'),canvas=document.getElementById('demoCanvas'),ctx=canvas.getContext('2d');
+    var camStart=document.getElementById('camStart'),camStatus=document.getElementById('camStatus'),camGesture=document.getElementById('camGesture'),active=false;
+    function detect(lms){
+      if(!lms||!lms.length) return null; var lm=lms[0];
+      function d(a,b){var dx=lm[a].x-lm[b].x,dy=lm[a].y-lm[b].y;return Math.sqrt(dx*dx+dy*dy);}
+      var ie=d(8,5)>d(6,5),me=d(12,9)>d(10,9),re=d(16,13)>d(14,13),pe=d(20,17)>d(18,17);
+      var ao=ie&&me&&re&&pe,ac=!ie&&!me&&!re&&!pe;
+      if(ac&&lm[4].y>lm[3].y&&lm[4].y>lm[2].y) return 'THUMBS DOWN';
+      if(ac) return 'YUMRUK'; if(ie&&me&&!re&&!pe) return 'PEACE';
+      if(ie&&!me&&!re&&!pe) return 'ISARET'; if(d(4,8)<0.07) return 'PINCH';
+      if(ao) return 'ACIK EL'; return null;
+    }
+    camStart.addEventListener('click',function(){
+      if(active) return; active=true; camStart.style.display='none';
+      camStatus.style.display='flex'; camGesture.style.display='block';
+      var hands=new Hands({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/hands/'+f;}});
+      hands.setOptions({maxNumHands:2,modelComplexity:1,minDetectionConfidence:0.7,minTrackingConfidence:0.5});
+      hands.onResults(function(r){
+        canvas.width=video.videoWidth;canvas.height=video.videoHeight;ctx.clearRect(0,0,canvas.width,canvas.height);
+        if(r.multiHandLandmarks){
+          for(var i=0;i<r.multiHandLandmarks.length;i++){
+            drawConnectors(ctx,r.multiHandLandmarks[i],HAND_CONNECTIONS,{color:'#B8DB80',lineWidth:2});
+            drawLandmarks(ctx,r.multiHandLandmarks[i],{color:'#FFA4A4',lineWidth:1,radius:3});
+          }
+          var g=detect(r.multiHandLandmarks);
+          camGesture.textContent=g||'HAREKET BEKLENIYOR...';
+          camGesture.style.borderColor=g?'var(--green)':'var(--coral)';
+          camGesture.style.color=g?'var(--green)':'var(--coral)';
+        } else {
+          camGesture.textContent='EL ALGILANMADI';
+          camGesture.style.borderColor='var(--coral)';camGesture.style.color='var(--coral)';
+        }
+      });
+      new Camera(video,{onFrame:async function(){await hands.send({image:video});},width:640,height:480}).start();
     });
   })();
-</script>
-
+  </script>
 </body>
 </html>

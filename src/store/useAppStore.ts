@@ -1,7 +1,14 @@
 import { create } from 'zustand';
+import type { User } from 'firebase/auth';
 import type { CalendarEvent, GestureType, AppMode, ViewMode, HandData } from '../types';
 
 interface AppState {
+  // Firebase Auth
+  firebaseUser: User | null;
+  setFirebaseUser: (user: User | null) => void;
+  authLoading: boolean;
+  setAuthLoading: (loading: boolean) => void;
+
   // Google Calendar
   googleSignedIn: boolean;
   setGoogleSignedIn: (signedIn: boolean) => void;
@@ -76,20 +83,13 @@ function formatDate(date: Date): string {
   return date.toISOString().split('T')[0];
 }
 
-function loadEvents(): CalendarEvent[] {
-  try {
-    const stored = localStorage.getItem('calendar-events');
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveEvents(events: CalendarEvent[]) {
-  localStorage.setItem('calendar-events', JSON.stringify(events));
-}
-
 export const useAppStore = create<AppState>((set, get) => ({
+  // Firebase Auth
+  firebaseUser: null,
+  setFirebaseUser: (user) => set({ firebaseUser: user }),
+  authLoading: true,
+  setAuthLoading: (loading) => set({ authLoading: loading }),
+
   // Google Calendar
   googleSignedIn: false,
   setGoogleSignedIn: (signedIn) => set({ googleSignedIn: signedIn }),
@@ -112,20 +112,15 @@ export const useAppStore = create<AppState>((set, get) => ({
   highlightedSlot: null,
   setHighlightedSlot: (slot) => set({ highlightedSlot: slot }),
 
-  // Events
-  events: loadEvents(),
+  // Events (managed by Firestore via useAuth hook)
+  events: [],
   addEvent: (event) => {
-    const newEvents = [...get().events, event];
-    saveEvents(newEvents);
-    set({ events: newEvents });
+    set({ events: [...get().events, event] });
   },
   removeEvent: (id) => {
-    const newEvents = get().events.filter((e) => e.id !== id);
-    saveEvents(newEvents);
-    set({ events: newEvents });
+    set({ events: get().events.filter((e) => e.id !== id) });
   },
   setEvents: (events) => {
-    saveEvents(events);
     set({ events });
   },
 

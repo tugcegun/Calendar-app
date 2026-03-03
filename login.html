@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TUGÇE | Air Planner - Giris Yap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --wine: #662222;
+      --berry: #842A3B;
+      --mauve: #A3485A;
+      --sand: #F5DAA7;
+      --frog: #C7DB9C;
+      --frog-dark: #8fcc7a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--wine);
+      color: var(--sand);
+      font-family: 'VT323', monospace;
+      font-size: 24px;
+      overflow: hidden;
+      image-rendering: pixelated;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Stars ── */
+    .star {
+      position: fixed;
+      width: 2px; height: 2px;
+      background: var(--sand);
+      opacity: 0.3;
+      animation: twinkle var(--dur) ease-in-out infinite;
+      animation-delay: var(--delay);
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes twinkle { 0%,100%{opacity:0.1} 50%{opacity:0.8} }
+
+    /* ── Pixel border util ── */
+    .pixel-border {
+      border: 3px solid;
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.5), inset -2px -2px 0px rgba(0,0,0,0.2), inset 2px 2px 0px rgba(255,255,255,0.05);
+    }
+
+    /* ── Login card ── */
+    .login-card {
+      position: relative;
+      z-index: 10;
+      width: 420px;
+      max-width: 95vw;
+      background: linear-gradient(170deg, #7a2a3a 0%, #662222 60%, #55201e 100%);
+      border: 3px solid var(--berry);
+      box-shadow: 6px 6px 0px rgba(0,0,0,0.5), inset -2px -2px 0px rgba(0,0,0,0.2), inset 2px 2px 0px rgba(255,255,255,0.05);
+      padding: 0;
+      transform: scale(0);
+      animation: cardAppear 0.4s ease-out 0.1s forwards;
+    }
+    @keyframes cardAppear { to { transform: scale(1); } }
+
+    .card-header {
+      background: rgba(0,0,0,0.2);
+      border-bottom: 2px solid var(--berry);
+      padding: 16px 20px 12px;
+      text-align: center;
+    }
+    .card-header h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 14px;
+      color: var(--sand);
+      text-shadow: 0 0 12px rgba(245,218,167,0.3);
+      letter-spacing: 1px;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--berry);
+    }
+    .tab {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--sand);
+      opacity: 0.4;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      transition: all 0.15s;
+      border-bottom: 3px solid transparent;
+    }
+    .tab:hover { opacity: 0.7; }
+    .tab.active {
+      opacity: 1;
+      border-bottom-color: var(--sand);
+      background: rgba(245,218,167,0.05);
+    }
+
+    /* ── Forms ── */
+    .form-body { padding: 24px 24px 20px; }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--sand);
+      opacity: 0.7;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.3);
+      border: 2px solid var(--berry);
+      color: var(--sand);
+      font-family: 'Satoshi', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-group input::placeholder {
+      color: var(--sand);
+      opacity: 0.25;
+      font-family: 'Satoshi', sans-serif;
+    }
+    .form-group input:focus {
+      border-color: var(--sand);
+      box-shadow: 0 0 8px rgba(245,218,167,0.15);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px 0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--wine);
+      background: var(--sand);
+      border: 3px solid var(--sand);
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: all 0.1s;
+      margin-top: 4px;
+    }
+    .submit-btn:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+      background: #e8cd96;
+    }
+    .submit-btn:active {
+      transform: translate(4px, 4px);
+      box-shadow: 0px 0px 0px rgba(0,0,0,0.4);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--berry);
+    }
+    .divider span {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--sand);
+      opacity: 0.4;
+    }
+
+    /* ── Google button ── */
+    .google-btn {
+      width: 100%;
+      padding: 10px 0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--sand);
+      background: rgba(0,0,0,0.25);
+      border: 2px solid var(--berry);
+      box-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .google-btn:hover {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+      border-color: var(--mauve);
+      background: rgba(163,72,90,0.2);
+    }
+
+    /* ── Error message ── */
+    .error-msg {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 13px;
+      color: #ff6b6b;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: rgba(255,107,107,0.1);
+      border: 1px solid rgba(255,107,107,0.3);
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    /* ── Frog ── */
+    .frog-container {
+      position: fixed;
+      z-index: 20;
+      pointer-events: none;
+      /* Start above the viewport */
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .frog-container.dropping {
+      animation: frogDrop 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+    }
+    .frog-container.idle {
+      animation: frogHop 1.5s ease-in-out infinite;
+    }
+    @keyframes frogDrop {
+      0% { top: -80px; }
+      60% { top: calc(50% - 230px); }
+      75% { top: calc(50% - 245px); }
+      85% { top: calc(50% - 228px); }
+      100% { top: calc(50% - 235px); }
+    }
+    @keyframes frogHop {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
+    }
+
+    /* ── Floating hearts ── */
+    .pixel-heart {
+      position: fixed;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .heart-left {
+      animation: floatHeartLeft var(--hdur) linear forwards;
+      animation-delay: var(--hdelay);
+    }
+    .heart-right {
+      animation: floatHeartRight var(--hdur) linear forwards;
+      animation-delay: var(--hdelay);
+    }
+    @keyframes floatHeartLeft {
+      0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.6; }
+      100% { opacity: 0; transform: translate(180px, -350px) scale(1); }
+    }
+    @keyframes floatHeartRight {
+      0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.6; }
+      100% { opacity: 0; transform: translate(-180px, -350px) scale(1); }
+    }
+
+    /* ── Success screen ── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .success-screen.show { display: block; }
+    .success-screen h2 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 16px;
+      color: var(--sand);
+      text-shadow: 0 0 15px rgba(245,218,167,0.4);
+      margin-top: 16px;
+      animation: successPulse 0.8s ease-in-out infinite alternate;
+    }
+    .success-screen .user-name {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 20px;
+      color: var(--frog);
+      margin-top: 10px;
+      font-weight: 700;
+    }
+    @keyframes successPulse {
+      from { text-shadow: 0 0 10px rgba(245,218,167,0.2); }
+      to { text-shadow: 0 0 20px rgba(245,218,167,0.5); }
+    }
+
+    .hidden { display: none !important; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--wine); }
+    ::-webkit-scrollbar-thumb { background: var(--berry); border: 2px solid var(--wine); }
+  </style>
+</head>
+<body>
+
+  <!-- ── Stars ── -->
+  <div id="stars"></div>
+
+  <!-- ── Frog ── -->
+  <div class="frog-container" id="frog">
+    <svg width="48" height="48" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+      <rect x="3" y="0" width="4" height="2" fill="#C7DB9C"/>
+      <rect x="9" y="0" width="4" height="2" fill="#C7DB9C"/>
+      <rect x="2" y="2" width="12" height="3" fill="#C7DB9C"/>
+      <rect x="4" y="2" width="2" height="2" fill="#1a1a2e"/>
+      <rect x="10" y="2" width="2" height="2" fill="#1a1a2e"/>
+      <rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/>
+      <rect x="5" y="7" width="2" height="1" fill="#E50046"/>
+      <rect x="9" y="7" width="2" height="1" fill="#E50046"/>
+      <rect x="6" y="8" width="4" height="1" fill="#E50046"/>
+      <rect x="2" y="9" width="4" height="3" fill="#C7DB9C"/>
+      <rect x="10" y="9" width="4" height="3" fill="#C7DB9C"/>
+      <rect x="1" y="11" width="3" height="2" fill="#8fcc7a"/>
+      <rect x="12" y="11" width="3" height="2" fill="#8fcc7a"/>
+    </svg>
+  </div>
+
+  <!-- ── Login Card ── -->
+  <div class="login-card" id="loginCard">
+    <div class="card-header">
+      <h1>AIR PLANNER</h1>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" id="tabsContainer">
+      <button class="tab active" data-tab="login">GIRIS YAP</button>
+      <button class="tab" data-tab="register">KAYIT OL</button>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-body" id="loginForm">
+      <div class="error-msg" id="loginError"></div>
+      <div class="form-group">
+        <label>E-posta</label>
+        <input type="email" id="loginEmail" placeholder="ornek@mail.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Sifre</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button class="submit-btn" id="loginBtn">GIRIS YAP</button>
+      <div class="divider"><span>VEYA</span></div>
+      <button class="google-btn" id="googleLoginBtn">
+        <svg width="16" height="16" viewBox="0 0 8 8" style="image-rendering:pixelated;">
+          <rect x="1" y="0" width="6" height="1" fill="#4285F4"/>
+          <rect x="0" y="1" width="1" height="6" fill="#4285F4"/>
+          <rect x="1" y="7" width="6" height="1" fill="#34A853"/>
+          <rect x="7" y="5" width="1" height="2" fill="#34A853"/>
+          <rect x="7" y="1" width="1" height="2" fill="#EA4335"/>
+          <rect x="3" y="3" width="5" height="2" fill="#FBBC05"/>
+          <rect x="7" y="3" width="1" height="2" fill="#EA4335"/>
+        </svg>
+        GOOGLE ILE GIRIS
+      </button>
+    </div>
+
+    <!-- Register Form -->
+    <div class="form-body hidden" id="registerForm">
+      <div class="error-msg" id="registerError"></div>
+      <div class="form-group">
+        <label>Isim</label>
+        <input type="text" id="registerName" placeholder="Adiniz" autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label>E-posta</label>
+        <input type="email" id="registerEmail" placeholder="ornek@mail.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Sifre</label>
+        <input type="password" id="registerPassword" placeholder="••••••••" autocomplete="new-password" />
+      </div>
+      <button class="submit-btn" id="registerBtn">KAYIT OL</button>
+      <div class="divider"><span>VEYA</span></div>
+      <button class="google-btn" id="googleRegisterBtn">
+        <svg width="16" height="16" viewBox="0 0 8 8" style="image-rendering:pixelated;">
+          <rect x="1" y="0" width="6" height="1" fill="#4285F4"/>
+          <rect x="0" y="1" width="1" height="6" fill="#4285F4"/>
+          <rect x="1" y="7" width="6" height="1" fill="#34A853"/>
+          <rect x="7" y="5" width="1" height="2" fill="#34A853"/>
+          <rect x="7" y="1" width="1" height="2" fill="#EA4335"/>
+          <rect x="3" y="3" width="5" height="2" fill="#FBBC05"/>
+          <rect x="7" y="3" width="1" height="2" fill="#EA4335"/>
+        </svg>
+        GOOGLE ILE KAYIT
+      </button>
+    </div>
+
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen">
+      <svg width="64" height="64" viewBox="0 0 16 16" style="image-rendering:pixelated;">
+        <rect x="3" y="0" width="4" height="2" fill="#C7DB9C"/>
+        <rect x="9" y="0" width="4" height="2" fill="#C7DB9C"/>
+        <rect x="2" y="2" width="12" height="3" fill="#C7DB9C"/>
+        <rect x="4" y="2" width="2" height="2" fill="#1a1a2e"/>
+        <rect x="10" y="2" width="2" height="2" fill="#1a1a2e"/>
+        <rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/>
+        <rect x="5" y="7" width="2" height="1" fill="#E50046"/>
+        <rect x="9" y="7" width="2" height="1" fill="#E50046"/>
+        <rect x="6" y="8" width="4" height="1" fill="#E50046"/>
+        <rect x="2" y="9" width="4" height="3" fill="#C7DB9C"/>
+        <rect x="10" y="9" width="4" height="3" fill="#C7DB9C"/>
+        <rect x="1" y="11" width="3" height="2" fill="#8fcc7a"/>
+        <rect x="12" y="11" width="3" height="2" fill="#8fcc7a"/>
+      </svg>
+      <h2>HOSGELDIN!</h2>
+      <p class="user-name" id="welcomeName"></p>
+    </div>
+  </div>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-auth-compat.js"></script>
+
+  <script>
+    // ── Firebase Init ──
+    firebase.initializeApp({
+      apiKey: "AIzaSyCzZ7vAMtF8CJNy1CRU3GHn9ZHwNyzSX14",
+      authDomain: "air-planner-c5496.firebaseapp.com",
+      projectId: "air-planner-c5496",
+      storageBucket: "air-planner-c5496.firebasestorage.app",
+      messagingSenderId: "497824022290",
+      appId: "1:497824022290:web:9c519e4b53b1a4cf193dcb",
+    });
+    var auth = firebase.auth();
+    var googleProvider = new firebase.auth.GoogleAuthProvider();
+
+    // ── Auto-redirect if already logged in ──
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        window.location.href = './app.html';
+      }
+    });
+
+    // ── Stars ──
+    (function() {
+      const container = document.getElementById('stars');
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = ((i * 17.31) % 100) + '%';
+        star.style.top = ((i * 23.57) % 100) + '%';
+        star.style.setProperty('--dur', (2 + (i % 5)) + 's');
+        star.style.setProperty('--delay', ((i * 0.37) % 3) + 's');
+        const colors = ['#F5DAA7', '#A3485A', '#F5DAA7', '#842A3B'];
+        star.style.background = colors[i % 4];
+        star.style.width = (Math.sin(i * 7.3) > 0.3) ? '3px' : '2px';
+        star.style.height = star.style.width;
+        container.appendChild(star);
+      }
+    })();
+
+    // ── Frog animation ──
+    const frog = document.getElementById('frog');
+    frog.classList.add('dropping');
+    frog.addEventListener('animationend', function handler() {
+      frog.removeEventListener('animationend', handler);
+      frog.classList.remove('dropping');
+      frog.style.top = 'calc(50% - 235px)';
+      frog.classList.add('idle');
+    });
+
+    // ── Floating hearts ──
+    let heartCount = 0;
+    const MAX_HEARTS = 15;
+    function createPixelHeartSVG() {
+      return `<svg width="16" height="14" viewBox="0 0 9 8" style="image-rendering:pixelated;">
+        <rect x="1" y="0" width="2" height="1" fill="#A3485A"/>
+        <rect x="6" y="0" width="2" height="1" fill="#A3485A"/>
+        <rect x="0" y="1" width="4" height="1" fill="#A3485A"/>
+        <rect x="5" y="1" width="4" height="1" fill="#A3485A"/>
+        <rect x="0" y="2" width="9" height="1" fill="#842A3B"/>
+        <rect x="1" y="3" width="7" height="1" fill="#842A3B"/>
+        <rect x="2" y="4" width="5" height="1" fill="#662222"/>
+        <rect x="3" y="5" width="3" height="1" fill="#662222"/>
+        <rect x="4" y="6" width="1" height="1" fill="#662222"/>
+      </svg>`;
+    }
+
+    function spawnHeart() {
+      if (heartCount >= MAX_HEARTS) return;
+      heartCount++;
+
+      const heart = document.createElement('div');
+      heart.className = 'pixel-heart';
+      const fromLeft = Math.random() > 0.5;
+      heart.classList.add(fromLeft ? 'heart-left' : 'heart-right');
+
+      const startX = fromLeft ? -20 + Math.random() * 60 : window.innerWidth - 60 + Math.random() * 60;
+      const startY = window.innerHeight * 0.4 + Math.random() * window.innerHeight * 0.5;
+      heart.style.left = startX + 'px';
+      heart.style.top = startY + 'px';
+
+      const dur = 4 + Math.random() * 3;
+      heart.style.setProperty('--hdur', dur + 's');
+      heart.style.setProperty('--hdelay', '0s');
+      heart.innerHTML = createPixelHeartSVG();
+
+      document.body.appendChild(heart);
+
+      setTimeout(function() {
+        heart.remove();
+        heartCount--;
+      }, dur * 1000 + 100);
+    }
+
+    setTimeout(function() {
+      spawnHeart();
+      setInterval(spawnHeart, 800);
+    }, 500);
+
+    // ── Tab switching ──
+    const tabs = document.querySelectorAll('.tab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        loginError.classList.remove('show');
+        registerError.classList.remove('show');
+        if (tab.dataset.tab === 'login') {
+          loginForm.classList.remove('hidden');
+          registerForm.classList.add('hidden');
+        } else {
+          loginForm.classList.add('hidden');
+          registerForm.classList.remove('hidden');
+        }
+      });
+    });
+
+    // ── Firebase error messages (Turkish) ──
+    function getFirebaseErrorMessage(code) {
+      switch (code) {
+        case 'auth/email-already-in-use': return 'Bu e-posta zaten kayitli.';
+        case 'auth/invalid-email': return 'Gecersiz e-posta adresi.';
+        case 'auth/weak-password': return 'Sifre en az 6 karakter olmali.';
+        case 'auth/user-not-found': return 'Bu e-posta ile kayitli kullanici yok.';
+        case 'auth/wrong-password': return 'Sifre hatali.';
+        case 'auth/invalid-credential': return 'E-posta veya sifre hatali.';
+        case 'auth/too-many-requests': return 'Cok fazla deneme. Lutfen bekleyin.';
+        case 'auth/popup-closed-by-user': return 'Google giris penceresi kapatildi.';
+        default: return 'Bir hata olustu. Tekrar deneyin.';
+      }
+    }
+
+    // ── Show success & redirect ──
+    function showSuccess(name) {
+      document.getElementById('tabsContainer').classList.add('hidden');
+      loginForm.classList.add('hidden');
+      registerForm.classList.add('hidden');
+      const ss = document.getElementById('successScreen');
+      ss.classList.add('show');
+      document.getElementById('welcomeName').textContent = name;
+      setTimeout(function() {
+        window.location.href = './app.html';
+      }, 1500);
+    }
+
+    // ── Set loading state on button ──
+    function setButtonLoading(btn, loading) {
+      btn.disabled = loading;
+      btn.style.opacity = loading ? '0.5' : '1';
+      btn.style.pointerEvents = loading ? 'none' : 'auto';
+    }
+
+    // ── Register with Firebase ──
+    document.getElementById('registerBtn').addEventListener('click', function() {
+      const name = document.getElementById('registerName').value.trim();
+      const email = document.getElementById('registerEmail').value.trim().toLowerCase();
+      const pw = document.getElementById('registerPassword').value;
+      const btn = this;
+      registerError.classList.remove('show');
+
+      if (!name || !email || !pw) {
+        registerError.textContent = 'Tum alanlari doldurun.';
+        registerError.classList.add('show');
+        return;
+      }
+      if (pw.length < 6) {
+        registerError.textContent = 'Sifre en az 6 karakter olmali.';
+        registerError.classList.add('show');
+        return;
+      }
+
+      setButtonLoading(btn, true);
+      auth.createUserWithEmailAndPassword(email, pw)
+        .then(function(cred) {
+          return cred.user.updateProfile({ displayName: name });
+        })
+        .then(function() {
+          showSuccess(name);
+        })
+        .catch(function(err) {
+          registerError.textContent = getFirebaseErrorMessage(err.code);
+          registerError.classList.add('show');
+          setButtonLoading(btn, false);
+        });
+    });
+
+    // ── Login with Firebase ──
+    document.getElementById('loginBtn').addEventListener('click', function() {
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const pw = document.getElementById('loginPassword').value;
+      const btn = this;
+      loginError.classList.remove('show');
+
+      if (!email || !pw) {
+        loginError.textContent = 'E-posta ve sifre girin.';
+        loginError.classList.add('show');
+        return;
+      }
+
+      setButtonLoading(btn, true);
+      auth.signInWithEmailAndPassword(email, pw)
+        .then(function(cred) {
+          showSuccess(cred.user.displayName || cred.user.email);
+        })
+        .catch(function(err) {
+          loginError.textContent = getFirebaseErrorMessage(err.code);
+          loginError.classList.add('show');
+          setButtonLoading(btn, false);
+        });
+    });
+
+    // ── Enter key support ──
+    document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+    document.getElementById('registerPassword').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('registerBtn').click();
+    });
+
+    // ── Google sign-in with Firebase ──
+    function googleSignIn() {
+      auth.signInWithPopup(googleProvider)
+        .then(function(result) {
+          showSuccess(result.user.displayName || result.user.email);
+        })
+        .catch(function(err) {
+          if (err.code !== 'auth/popup-closed-by-user') {
+            loginError.textContent = getFirebaseErrorMessage(err.code);
+            loginError.classList.add('show');
+          }
+        });
+    }
+    document.getElementById('googleLoginBtn').addEventListener('click', googleSignIn);
+    document.getElementById('googleRegisterBtn').addEventListener('click', googleSignIn);
+  </script>
+</body>
+</html>

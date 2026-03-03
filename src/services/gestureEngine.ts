@@ -9,14 +9,7 @@ interface GestureMapping {
 }
 
 const GESTURE_MAP: GestureMapping[] = [
-  // FIST = universal "click/confirm" button
-  {
-    gesture: 'fist',
-    modes: ['idle', 'selecting'],
-    action: 'click_select',
-    label: 'Sec / Olustur',
-    icon: '✊',
-  },
+  // FIST in creating mode = save (other fist clicks handled by synthetic click)
   {
     gesture: 'fist',
     modes: ['creating'],
