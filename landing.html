@@ -10,41 +10,41 @@
   <style>
     /* ══════ LIGHT MODE (default) ══════ */
     :root {
-      --bg1: #FCF9EA;
-      --bg2: #BADFDB;
-      --bg3: #FFBDBD;
-      --bg4: #FFA4A4;
-      --green: #B8DB80;
-      --mint: #BADFDB;
-      --coral: #FFA4A4;
+      --bg1: #E3DBBB;
+      --bg2: #AEB784;
+      --bg3: #E3DBBB;
+      --bg4: #AEB784;
+      --green: #AEB784;
+      --mint: #AEB784;
+      --coral: #F39EB6;
       --pink: #F39EB6;
-      --text: #3a3a3a;
-      --text-soft: #6b6b6b;
-      --card: #ffffff;
-      --card-border: #3a3a3a;
-      --dark-bg: #2c3030;
-      --dark-bg2: #222626;
-      --nav-bg: rgba(252,249,234,0.88);
-      --nav-text: #3a3a3a;
-      --nav-link: rgba(58,58,58,0.55);
-      --star-opacity: 0.12;
+      --text: #F39EB6;
+      --text-soft: #d4829e;
+      --card: #efe9d3;
+      --card-border: #41431B;
+      --dark-bg: #41431B;
+      --dark-bg2: #41431B;
+      --nav-bg: rgba(227,219,187,0.92);
+      --nav-text: #F39EB6;
+      --nav-link: rgba(243,158,182,0.6);
+      --star-opacity: 0.15;
     }
 
     /* ══════ DARK MODE ══════ */
     body.dark {
-      --bg1: #1a1e1a;
-      --bg2: #152524;
-      --bg3: #261a1e;
-      --bg4: #2e1e1e;
-      --text: #eae8d8;
-      --text-soft: #9a9888;
-      --card: #222824;
-      --card-border: #4a5a4a;
-      --dark-bg: #141816;
-      --dark-bg2: #0e1210;
-      --nav-bg: rgba(26,30,26,0.92);
-      --nav-text: #eae8d8;
-      --nav-link: rgba(234,232,216,0.45);
+      --bg1: #2a2b14;
+      --bg2: #41431B;
+      --bg3: #2a2b14;
+      --bg4: #41431B;
+      --text: #F39EB6;
+      --text-soft: #d4829e;
+      --card: #363818;
+      --card-border: #AEB784;
+      --dark-bg: #1e1f0e;
+      --dark-bg2: #161709;
+      --nav-bg: rgba(42,43,20,0.92);
+      --nav-text: #F39EB6;
+      --nav-link: rgba(243,158,182,0.5);
       --star-opacity: 0.25;
     }
 
@@ -101,7 +101,7 @@
     .nav-right a:hover { color: var(--nav-text); background: rgba(184,219,128,0.15); }
     .nav-login {
       font-family: 'Press Start 2P', monospace !important; font-size: 8px !important;
-      color: #3a3a3a !important; background: var(--green) !important;
+      color: #41431B !important; background: var(--green) !important;
       padding: 9px 18px !important; box-shadow: 3px 3px 0 rgba(0,0,0,0.2); border: none;
     }
     .nav-login:hover { transform: translate(2px,2px) !important; box-shadow: 1px 1px 0 rgba(0,0,0,0.2) !important; }
@@ -194,9 +194,9 @@
       padding: 0 32px; display: inline-flex; align-items: center; gap: 16px; image-rendering: pixelated;
     }
     .marquee-dot { width: 6px; height: 6px; flex-shrink: 0; }
-    .band-1 { background: var(--green); border-color: var(--card-border); color: #3a3a3a; }
+    .band-1 { background: var(--green); border-color: var(--card-border); color: #41431B; }
     .band-2 { background: var(--bg1); border-color: var(--green); color: var(--green); }
-    .band-3 { background: var(--green); border-color: var(--card-border); color: #3a3a3a; }
+    .band-3 { background: var(--green); border-color: var(--card-border); color: #41431B; }
 
     /* ══ FEATURES ══ */
     .feat-section {
@@ -268,7 +268,7 @@
       background: var(--green); border: 3px solid var(--card-border);
       box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
       font-family: 'Press Start 2P', monospace; font-size: 22px;
-      color: #3a3a3a; position: relative; z-index: 2;
+      color: #41431B; position: relative; z-index: 2;
     }
 
     /* ══ GESTURES ══ */
@@ -411,7 +411,7 @@
   <!-- ══ NAVBAR ══ -->
   <nav class="navbar" id="navbar">
     <a href="#" class="nav-logo">
-      <svg width="20" height="20" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="3" y="0" width="4" height="2" fill="#B8DB80"/><rect x="9" y="0" width="4" height="2" fill="#B8DB80"/><rect x="2" y="2" width="12" height="3" fill="#B8DB80"/><rect x="4" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="10" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/><rect x="5" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="9" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="8" width="4" height="1" fill="#FFA4A4"/><rect x="2" y="9" width="4" height="3" fill="#B8DB80"/><rect x="10" y="9" width="4" height="3" fill="#B8DB80"/></svg>
+      <svg width="20" height="20" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="3" y="0" width="4" height="2" fill="#AEB784"/><rect x="9" y="0" width="4" height="2" fill="#AEB784"/><rect x="2" y="2" width="12" height="3" fill="#AEB784"/><rect x="4" y="2" width="2" height="2" fill="#41431B"/><rect x="10" y="2" width="2" height="2" fill="#41431B"/><rect x="1" y="5" width="14" height="4" fill="#8a9a5e"/><rect x="5" y="7" width="2" height="1" fill="#F39EB6"/><rect x="9" y="7" width="2" height="1" fill="#F39EB6"/><rect x="6" y="8" width="4" height="1" fill="#F39EB6"/><rect x="2" y="9" width="4" height="3" fill="#AEB784"/><rect x="10" y="9" width="4" height="3" fill="#AEB784"/></svg>
       AIR PLANNER
     </a>
     <ul class="nav-right">
@@ -424,28 +424,28 @@
         <button class="theme-btn" id="themeBtn" title="Tema degistir">
           <!-- Moon (light mode -> show moon) -->
           <svg class="theme-moon" width="18" height="18" viewBox="0 0 8 8" style="image-rendering:pixelated;">
-            <rect x="3" y="0" width="3" height="1" fill="#3a3a3a"/>
-            <rect x="2" y="1" width="1" height="1" fill="#3a3a3a"/>
-            <rect x="5" y="1" width="2" height="1" fill="#3a3a3a"/>
-            <rect x="1" y="2" width="1" height="4" fill="#3a3a3a"/>
-            <rect x="6" y="2" width="1" height="1" fill="#3a3a3a"/>
-            <rect x="2" y="6" width="1" height="1" fill="#3a3a3a"/>
-            <rect x="3" y="7" width="3" height="1" fill="#3a3a3a"/>
-            <rect x="6" y="4" width="1" height="2" fill="#3a3a3a"/>
+            <rect x="3" y="0" width="3" height="1" fill="#41431B"/>
+            <rect x="2" y="1" width="1" height="1" fill="#41431B"/>
+            <rect x="5" y="1" width="2" height="1" fill="#41431B"/>
+            <rect x="1" y="2" width="1" height="4" fill="#41431B"/>
+            <rect x="6" y="2" width="1" height="1" fill="#41431B"/>
+            <rect x="2" y="6" width="1" height="1" fill="#41431B"/>
+            <rect x="3" y="7" width="3" height="1" fill="#41431B"/>
+            <rect x="6" y="4" width="1" height="2" fill="#41431B"/>
           </svg>
           <!-- Sun (dark mode -> show sun) -->
           <svg class="theme-sun" width="18" height="18" viewBox="0 0 10 10" style="image-rendering:pixelated;">
-            <rect x="4" y="0" width="2" height="1" fill="#FCF9EA"/>
-            <rect x="1" y="1" width="1" height="1" fill="#FCF9EA"/>
-            <rect x="8" y="1" width="1" height="1" fill="#FCF9EA"/>
-            <rect x="3" y="2" width="4" height="1" fill="#FCF9EA"/>
-            <rect x="2" y="3" width="6" height="4" fill="#FCF9EA"/>
-            <rect x="3" y="7" width="4" height="1" fill="#FCF9EA"/>
-            <rect x="0" y="4" width="1" height="2" fill="#FCF9EA"/>
-            <rect x="9" y="4" width="1" height="2" fill="#FCF9EA"/>
-            <rect x="1" y="8" width="1" height="1" fill="#FCF9EA"/>
-            <rect x="8" y="8" width="1" height="1" fill="#FCF9EA"/>
-            <rect x="4" y="9" width="2" height="1" fill="#FCF9EA"/>
+            <rect x="4" y="0" width="2" height="1" fill="#E3DBBB"/>
+            <rect x="1" y="1" width="1" height="1" fill="#E3DBBB"/>
+            <rect x="8" y="1" width="1" height="1" fill="#E3DBBB"/>
+            <rect x="3" y="2" width="4" height="1" fill="#E3DBBB"/>
+            <rect x="2" y="3" width="6" height="4" fill="#E3DBBB"/>
+            <rect x="3" y="7" width="4" height="1" fill="#E3DBBB"/>
+            <rect x="0" y="4" width="1" height="2" fill="#E3DBBB"/>
+            <rect x="9" y="4" width="1" height="2" fill="#E3DBBB"/>
+            <rect x="1" y="8" width="1" height="1" fill="#E3DBBB"/>
+            <rect x="8" y="8" width="1" height="1" fill="#E3DBBB"/>
+            <rect x="4" y="9" width="2" height="1" fill="#E3DBBB"/>
           </svg>
         </button>
       </li>
@@ -455,23 +455,23 @@
   <!-- ══ HERO ══ -->
   <section class="hero">
     <div class="hero-float" style="top:14%;left:7%;animation:float 4.5s ease-in-out infinite;">
-      <svg width="36" height="30" viewBox="0 0 9 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="0" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="5" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="0" y="2" width="9" height="1" fill="#FFA4A4"/><rect x="1" y="3" width="7" height="1" fill="#FFBDBD"/><rect x="2" y="4" width="5" height="1" fill="#FFBDBD"/><rect x="3" y="5" width="3" height="1" fill="#FFBDBD"/><rect x="4" y="6" width="1" height="1" fill="#FFBDBD"/></svg>
+      <svg width="36" height="30" viewBox="0 0 9 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="2" height="1" fill="#F39EB6"/><rect x="6" y="0" width="2" height="1" fill="#F39EB6"/><rect x="0" y="1" width="4" height="1" fill="#F39EB6"/><rect x="5" y="1" width="4" height="1" fill="#F39EB6"/><rect x="0" y="2" width="9" height="1" fill="#F39EB6"/><rect x="1" y="3" width="7" height="1" fill="#F7B8CC"/><rect x="2" y="4" width="5" height="1" fill="#F7B8CC"/><rect x="3" y="5" width="3" height="1" fill="#F7B8CC"/><rect x="4" y="6" width="1" height="1" fill="#F7B8CC"/></svg>
     </div>
     <div class="hero-float" style="top:22%;right:9%;animation:floatSlow 5.5s ease-in-out infinite;">
-      <svg width="28" height="28" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="2" fill="#B8DB80"/><rect x="1" y="2" width="6" height="2" fill="#B8DB80"/><rect x="0" y="3" width="8" height="2" fill="#8fcc7a"/><rect x="1" y="5" width="6" height="2" fill="#B8DB80"/><rect x="3" y="7" width="2" height="1" fill="#8fcc7a"/></svg>
+      <svg width="28" height="28" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="2" fill="#AEB784"/><rect x="1" y="2" width="6" height="2" fill="#AEB784"/><rect x="0" y="3" width="8" height="2" fill="#8a9a5e"/><rect x="1" y="5" width="6" height="2" fill="#AEB784"/><rect x="3" y="7" width="2" height="1" fill="#8a9a5e"/></svg>
     </div>
     <div class="hero-float" style="bottom:24%;left:5%;animation:wiggle 3s ease-in-out infinite;">
-      <svg width="26" height="26" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="2" y="0" width="4" height="1" fill="#BADFDB"/><rect x="1" y="1" width="6" height="1" fill="#BADFDB"/><rect x="0" y="2" width="8" height="4" fill="#BADFDB"/><rect x="2" y="3" width="1" height="1" fill="#3a3a3a"/><rect x="5" y="3" width="1" height="1" fill="#3a3a3a"/><rect x="3" y="5" width="2" height="1" fill="#FFA4A4"/><rect x="1" y="6" width="2" height="2" fill="#BADFDB"/><rect x="5" y="6" width="2" height="2" fill="#BADFDB"/></svg>
+      <svg width="26" height="26" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="2" y="0" width="4" height="1" fill="#BADFDB"/><rect x="1" y="1" width="6" height="1" fill="#BADFDB"/><rect x="0" y="2" width="8" height="4" fill="#BADFDB"/><rect x="2" y="3" width="1" height="1" fill="#41431B"/><rect x="5" y="3" width="1" height="1" fill="#41431B"/><rect x="3" y="5" width="2" height="1" fill="#F39EB6"/><rect x="1" y="6" width="2" height="2" fill="#BADFDB"/><rect x="5" y="6" width="2" height="2" fill="#BADFDB"/></svg>
     </div>
     <div class="hero-float" style="bottom:18%;right:6%;animation:hop 2s ease-in-out infinite;">
-      <svg width="44" height="44" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="3" y="0" width="4" height="2" fill="#B8DB80"/><rect x="9" y="0" width="4" height="2" fill="#B8DB80"/><rect x="2" y="2" width="12" height="3" fill="#B8DB80"/><rect x="4" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="10" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/><rect x="5" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="9" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="8" width="4" height="1" fill="#FFA4A4"/><rect x="2" y="9" width="4" height="3" fill="#B8DB80"/><rect x="10" y="9" width="4" height="3" fill="#B8DB80"/></svg>
+      <svg width="44" height="44" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="3" y="0" width="4" height="2" fill="#AEB784"/><rect x="9" y="0" width="4" height="2" fill="#AEB784"/><rect x="2" y="2" width="12" height="3" fill="#AEB784"/><rect x="4" y="2" width="2" height="2" fill="#41431B"/><rect x="10" y="2" width="2" height="2" fill="#41431B"/><rect x="1" y="5" width="14" height="4" fill="#8a9a5e"/><rect x="5" y="7" width="2" height="1" fill="#F39EB6"/><rect x="9" y="7" width="2" height="1" fill="#F39EB6"/><rect x="6" y="8" width="4" height="1" fill="#F39EB6"/><rect x="2" y="9" width="4" height="3" fill="#AEB784"/><rect x="10" y="9" width="4" height="3" fill="#AEB784"/></svg>
     </div>
     <div class="hero-content">
-      <div class="hero-badge anim a-up"><svg width="12" height="12" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="8" fill="#B8DB80"/><rect x="0" y="3" width="8" height="2" fill="#B8DB80"/></svg> MediaPipe + Pixel Art</div>
+      <div class="hero-badge anim a-up"><svg width="12" height="12" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="8" fill="#AEB784"/><rect x="0" y="3" width="8" height="2" fill="#AEB784"/></svg> MediaPipe + Pixel Art</div>
       <h1 class="anim a-up d1">ELLERINI KULLAN<br><span class="hl-g">TAKVIMINI</span> <span class="hl-p">YONET</span></h1>
       <p class="hero-sub anim a-up d2">Kamera ile el hareketlerini algilayarak takvimini yonet. Klavye ve fare olmadan, sadece ellerinle etkinlik olustur ve duzenle.</p>
       <div class="hero-btns anim a-up d3">
-        <a href="#demo" class="pixel-btn" style="padding:13px 32px;font-size:10px;border-color:var(--green);color:#3a3a3a;background:var(--green);">DENEYIN</a>
+        <a href="#demo" class="pixel-btn" style="padding:13px 32px;font-size:10px;border-color:var(--green);color:#41431B;background:var(--green);">DENEYIN</a>
         <a href="./login.html" class="pixel-btn" style="padding:13px 32px;font-size:10px;border-color:var(--coral);color:var(--coral);background:transparent;">GIRIS YAP</a>
       </div>
     </div>
@@ -501,15 +501,15 @@
     </div>
     <div class="feat-grid">
       <div class="f-card anim a-up">
-        <div class="f-icon"><svg width="28" height="28" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#3a3a3a"/><rect x="2" y="1" width="2" height="3" fill="#FCF9EA"/><rect x="6" y="1" width="2" height="3" fill="#FCF9EA"/><rect x="0" y="2" width="2" height="3" fill="#FCF9EA"/><rect x="8" y="2" width="2" height="3" fill="#FCF9EA"/><rect x="0" y="5" width="10" height="4" fill="#FCF9EA"/><rect x="1" y="9" width="8" height="3" fill="#FCF9EA"/></svg></div>
+        <div class="f-icon"><svg width="28" height="28" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#41431B"/><rect x="2" y="1" width="2" height="3" fill="#E3DBBB"/><rect x="6" y="1" width="2" height="3" fill="#E3DBBB"/><rect x="0" y="2" width="2" height="3" fill="#E3DBBB"/><rect x="8" y="2" width="2" height="3" fill="#E3DBBB"/><rect x="0" y="5" width="10" height="4" fill="#E3DBBB"/><rect x="1" y="9" width="8" height="3" fill="#E3DBBB"/></svg></div>
         <h3>EL HAREKETI KONTROLU</h3><p>Yumruk, acik el, peace isareti ve daha fazlasi ile takvimini yonet. MediaPipe ile gercek zamanli el algilama.</p>
       </div>
       <div class="f-card anim a-up d1">
-        <div class="f-icon" style="background:rgba(186,223,219,0.3);border-color:var(--mint);"><svg width="28" height="28" viewBox="0 0 10 10" style="image-rendering:pixelated;"><rect x="0" y="0" width="10" height="2" fill="#B8DB80"/><rect x="2" y="0" width="1" height="1" fill="#3a3a3a"/><rect x="7" y="0" width="1" height="1" fill="#3a3a3a"/><rect x="0" y="2" width="10" height="8" fill="#FCF9EA"/><rect x="1" y="4" width="2" height="2" fill="#FFA4A4"/><rect x="4" y="4" width="2" height="2" fill="#B8DB80"/><rect x="7" y="4" width="2" height="2" fill="#BADFDB"/></svg></div>
+        <div class="f-icon" style="background:rgba(186,223,219,0.3);border-color:var(--mint);"><svg width="28" height="28" viewBox="0 0 10 10" style="image-rendering:pixelated;"><rect x="0" y="0" width="10" height="2" fill="#AEB784"/><rect x="2" y="0" width="1" height="1" fill="#41431B"/><rect x="7" y="0" width="1" height="1" fill="#41431B"/><rect x="0" y="2" width="10" height="8" fill="#E3DBBB"/><rect x="1" y="4" width="2" height="2" fill="#F39EB6"/><rect x="4" y="4" width="2" height="2" fill="#AEB784"/><rect x="7" y="4" width="2" height="2" fill="#BADFDB"/></svg></div>
         <h3>PIXEL TAKVIM</h3><p>Gunluk ve haftalik gorunumde etkinliklerini pixel temali arayuzde goruntule. Renkli ve estetik.</p>
       </div>
       <div class="f-card anim a-up d2">
-        <div class="f-icon"><svg width="28" height="28" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="2" y="1" width="4" height="4" fill="#FFA4A4"/><rect x="3" y="5" width="2" height="1" fill="#FFA4A4"/><rect x="1" y="6" width="6" height="1" fill="#3a3a3a" opacity="0.2"/><rect x="3" y="7" width="2" height="2" fill="#3a3a3a" opacity="0.2"/><rect x="2" y="9" width="4" height="1" fill="#3a3a3a" opacity="0.2"/></svg></div>
+        <div class="f-icon"><svg width="28" height="28" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="1" fill="#F39EB6"/><rect x="2" y="1" width="4" height="4" fill="#F39EB6"/><rect x="3" y="5" width="2" height="1" fill="#F39EB6"/><rect x="1" y="6" width="6" height="1" fill="#41431B" opacity="0.2"/><rect x="3" y="7" width="2" height="2" fill="#41431B" opacity="0.2"/><rect x="2" y="9" width="4" height="1" fill="#41431B" opacity="0.2"/></svg></div>
         <h3>SESLI GIRIS</h3><p>Etkinlik adini sesli olarak soyle, uygulama otomatik metne cevirsin. Eller serbest deneyim.</p>
       </div>
       <div class="f-card anim a-up d3">
@@ -583,18 +583,18 @@
       <p class="section-sub anim a-up d1">6 hareketle tam kontrol</p>
     </div>
     <div class="gest-marquee"><div class="gest-marquee-track">
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#B8DB80"/><rect x="2" y="1" width="2" height="3" fill="#B8DB80"/><rect x="6" y="1" width="2" height="3" fill="#B8DB80"/><rect x="0" y="2" width="2" height="3" fill="#B8DB80"/><rect x="8" y="2" width="2" height="3" fill="#B8DB80"/><rect x="0" y="5" width="10" height="4" fill="#FCF9EA"/><rect x="1" y="9" width="8" height="3" fill="#FCF9EA"/></svg></div><h4>ACIK EL</h4><p>Imleci hareket ettir</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="2" fill="#FCF9EA"/><rect x="0" y="2" width="8" height="4" fill="#FCF9EA"/><rect x="1" y="6" width="6" height="2" fill="#FCF9EA"/></svg></div><h4>YUMRUK</h4><p>Sec / Kaydet</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="2" y="0" width="2" height="5" fill="#B8DB80"/><rect x="4" y="0" width="2" height="5" fill="#B8DB80"/><rect x="1" y="5" width="6" height="3" fill="#FCF9EA"/><rect x="2" y="8" width="4" height="2" fill="#FCF9EA"/></svg></div><h4>PEACE</h4><p>Gorunum degistir</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="3" fill="#FCF9EA"/><rect x="0" y="3" width="8" height="3" fill="#FCF9EA"/><rect x="3" y="6" width="2" height="4" fill="#FFA4A4"/></svg></div><h4>THUMBS DOWN</h4><p>Etkinlik sil</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 12 8" style="image-rendering:pixelated;"><rect x="0" y="3" width="10" height="2" fill="#B8DB80"/><rect x="8" y="1" width="2" height="2" fill="#B8DB80"/><rect x="10" y="3" width="2" height="2" fill="#B8DB80"/><rect x="8" y="5" width="2" height="2" fill="#B8DB80"/></svg></div><h4>KAYDIRMA</h4><p>Gun degistir</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="0" y="2" width="3" height="2" fill="#FCF9EA"/><rect x="3" y="3" width="2" height="2" fill="#FFA4A4"/><rect x="5" y="2" width="3" height="2" fill="#FCF9EA"/></svg></div><h4>PINCH</h4><p>Sure ayarla</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#B8DB80"/><rect x="2" y="1" width="2" height="3" fill="#B8DB80"/><rect x="6" y="1" width="2" height="3" fill="#B8DB80"/><rect x="0" y="2" width="2" height="3" fill="#B8DB80"/><rect x="8" y="2" width="2" height="3" fill="#B8DB80"/><rect x="0" y="5" width="10" height="4" fill="#FCF9EA"/><rect x="1" y="9" width="8" height="3" fill="#FCF9EA"/></svg></div><h4>ACIK EL</h4><p>Imleci hareket ettir</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="2" fill="#FCF9EA"/><rect x="0" y="2" width="8" height="4" fill="#FCF9EA"/><rect x="1" y="6" width="6" height="2" fill="#FCF9EA"/></svg></div><h4>YUMRUK</h4><p>Sec / Kaydet</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="2" y="0" width="2" height="5" fill="#B8DB80"/><rect x="4" y="0" width="2" height="5" fill="#B8DB80"/><rect x="1" y="5" width="6" height="3" fill="#FCF9EA"/><rect x="2" y="8" width="4" height="2" fill="#FCF9EA"/></svg></div><h4>PEACE</h4><p>Gorunum degistir</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="3" fill="#FCF9EA"/><rect x="0" y="3" width="8" height="3" fill="#FCF9EA"/><rect x="3" y="6" width="2" height="4" fill="#FFA4A4"/></svg></div><h4>THUMBS DOWN</h4><p>Etkinlik sil</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 12 8" style="image-rendering:pixelated;"><rect x="0" y="3" width="10" height="2" fill="#B8DB80"/><rect x="8" y="1" width="2" height="2" fill="#B8DB80"/><rect x="10" y="3" width="2" height="2" fill="#B8DB80"/><rect x="8" y="5" width="2" height="2" fill="#B8DB80"/></svg></div><h4>KAYDIRMA</h4><p>Gun degistir</p></div>
-      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="0" y="2" width="3" height="2" fill="#FCF9EA"/><rect x="3" y="3" width="2" height="2" fill="#FFA4A4"/><rect x="5" y="2" width="3" height="2" fill="#FCF9EA"/></svg></div><h4>PINCH</h4><p>Sure ayarla</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#AEB784"/><rect x="2" y="1" width="2" height="3" fill="#AEB784"/><rect x="6" y="1" width="2" height="3" fill="#AEB784"/><rect x="0" y="2" width="2" height="3" fill="#AEB784"/><rect x="8" y="2" width="2" height="3" fill="#AEB784"/><rect x="0" y="5" width="10" height="4" fill="#E3DBBB"/><rect x="1" y="9" width="8" height="3" fill="#E3DBBB"/></svg></div><h4>ACIK EL</h4><p>Imleci hareket ettir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="2" fill="#E3DBBB"/><rect x="0" y="2" width="8" height="4" fill="#E3DBBB"/><rect x="1" y="6" width="6" height="2" fill="#E3DBBB"/></svg></div><h4>YUMRUK</h4><p>Sec / Kaydet</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="2" y="0" width="2" height="5" fill="#AEB784"/><rect x="4" y="0" width="2" height="5" fill="#AEB784"/><rect x="1" y="5" width="6" height="3" fill="#E3DBBB"/><rect x="2" y="8" width="4" height="2" fill="#E3DBBB"/></svg></div><h4>PEACE</h4><p>Gorunum degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="3" fill="#E3DBBB"/><rect x="0" y="3" width="8" height="3" fill="#E3DBBB"/><rect x="3" y="6" width="2" height="4" fill="#F39EB6"/></svg></div><h4>THUMBS DOWN</h4><p>Etkinlik sil</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 12 8" style="image-rendering:pixelated;"><rect x="0" y="3" width="10" height="2" fill="#AEB784"/><rect x="8" y="1" width="2" height="2" fill="#AEB784"/><rect x="10" y="3" width="2" height="2" fill="#AEB784"/><rect x="8" y="5" width="2" height="2" fill="#AEB784"/></svg></div><h4>KAYDIRMA</h4><p>Gun degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="0" y="2" width="3" height="2" fill="#E3DBBB"/><rect x="3" y="3" width="2" height="2" fill="#F39EB6"/><rect x="5" y="2" width="3" height="2" fill="#E3DBBB"/></svg></div><h4>PINCH</h4><p>Sure ayarla</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 10 12" style="image-rendering:pixelated;"><rect x="4" y="0" width="2" height="4" fill="#AEB784"/><rect x="2" y="1" width="2" height="3" fill="#AEB784"/><rect x="6" y="1" width="2" height="3" fill="#AEB784"/><rect x="0" y="2" width="2" height="3" fill="#AEB784"/><rect x="8" y="2" width="2" height="3" fill="#AEB784"/><rect x="0" y="5" width="10" height="4" fill="#E3DBBB"/><rect x="1" y="9" width="8" height="3" fill="#E3DBBB"/></svg></div><h4>ACIK EL</h4><p>Imleci hareket ettir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="2" fill="#E3DBBB"/><rect x="0" y="2" width="8" height="4" fill="#E3DBBB"/><rect x="1" y="6" width="6" height="2" fill="#E3DBBB"/></svg></div><h4>YUMRUK</h4><p>Sec / Kaydet</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="2" y="0" width="2" height="5" fill="#AEB784"/><rect x="4" y="0" width="2" height="5" fill="#AEB784"/><rect x="1" y="5" width="6" height="3" fill="#E3DBBB"/><rect x="2" y="8" width="4" height="2" fill="#E3DBBB"/></svg></div><h4>PEACE</h4><p>Gorunum degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 10" style="image-rendering:pixelated;"><rect x="1" y="0" width="6" height="3" fill="#E3DBBB"/><rect x="0" y="3" width="8" height="3" fill="#E3DBBB"/><rect x="3" y="6" width="2" height="4" fill="#F39EB6"/></svg></div><h4>THUMBS DOWN</h4><p>Etkinlik sil</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 12 8" style="image-rendering:pixelated;"><rect x="0" y="3" width="10" height="2" fill="#AEB784"/><rect x="8" y="1" width="2" height="2" fill="#AEB784"/><rect x="10" y="3" width="2" height="2" fill="#AEB784"/><rect x="8" y="5" width="2" height="2" fill="#AEB784"/></svg></div><h4>KAYDIRMA</h4><p>Gun degistir</p></div>
+      <div class="g-card"><div class="g-icon"><svg width="30" height="30" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="0" y="2" width="3" height="2" fill="#E3DBBB"/><rect x="3" y="3" width="2" height="2" fill="#F39EB6"/><rect x="5" y="2" width="3" height="2" fill="#E3DBBB"/></svg></div><h4>PINCH</h4><p>Sure ayarla</p></div>
     </div></div>
   </div>
 
@@ -610,20 +610,20 @@
         <div class="cam-status" id="camStatus" style="display:none;"><div class="cam-dot"></div> CANLI</div>
         <div class="cam-gesture" id="camGesture" style="display:none;">HAREKET BEKLENIYOR...</div>
         <button class="cam-start" id="camStart">
-          <svg width="56" height="56" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="2" y="1" width="12" height="10" fill="none" stroke="#B8DB80" stroke-width="1"/><rect x="5" y="12" width="6" height="1" fill="#B8DB80"/><rect x="4" y="13" width="8" height="1" fill="#B8DB80"/><circle cx="8" cy="6" r="3" fill="none" stroke="#B8DB80" stroke-width="1"/><rect x="7" y="5" width="2" height="2" fill="#B8DB80"/></svg>
+          <svg width="56" height="56" viewBox="0 0 16 16" style="image-rendering:pixelated;"><rect x="2" y="1" width="12" height="10" fill="none" stroke="#B8DB80" stroke-width="1"/><rect x="5" y="12" width="6" height="1" fill="#AEB784"/><rect x="4" y="13" width="8" height="1" fill="#AEB784"/><circle cx="8" cy="6" r="3" fill="none" stroke="#B8DB80" stroke-width="1"/><rect x="7" y="5" width="2" height="2" fill="#AEB784"/></svg>
           <span>KAMERAYI AC</span><span class="sub">El hareketlerini gercek zamanli test et</span>
         </button>
       </div>
-      <div class="cam-label"><svg width="10" height="10" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="8" fill="#B8DB80" opacity="0.3"/><rect x="0" y="3" width="8" height="2" fill="#B8DB80" opacity="0.3"/></svg><span>MediaPipe Hands &bull; 21 Landmark &bull; Gercek Zamanli</span></div>
+      <div class="cam-label"><svg width="10" height="10" viewBox="0 0 8 8" style="image-rendering:pixelated;"><rect x="3" y="0" width="2" height="8" fill="#AEB784" opacity="0.3"/><rect x="0" y="3" width="8" height="2" fill="#AEB784" opacity="0.3"/></svg><span>MediaPipe Hands &bull; 21 Landmark &bull; Gercek Zamanli</span></div>
     </div>
   </div>
 
   <!-- ══ FROG GAME ══ -->
   <div class="game-section section-slide slide-from-left" id="game">
     <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:8px;" class="anim a-up">
-      <svg width="56" height="56" viewBox="0 0 16 16" style="image-rendering:pixelated;animation:hop 2s ease-in-out infinite;"><rect x="3" y="0" width="4" height="2" fill="#B8DB80"/><rect x="9" y="0" width="4" height="2" fill="#B8DB80"/><rect x="2" y="2" width="12" height="3" fill="#B8DB80"/><rect x="4" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="10" y="2" width="2" height="2" fill="#3a3a3a"/><rect x="1" y="5" width="14" height="4" fill="#8fcc7a"/><rect x="5" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="9" y="7" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="8" width="4" height="1" fill="#FFA4A4"/><rect x="2" y="9" width="4" height="3" fill="#B8DB80"/><rect x="10" y="9" width="4" height="3" fill="#B8DB80"/><rect x="1" y="11" width="3" height="2" fill="#8fcc7a"/><rect x="12" y="11" width="3" height="2" fill="#8fcc7a"/></svg>
+      <svg width="56" height="56" viewBox="0 0 16 16" style="image-rendering:pixelated;animation:hop 2s ease-in-out infinite;"><rect x="3" y="0" width="4" height="2" fill="#AEB784"/><rect x="9" y="0" width="4" height="2" fill="#AEB784"/><rect x="2" y="2" width="12" height="3" fill="#AEB784"/><rect x="4" y="2" width="2" height="2" fill="#41431B"/><rect x="10" y="2" width="2" height="2" fill="#41431B"/><rect x="1" y="5" width="14" height="4" fill="#8a9a5e"/><rect x="5" y="7" width="2" height="1" fill="#F39EB6"/><rect x="9" y="7" width="2" height="1" fill="#F39EB6"/><rect x="6" y="8" width="4" height="1" fill="#F39EB6"/><rect x="2" y="9" width="4" height="3" fill="#AEB784"/><rect x="10" y="9" width="4" height="3" fill="#AEB784"/><rect x="1" y="11" width="3" height="2" fill="#8a9a5e"/><rect x="12" y="11" width="3" height="2" fill="#8a9a5e"/></svg>
       <h2 style="font-family:'Aston Script',cursive;font-size:clamp(36px,5vw,52px);color:var(--green);margin:0;text-shadow:0 0 30px rgba(184,219,128,0.3);">Hungry Frog</h2>
-      <svg width="44" height="36" viewBox="0 0 9 8" style="image-rendering:pixelated;animation:float 3s ease-in-out infinite;"><rect x="1" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="6" y="0" width="2" height="1" fill="#FFA4A4"/><rect x="0" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="5" y="1" width="4" height="1" fill="#FFA4A4"/><rect x="0" y="2" width="9" height="1" fill="#FFA4A4"/><rect x="1" y="3" width="7" height="1" fill="#FFBDBD"/><rect x="2" y="4" width="5" height="1" fill="#FFBDBD"/><rect x="3" y="5" width="3" height="1" fill="#FFBDBD"/><rect x="4" y="6" width="1" height="1" fill="#FFBDBD"/></svg>
+      <svg width="44" height="36" viewBox="0 0 9 8" style="image-rendering:pixelated;animation:float 3s ease-in-out infinite;"><rect x="1" y="0" width="2" height="1" fill="#F39EB6"/><rect x="6" y="0" width="2" height="1" fill="#F39EB6"/><rect x="0" y="1" width="4" height="1" fill="#F39EB6"/><rect x="5" y="1" width="4" height="1" fill="#F39EB6"/><rect x="0" y="2" width="9" height="1" fill="#F39EB6"/><rect x="1" y="3" width="7" height="1" fill="#F7B8CC"/><rect x="2" y="4" width="5" height="1" fill="#F7B8CC"/><rect x="3" y="5" width="3" height="1" fill="#F7B8CC"/><rect x="4" y="6" width="1" height="1" fill="#F7B8CC"/></svg>
     </div>
     <p class="section-sub anim a-up d1" style="font-family:'VT323',monospace;font-size:24px;color:rgba(252,249,234,0.45);">Kurbagamizi doyur, boceklerden koru!</p>
     <div class="game-wrap anim a-scale d2">
@@ -659,7 +659,7 @@
     <div class="cta-inner anim a-up">
       <h2>HEMEN BASLA</h2>
       <p>Hesap olustur ve el hareketleriyle takvimini yonetmeye basla.</p>
-      <a href="./login.html" class="pixel-btn" style="padding:14px 40px;font-size:11px;border-color:var(--coral);color:#fff;background:var(--coral);">KAYIT OL</a>
+      <a href="./login.html" class="pixel-btn" style="padding:14px 40px;font-size:11px;border-color:var(--coral);color:#41431B;background:var(--coral);">KAYIT OL</a>
     </div>
   </div>
 
@@ -685,7 +685,7 @@
     });
 
     // ── Stars ──
-    var sc=document.getElementById('stars'), cols=['#FFA4A4','#B8DB80','#BADFDB','#FFBDBD'];
+    var sc=document.getElementById('stars'), cols=['#F39EB6','#AEB784','#E3DBBB','#F7B8CC'];
     for(var i=0;i<55;i++){
       var s=document.createElement('div'); s.className='star';
       s.style.left=((i*17.31)%100)+'%'; s.style.top=((i*23.57+i*3.1)%100)+'%';
@@ -820,7 +820,7 @@
       // Frog facing down (default)
       var F_DOWN=[
         [1,0,'#B8DB80'],[2,0,'#B8DB80'],[5,0,'#B8DB80'],[6,0,'#B8DB80'],
-        [1,1,'#B8DB80'],[2,1,'#3a3a3a'],[5,1,'#3a3a3a'],[6,1,'#B8DB80'],
+        [1,1,'#B8DB80'],[2,1,'#41431B'],[5,1,'#41431B'],[6,1,'#B8DB80'],
         [0,2,'#8fcc7a'],[1,2,'#8fcc7a'],[2,2,'#8fcc7a'],[3,2,'#8fcc7a'],
         [4,2,'#8fcc7a'],[5,2,'#8fcc7a'],[6,2,'#8fcc7a'],[7,2,'#8fcc7a'],
         [0,3,'#8fcc7a'],[1,3,'#8fcc7a'],[2,3,'#FFA4A4'],[3,3,'#FFA4A4'],
@@ -836,28 +836,28 @@
         [4,2,'#FFA4A4'],[5,2,'#FFA4A4'],[6,2,'#8fcc7a'],[7,2,'#8fcc7a'],
         [0,3,'#8fcc7a'],[1,3,'#8fcc7a'],[2,3,'#8fcc7a'],[3,3,'#8fcc7a'],
         [4,3,'#8fcc7a'],[5,3,'#8fcc7a'],[6,3,'#8fcc7a'],[7,3,'#8fcc7a'],
-        [1,4,'#B8DB80'],[2,4,'#3a3a3a'],[5,4,'#3a3a3a'],[6,4,'#B8DB80'],
+        [1,4,'#B8DB80'],[2,4,'#41431B'],[5,4,'#41431B'],[6,4,'#B8DB80'],
         [1,5,'#B8DB80'],[2,5,'#B8DB80'],[5,5,'#B8DB80'],[6,5,'#B8DB80'],
       ];
       // Frog facing right
       var F_RIGHT=[
         [0,1,'#B8DB80'],[0,2,'#B8DB80'],
-        [1,0,'#8fcc7a'],[1,1,'#3a3a3a'],[1,2,'#8fcc7a'],[1,3,'#8fcc7a'],
+        [1,0,'#8fcc7a'],[1,1,'#41431B'],[1,2,'#8fcc7a'],[1,3,'#8fcc7a'],
         [2,0,'#8fcc7a'],[2,1,'#8fcc7a'],[2,2,'#8fcc7a'],[2,3,'#8fcc7a'],
         [3,0,'#8fcc7a'],[3,1,'#8fcc7a'],[3,2,'#8fcc7a'],[3,3,'#8fcc7a'],
         [4,0,'#8fcc7a'],[4,1,'#FFA4A4'],[4,2,'#FFA4A4'],[4,3,'#8fcc7a'],
-        [5,0,'#8fcc7a'],[5,1,'#3a3a3a'],[5,2,'#8fcc7a'],[5,3,'#8fcc7a'],
+        [5,0,'#8fcc7a'],[5,1,'#41431B'],[5,2,'#8fcc7a'],[5,3,'#8fcc7a'],
         [6,1,'#B8DB80'],[6,2,'#B8DB80'],
         [0,0,'#8fcc7a'],[6,0,'#8fcc7a'],[0,3,'#8fcc7a'],[6,3,'#8fcc7a'],
       ];
       // Frog facing left
       var F_LEFT=[
         [6,1,'#B8DB80'],[6,2,'#B8DB80'],
-        [5,0,'#8fcc7a'],[5,1,'#3a3a3a'],[5,2,'#8fcc7a'],[5,3,'#8fcc7a'],
+        [5,0,'#8fcc7a'],[5,1,'#41431B'],[5,2,'#8fcc7a'],[5,3,'#8fcc7a'],
         [4,0,'#8fcc7a'],[4,1,'#8fcc7a'],[4,2,'#8fcc7a'],[4,3,'#8fcc7a'],
         [3,0,'#8fcc7a'],[3,1,'#8fcc7a'],[3,2,'#8fcc7a'],[3,3,'#8fcc7a'],
         [2,0,'#8fcc7a'],[2,1,'#FFA4A4'],[2,2,'#FFA4A4'],[2,3,'#8fcc7a'],
-        [1,0,'#8fcc7a'],[1,1,'#3a3a3a'],[1,2,'#8fcc7a'],[1,3,'#8fcc7a'],
+        [1,0,'#8fcc7a'],[1,1,'#41431B'],[1,2,'#8fcc7a'],[1,3,'#8fcc7a'],
         [0,1,'#B8DB80'],[0,2,'#B8DB80'],
         [6,0,'#8fcc7a'],[0,0,'#8fcc7a'],[6,3,'#8fcc7a'],[0,3,'#8fcc7a'],
       ];
