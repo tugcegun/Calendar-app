@@ -11,7 +11,7 @@ import { EventCreator } from './components/EventCreator';
 import { StatusBar } from './components/StatusBar';
 import { Onboarding } from './components/Onboarding';
 import { HandCursor } from './components/HandCursor';
-import { PixelFrog, PixelCat, PixelLion, PixelHand, PixelFist, PixelStar, PixelHeart } from './components/PixelIcons';
+import { PixelHand, PixelFist } from './components/PixelIcons';
 import { useGestureRecognition } from './hooks/useGestureRecognition';
 import { useHandScroll } from './hooks/useHandScroll';
 import { useGoogleCalendar } from './hooks/useGoogleCalendar';
@@ -119,8 +119,7 @@ function App() {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-bg">
         <BackgroundStars />
-        <PixelFrog size={72} className="animate-hop" />
-        <p className="font-pixel text-[12px] text-cream/60 mt-4 animate-pulse">YUKLENIYOR...</p>
+        <p className="font-pixel text-[12px] text-cream/60 animate-pulse">YUKLENIYOR...</p>
       </div>
     );
   }
@@ -143,6 +142,22 @@ function App() {
 
       <GestureIndicator />
 
+      {/* Top bar with logout */}
+      {userName && (
+        <div className="relative z-10 flex items-center justify-between px-4 py-2 border-b-[2px] border-peach/30 shrink-0">
+          <h1 className="font-pixel text-[10px] text-rose">AIR PLANNER</h1>
+          <div className="flex items-center gap-3">
+            <span className="text-[13px] font-body text-cream/60 truncate max-w-[200px]">{userName}</span>
+            <button
+              onClick={handleLogout}
+              className="font-pixel text-[7px] text-rose/50 hover:text-rose transition-colors px-3 py-1 border border-rose/30 hover:border-rose/60"
+            >
+              CIKIS
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="flex-1 flex min-h-0 relative z-10">
         {/* Sidebar */}
         <div className={`
@@ -150,28 +165,9 @@ function App() {
           border-r-[3px] border-peach/40 bg-mint/15 flex flex-col
         `}>
           <div className="p-4 space-y-4 flex-1 overflow-y-auto">
-            {/* Big title with Aston Script */}
-            <div className="text-center py-3 pixel-border border-peach/50 bg-white/50">
-              <div className="flex items-center justify-center gap-3 mb-1">
-                <PixelFrog size={28} className="animate-hop" />
-                <PixelCat size={28} className="animate-wiggle" />
-                <PixelLion size={28} className="animate-float" />
-              </div>
-              <h1 className="font-script text-[36px] text-rose leading-tight"
-                style={{ textShadow: '0 0 25px rgba(229,0,70,0.3), 2px 2px 0px rgba(0,0,0,0.15)' }}>
-                Air Planner
-              </h1>
-              <p className="text-[20px] font-body text-cream/60 flex items-center justify-center gap-2 mt-1">
-                <PixelHand size={18} /> El ile Takvim Yonetimi
-              </p>
-            </div>
-
-            {/* Camera - en ustte */}
+            {/* Camera */}
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <PixelLion size={18} />
-                <span className="font-pixel text-[9px] text-cream/50">KAMERA</span>
-              </div>
+              <span className="font-pixel text-[9px] text-cream/50 mb-1 block">KAMERA</span>
               <div className="pixel-border border-peach/40 h-44 overflow-hidden">
                 <CameraView />
               </div>
@@ -182,17 +178,11 @@ function App() {
             {/* Gesture reference */}
             {mode === 'idle' && (
               <div className="pixel-border border-mint/50 bg-white/40 p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <PixelFrog size={18} />
-                  <span className="font-pixel text-[9px] text-cream/50">EL HAREKETLERI</span>
-                </div>
+                <span className="font-pixel text-[9px] text-cream/50 mb-3 block">EL HAREKETLERI</span>
                 <div className="space-y-2 text-[22px] font-body">
                   {[
                     [<PixelHand size={18} key="h" />, 'El Ac', 'Hareket', 'text-cream'],
                     [<PixelFist size={18} key="f" />, 'Yumruk', 'Tikla/Kaydet', 'text-cream'],
-                    [<PixelStar size={18} color="#C7DB9C" key="s" />, 'Peace', 'Gorunum', 'text-cream'],
-                    [<PixelHeart size={18} color="#E50046" key="t" />, 'T.Down', 'Sil', 'text-rose'],
-                    [<PixelArrowLeft size={16} key="a1" />, 'Swipe', 'Gun', 'text-cream'],
                   ].map(([icon, gesture, action, color], i) => (
                     <div key={i} className="flex items-center gap-2">
                       <div className="w-6 flex justify-center">{icon}</div>
@@ -200,28 +190,25 @@ function App() {
                       <span className={color as string}>{action as string}</span>
                     </div>
                   ))}
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 flex justify-center"><span className="font-pixel text-[8px] text-mint">V</span></div>
+                    <span className="text-cream/50 flex-1">Peace</span>
+                    <span className="text-cream">Gorunum</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 flex justify-center"><span className="font-pixel text-[8px] text-rose">X</span></div>
+                    <span className="text-cream/50 flex-1">T.Down</span>
+                    <span className="text-rose">Sil</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 flex justify-center"><span className="font-pixel text-[8px] text-cream/50">&lt;&gt;</span></div>
+                    <span className="text-cream/50 flex-1">Swipe</span>
+                    <span className="text-cream">Gun</span>
+                  </div>
                 </div>
               </div>
             )}
           </div>
-
-          {/* Account & logout — pinned to bottom */}
-          {userName && (
-            <div className="px-4 py-3 border-t-[2px] border-peach/30 flex items-center justify-between shrink-0">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-full bg-rose/20 border-2 border-rose/40 flex items-center justify-center shrink-0">
-                  <span className="font-pixel text-[7px] text-rose">{userName.charAt(0).toUpperCase()}</span>
-                </div>
-                <span className="text-[14px] font-body text-cream/70 truncate">{userName}</span>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="font-pixel text-[7px] text-rose/50 hover:text-rose transition-colors shrink-0 ml-2"
-              >
-                CIKIS
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Sidebar toggle */}
