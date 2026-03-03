@@ -123,6 +123,7 @@
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
     @keyframes floatSlow { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-14px) rotate(4deg)} }
     @keyframes hop { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
     @keyframes wiggle { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
     @keyframes blink-dot { 50%{opacity:0.2} }
@@ -632,7 +633,17 @@
             <span id="gScore">SKOR: 0</span>
             <span id="gHigh">EN YUKSEK: 0</span>
           </div>
-          <div class="game-msg" id="gMsg" style="font-family:'VT323',monospace;font-size:24px;line-height:1.8;">Baslamak icin<br>bir tusa bas!</div>
+          <div class="game-msg" id="gMsg" style="font-family:'VT323',monospace;font-size:24px;line-height:1.8;">
+            <span style="font-size:28px;color:#B8DB80;">NASIL OYNANIR?</span><br><br>
+            <span style="display:inline-block;background:rgba(184,219,128,0.15);border:2px solid rgba(184,219,128,0.4);padding:8px 16px;border-radius:4px;margin-bottom:8px;">
+              <span style="font-size:22px;color:#FFA4A4;">W</span> <span style="font-size:18px;color:rgba(252,249,234,0.5);">Yukari</span>&nbsp;&nbsp;
+              <span style="font-size:22px;color:#FFA4A4;">A</span> <span style="font-size:18px;color:rgba(252,249,234,0.5);">Sol</span>&nbsp;&nbsp;
+              <span style="font-size:22px;color:#FFA4A4;">S</span> <span style="font-size:18px;color:rgba(252,249,234,0.5);">Asagi</span>&nbsp;&nbsp;
+              <span style="font-size:22px;color:#FFA4A4;">D</span> <span style="font-size:18px;color:rgba(252,249,234,0.5);">Sag</span>
+            </span><br><br>
+            <span style="font-size:18px;color:rgba(252,249,234,0.5);">Yemleri topla &bull; Boceklerden kac!</span><br><br>
+            <span style="font-size:20px;color:#BADFDB;animation:pulse 1.5s ease-in-out infinite;">Baslamak icin bir tusa bas!</span>
+          </div>
         </div>
         <div class="game-led"></div>
       </div>
@@ -964,7 +975,7 @@
             over=true; run=false;
             burst(frog.x+frog.s/2,frog.y+frog.s/2,'#B8DB80',15);
             if(score>hi){hi=score;localStorage.setItem('frog-game-hi',hi.toString());hiEl.textContent='EN YUKSEK: '+hi;}
-            msgEl.innerHTML='OYUN BITTI!<br>SKOR: '+score+'<br><br><span style="font-size:18px;opacity:0.5;">Tekrar oynamak icin bir tusa bas</span>';
+            msgEl.innerHTML='OYUN BITTI!<br>SKOR: '+score+'<br><br><span style="font-size:16px;opacity:0.5;">W A S D ile hareket et</span><br><span style="font-size:18px;opacity:0.5;">Tekrar oynamak icin bir tusa bas</span>';
             msgEl.style.display='block';
             return;
           }
