@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Air Planner - El Hareketleriyle Takvim Yonetimi</title>
+  <script>
+    // Block spacebar scroll globally (capturing phase, runs first)
+    window.addEventListener('keydown',function(e){if(e.code==='Space'){e.preventDefault();}},true);
+    window.addEventListener('keyup',function(e){if(e.code==='Space'){e.preventDefault();}},true);
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
   <link href="https://fonts.cdnfonts.com/css/aston-script" rel="stylesheet">
