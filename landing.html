@@ -642,8 +642,8 @@
               <span style="font-size:22px;color:#FFA4A4;">S</span> <span style="font-size:18px;color:rgba(252,249,234,0.5);">Asagi</span>&nbsp;&nbsp;
               <span style="font-size:22px;color:#FFA4A4;">D</span> <span style="font-size:18px;color:rgba(252,249,234,0.5);">Sag</span>
             </span><br><br>
-            <span style="font-size:18px;color:rgba(252,249,234,0.5);">Yemleri topla &bull; Boceklerden kac!</span><br><br>
-            <span style="font-size:20px;color:#BADFDB;animation:pulse 1.5s ease-in-out infinite;">Baslamak icin bir tusa bas!</span>
+            <span style="font-size:18px;color:rgba(227,219,187,0.6);">Yemleri topla &bull; Boceklere dokunma!</span><br><br>
+            <span style="font-size:20px;color:#AEB784;animation:pulse 1.5s ease-in-out infinite;">SPACE ile basla!</span>
           </div>
         </div>
         <div class="game-led"></div>
@@ -651,7 +651,7 @@
       <div class="game-base"></div>
       <div class="game-foot"></div>
     </div>
-    <div class="game-keys" style="font-family:'VT323',monospace;font-size:20px;">W A S D &bull; Yemleri topla &bull; Boceklere dokme!</div>
+    <div class="game-keys" style="font-family:'VT323',monospace;font-size:20px;">W A S D &bull; Yemleri topla &bull; Boceklere dokunma!</div>
   </div>
 
   <!-- ══ CTA ══ -->
@@ -975,7 +975,7 @@
             over=true; run=false;
             burst(frog.x+frog.s/2,frog.y+frog.s/2,'#B8DB80',15);
             if(score>hi){hi=score;localStorage.setItem('frog-game-hi',hi.toString());hiEl.textContent='EN YUKSEK: '+hi;}
-            msgEl.innerHTML='<span style="color:#FFA4A4;font-size:14px;">OYUN BITTI!</span><br><span style="color:#B8DB80;font-size:12px;">SKOR: '+score+'</span><br><br><span style="font-size:11px;color:rgba(252,249,234,0.7);">W A S D ile hareket et</span><br><span style="font-size:12px;color:rgba(252,249,234,0.7);">Tekrar oynamak icin bir tusa bas</span>';
+            msgEl.innerHTML='<span style="color:#F39EB6;font-size:22px;">OYUN BITTI!</span><br><span style="color:#AEB784;font-size:18px;">SKOR: '+score+'</span><br><br><span style="font-size:14px;color:rgba(227,219,187,0.8);">W A S D ile hareket et</span><br><span style="font-size:15px;color:rgba(227,219,187,0.8);">SPACE ile tekrar oyna</span>';
             msgEl.style.display='block';
             return;
           }
@@ -1032,8 +1032,11 @@
 
       document.addEventListener('keydown',function(e){
         var k=e.key.toLowerCase();
-        if(k==='w'||k==='a'||k==='s'||k==='d'){
+        if(k===' '||k==='space'){
           if(!run||over){start();return;}
+        }
+        if(k==='w'||k==='a'||k==='s'||k==='d'){
+          if(!run)return;
           if(k==='w')keys.w=true;
           if(k==='s')keys.s=true;
           if(k==='a')keys.a=true;
