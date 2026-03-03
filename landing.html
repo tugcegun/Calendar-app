@@ -1033,6 +1033,7 @@
       document.addEventListener('keydown',function(e){
         var k=e.key.toLowerCase();
         if(k===' '||k==='space'){
+          e.preventDefault();
           if(!run||over){start();return;}
         }
         if(k==='w'||k==='a'||k==='s'||k==='d'){
