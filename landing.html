@@ -1030,34 +1030,28 @@
         reset();run=true;requestAnimationFrame(loop);
       }
 
-      function isGameVisible(){
-        var r=scr.getBoundingClientRect();
-        return r.top<window.innerHeight&&r.bottom>0;
-      }
       window.addEventListener('keydown',function(e){
-        if(e.code==='Space'&&isGameVisible()){
-          e.preventDefault();
-          e.stopPropagation();
-          if(!run||over)start();
-          return false;
-        }
+        if(e.code==='Space'){e.preventDefault();}
         var k=e.key.toLowerCase();
-        if((k==='w'||k==='a'||k==='s'||k==='d')&&isGameVisible()){
-          e.preventDefault();
+        if(e.code==='Space'){
+          if(!run||over)start();
+          return;
+        }
+        if(k==='w'||k==='a'||k==='s'||k==='d'){
           if(!run)return;
           if(k==='w')keys.w=true;
           if(k==='s')keys.s=true;
           if(k==='a')keys.a=true;
           if(k==='d')keys.d=true;
         }
-      },false);
+      });
       window.addEventListener('keyup',function(e){
         var k=e.key.toLowerCase();
         if(k==='w')keys.w=false;
         if(k==='s')keys.s=false;
         if(k==='a')keys.a=false;
         if(k==='d')keys.d=false;
-      },false);
+      });
 
       scr.addEventListener('click',function(){if(!run||over)start();});
 
