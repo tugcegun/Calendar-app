@@ -155,7 +155,7 @@
       position: relative; z-index: 1; min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
       text-align: center; padding: 80px 24px 120px;
-      background: var(--bg1);
+      background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
       overflow: hidden; transition: background 0.4s;
     }
     .hero-content { position: relative; z-index: 2; max-width: 680px; }
@@ -195,13 +195,13 @@
     }
     .marquee-dot { width: 6px; height: 6px; flex-shrink: 0; }
     .band-1 { background: var(--green); border-color: var(--card-border); color: #3a3a3a; }
-    .band-2 { background: var(--bg4); border-color: var(--card-border); color: #fff; }
-    .band-3 { background: var(--mint); border-color: var(--card-border); color: #3a3a3a; }
+    .band-2 { background: var(--dark-bg); border-color: var(--green); color: var(--green); }
+    .band-3 { background: var(--green); border-color: var(--card-border); color: #3a3a3a; }
 
     /* ══ FEATURES ══ */
     .feat-section {
       position: relative; z-index: 1;
-      background: var(--bg2);
+      background: var(--bg1);
       transition: background 0.4s;
       padding: 90px 24px 100px;
     }
@@ -245,7 +245,7 @@
     /* ══ HOW IT WORKS ══ */
     .how-section {
       position: relative; z-index: 1;
-      background: var(--bg3);
+      background: var(--bg1);
       padding: 100px 24px; overflow: hidden; transition: background 0.4s;
     }
     .how-header { text-align: center; margin-bottom: 64px; position: relative; z-index: 1; }
@@ -298,6 +298,7 @@
       position: relative; z-index: 1;
       background: var(--dark-bg);
       padding: 100px 24px 120px; text-align: center; overflow: hidden; transition: background 0.4s;
+      border-top: 3px solid var(--green);
     }
     .cam-section .section-title { color: var(--bg1); }
     .cam-section .section-sub { color: rgba(252,249,234,0.35); max-width: 460px; margin: 0 auto 44px; }
@@ -328,6 +329,7 @@
       position: relative; z-index: 1;
       background: var(--dark-bg);
       padding: 80px 24px 100px; text-align: center; overflow: hidden; transition: background 0.4s;
+      border-top: 1px solid rgba(184,219,128,0.15);
     }
     .game-section .section-title { color: var(--bg1); }
     .game-section .section-sub { color: rgba(252,249,234,0.35); max-width: 460px; margin: 0 auto 36px; }
@@ -378,7 +380,8 @@
     .cta-section {
       position: relative; z-index: 1;
       background: var(--bg1);
-      text-align: center; padding: 140px 24px 100px; overflow: hidden; transition: background 0.4s;
+      text-align: center; padding: 100px 24px 100px; overflow: hidden; transition: background 0.4s;
+      border-top: 3px solid var(--green);
     }
     .cta-inner { position: relative; z-index: 1; }
     .cta-section h2 { font-family: 'Press Start 2P', monospace; font-size: clamp(13px, 2.2vw, 20px); color: var(--text); margin-bottom: 14px; line-height: 1.7; image-rendering: pixelated; }
